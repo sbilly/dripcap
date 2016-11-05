@@ -19,7 +19,7 @@ export default class Dissector {
     let version = parentLayer.payload.readUInt8(0) >> 4;
     layer.items.push({
       name: 'Version',
-      value: version,
+      id: 'version',
       range: '0:1'
     });
     layer.attrs.version = version;
@@ -27,7 +27,7 @@ export default class Dissector {
     let headerLength = parentLayer.payload.readUInt8(0) & 0b00001111;
     layer.items.push({
       name: 'Internet Header Length',
-      value: headerLength,
+      id: 'headerLength',
       range: '0:1'
     });
     layer.attrs.headerLength = headerLength;
@@ -35,7 +35,7 @@ export default class Dissector {
     let type = parentLayer.payload.readUInt8(1);
     layer.items.push({
       name: 'Type of service',
-      value: type,
+      id: 'type',
       range: '1:2'
     });
     layer.attrs.type = type;
@@ -43,7 +43,7 @@ export default class Dissector {
     let totalLength = parentLayer.payload.readUInt16BE(2);
     layer.items.push({
       name: 'Total Length',
-      value: totalLength,
+      id: 'totalLength',
       range: '2:4'
     });
     layer.attrs.totalLength = totalLength;
@@ -51,7 +51,7 @@ export default class Dissector {
     let id = parentLayer.payload.readUInt16BE(4);
     layer.items.push({
       name: 'Identification',
-      value: id,
+      id: 'id',
       range: '4:6'
     });
     layer.attrs.id = id;
@@ -96,7 +96,7 @@ export default class Dissector {
     let fragmentOffset = parentLayer.payload.readUInt8(6) & 0b0001111111111111;
     layer.items.push({
       name: 'Fragment Offset',
-      value: fragmentOffset,
+      id: 'fragmentOffset',
       range: '6:8',
     });
     layer.attrs.fragmentOffset = fragmentOffset;
@@ -104,7 +104,7 @@ export default class Dissector {
     let ttl = parentLayer.payload.readUInt8(8);
     layer.items.push({
       name: 'TTL',
-      value: ttl,
+      id: 'ttl',
       range: '8:9',
     });
     layer.attrs.ttl = ttl;
@@ -126,7 +126,7 @@ export default class Dissector {
     let checksum = parentLayer.payload.readUInt16BE(10);
     layer.items.push({
       name: 'Header Checksum',
-      value: checksum,
+      id: 'checksum',
       range: '10:12',
     });
     layer.attrs.checksum = checksum;
@@ -134,7 +134,7 @@ export default class Dissector {
     let source = IPv4Address(parentLayer.payload.slice(12, 16));
     layer.items.push({
       name: 'Source IP Address',
-      value: source,
+      id: 'src',
       range: '12:16',
     });
     layer.attrs.src = source;
@@ -142,7 +142,7 @@ export default class Dissector {
     let destination = IPv4Address(parentLayer.payload.slice(16, 20));
     layer.items.push({
       name: 'Destination IP Address',
-      value: destination,
+      id: 'dst',
       range: '16:20',
     });
     layer.attrs.dst = destination;

@@ -80,7 +80,7 @@
     <i class="fa fa-circle-o" show={ !opts.field.items.length }></i>
     <i class="fa fa-arrow-circle-right" show={ opts.field.items.length && !show }></i>
     <i class="fa fa-arrow-circle-down" show={ opts.field.items.length && show }></i>
-    <a class="text-label">{ opts.field.name }:</a>
+    <a class="text-label">{ opts.field.name }</a>
     <packet-view-boolean-value if={ type=='boolean' } val={ val }></packet-view-boolean-value>
     <packet-view-integer-value if={ type=='integer' } val={ val }></packet-view-integer-value>
     <packet-view-string-value if={ type=='string' } val={ val }></packet-view-string-value>
@@ -89,7 +89,7 @@
     <packet-view-custom-value if={ type=='custom' } tag={ tag } val={ val }></packet-view-custom-value>
   </p>
   <ul show={ opts.field.items.length && show }>
-    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } field={ f }></packet-view-item>
+    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } parent={ f } path={ path } field={ f }></packet-view-item>
   </ul>
 </li>
 
@@ -111,6 +111,9 @@
 
   this.context = e => {
     if (window.getSelection().toString().length > 0) {
+      if (this.path) {
+        e.filterText = `${this.path} == ${JSON.stringify(this.val)}`;
+      }
       Menu.popup('packet-view:context-menu', this, remote.getCurrentWindow(), {event: e});
       e.stopPropagation();
     }
@@ -121,6 +124,14 @@
     this.val = opts.field.value.data;
     this.type = null;
     this.tag = null;
+
+    let id = opts.field.id;
+    if (id) {
+      this.path = opts.path + '.' + id;
+      if (id in opts.parent.attrs) {
+        this.val = opts.parent.attrs[id].data;
+      }
+    }
 
     if (opts.field.value.type !== '') {
       let tag = 'packet-view-' + opts.field.value.type.replace(/\//g, '-');
@@ -165,7 +176,7 @@
   <i class="text-summary">{ layer.summary }</i>
 </p>
 <ul show={ visible }>
-  <packet-view-item each={ f in layer.items } layer={ layer } field={ f }></packet-view-item>
+  <packet-view-item each={ f in layer.items } layer={ layer } parent={ layer } path={ layer.id } field={ f }></packet-view-item>
   <li if={ layer.error }>
     <a class="text-label">Error:</a>
     { layer.error }
