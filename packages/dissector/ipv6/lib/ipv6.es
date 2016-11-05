@@ -19,7 +19,7 @@ export default class IPv6Dissector {
     let version = parentLayer.payload.readUInt8(0) >> 4;
     layer.items.push({
       name: 'Version',
-      value: version,
+      id: 'version',
       range: '0:1'
     });
     layer.attrs.version = version;
@@ -29,7 +29,7 @@ export default class IPv6Dissector {
       ((parentLayer.payload.readUInt8(1, true) & 0b11110000) >> 4);
     layer.items.push({
       name: 'Traffic Class',
-      value: trafficClass,
+      id: 'trafficClass',
       range: '0:2'
     });
     layer.attrs.trafficClass = trafficClass;
@@ -38,7 +38,7 @@ export default class IPv6Dissector {
       ((parentLayer.payload.readUInt8(1, true) & 0b00001111) << 16);
     layer.items.push({
       name: 'Flow Label',
-      value: flowLevel,
+      id: 'flowLevel',
       range: '1:4'
     });
     layer.attrs.flowLevel = flowLevel;
@@ -46,7 +46,7 @@ export default class IPv6Dissector {
     let payloadLength = parentLayer.payload.readUInt16BE(4);
     layer.items.push({
       name: 'Payload Length',
-      value: payloadLength,
+      id: 'payloadLength',
       range: '4:6'
     });
     layer.attrs.payloadLength = payloadLength;
@@ -63,7 +63,7 @@ export default class IPv6Dissector {
     let hopLimit = parentLayer.payload.readUInt8(7, true);
     layer.items.push({
       name: 'Hop Limit',
-      value: hopLimit,
+      id: 'hopLimit',
       range: '7:8'
     });
     layer.attrs.hopLimit = hopLimit;
@@ -71,7 +71,7 @@ export default class IPv6Dissector {
     let source = IPv6Address(parentLayer.payload.slice(8, 24));
     layer.items.push({
       name: 'Source IP Address',
-      value: source,
+      id: 'src',
       range: '8:24'
     });
     layer.attrs.src = source;
@@ -79,7 +79,7 @@ export default class IPv6Dissector {
     let destination = IPv6Address(parentLayer.payload.slice(24, 40));
     layer.items.push({
       name: 'Destination IP Address',
-      value: destination,
+      id: 'dst',
       range: '24:40'
     });
     layer.attrs.dst = destination;
@@ -142,7 +142,7 @@ export default class IPv6Dissector {
 
     layer.items.push({
       name: 'Protocol',
-      value: protocol,
+      id: 'protocol',
       data: nextHeaderRange
     });
     layer.attrs.protocol = protocol;
@@ -152,7 +152,7 @@ export default class IPv6Dissector {
 
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: offset + ':'
     });
 

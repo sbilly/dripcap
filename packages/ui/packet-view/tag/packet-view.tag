@@ -3,6 +3,7 @@
     this.on('update', () => {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
       this.name = keys.length > 0 ? keys.join(', ') : '[Unknown]';
+      if (opts.val._name) this.name = opts.val._name;
       this.value = opts.val._value;
     });
   </script>
@@ -13,6 +14,7 @@
   <script>
     this.on('update', () => {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
+      keys = keys.map(k => opts.val._name[k]);
       this.name = keys.length > 0 ? keys.join(', ') : '[None]';
       this.value = opts.val._value;
     });
@@ -80,7 +82,7 @@
     <i class="fa fa-circle-o" show={ !opts.field.items.length }></i>
     <i class="fa fa-arrow-circle-right" show={ opts.field.items.length && !show }></i>
     <i class="fa fa-arrow-circle-down" show={ opts.field.items.length && show }></i>
-    <a class="text-label">{ opts.field.name }:</a>
+    <a class="text-label">{ opts.field.name }</a>
     <packet-view-boolean-value if={ type=='boolean' } val={ val }></packet-view-boolean-value>
     <packet-view-integer-value if={ type=='integer' } val={ val }></packet-view-integer-value>
     <packet-view-string-value if={ type=='string' } val={ val }></packet-view-string-value>
@@ -89,7 +91,7 @@
     <packet-view-custom-value if={ type=='custom' } tag={ tag } val={ val }></packet-view-custom-value>
   </p>
   <ul show={ opts.field.items.length && show }>
-    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } field={ f }></packet-view-item>
+    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } parentVal={ val } parent={ f } path={ path } field={ f }></packet-view-item>
   </ul>
 </li>
 
@@ -111,6 +113,23 @@
 
   this.context = e => {
     if (window.getSelection().toString().length > 0) {
+      if (this.path) {
+        switch (typeof this.val) {
+          case 'boolean':
+            e.filterText = (this.val ? '' : '!') + this.path;
+            break;
+          case 'object':
+            if (this.val.__filterValue) {
+              e.filterText = `${this.path} == ${JSON.stringify(this.val.__filterValue)}`;
+            } else {
+              e.filterText = this.path;
+            }
+            break;
+          default:
+            e.filterText = `${this.path} == ${JSON.stringify(this.val)}`;
+            break;
+        }
+      }
       Menu.popup('packet-view:context-menu', this, remote.getCurrentWindow(), {event: e});
       e.stopPropagation();
     }
@@ -121,9 +140,23 @@
     this.val = opts.field.value.data;
     this.type = null;
     this.tag = null;
+    let valType = opts.field.value.type;
 
-    if (opts.field.value.type !== '') {
-      let tag = 'packet-view-' + opts.field.value.type.replace(/\//g, '-');
+    let id = opts.field.id;
+    if (id) {
+      this.path = opts.path + '.' + id;
+      if (id in opts.parent.attrs) {
+        this.val = opts.parent.attrs[id].data;
+        valType = opts.parent.attrs[id].type;
+      } else if (opts.parentval && id in opts.parentval) {
+        this.val = opts.parentval[id];
+      } else if (opts.parent.hasOwnProperty(id)) {
+        this.val = opts.parent[id];
+      }
+    }
+
+    if (valType !== '') {
+      let tag = 'packet-view-' + valType.replace(/\//g, '-');
       try {
         riot.render(tag, {val: this.val});
         this.type = 'custom';
@@ -165,7 +198,7 @@
   <i class="text-summary">{ layer.summary }</i>
 </p>
 <ul show={ visible }>
-  <packet-view-item each={ f in layer.items } layer={ layer } field={ f }></packet-view-item>
+  <packet-view-item each={ f in layer.items } layer={ layer } parent={ layer } path={ layer.id } field={ f }></packet-view-item>
   <li if={ layer.error }>
     <a class="text-label">Error:</a>
     { layer.error }

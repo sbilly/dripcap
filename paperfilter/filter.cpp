@@ -31,36 +31,49 @@ FilterFunc makeFilter(const json11::Json &json) {
 
     return FilterFunc([isolate, objectFunc,
                        propertyFunc](Packet *pkt) -> v8::Local<v8::Value> {
-      v8::Local<v8::Value> object = objectFunc(pkt);
+      v8::Local<v8::Value> value = objectFunc(pkt);
       v8::Local<v8::Value> property = propertyFunc(pkt);
+      v8::Local<v8::Value> result;
 
       const std::string &name =
           v8pp::from_v8<std::string>(isolate, property, "");
       if (name.empty())
-        return v8::Null(isolate);
+        return result;
 
       if (const Layer *layer =
-              v8pp::class_<Layer>::unwrap_object(isolate, object)) {
+              v8pp::class_<Layer>::unwrap_object(isolate, value)) {
         const std::unordered_map<std::string, ItemValue> &attrs =
             layer->attrs();
         const auto it = attrs.find(name);
         if (it != attrs.end()) {
-          return it->second.data();
+          result = it->second.data();
         }
       }
 
-      if (object->IsString()) {
-        object = v8::StringObject::New(object.As<v8::String>());
-      }
-
-      if (object->IsObject()) {
-        v8::Local<v8::Value> key = v8pp::to_v8(isolate, name);
-        if (object.As<v8::Object>()->Has(key)) {
-          return object.As<v8::Object>()->Get(key);
+      if (result.IsEmpty()) {
+        if (value->IsString()) {
+          value = v8::StringObject::New(value.As<v8::String>());
+        }
+        if (value->IsObject()) {
+          v8::Local<v8::Object> object = value.As<v8::Object>();
+          v8::Local<v8::Value> key = v8pp::to_v8(isolate, name);
+          if (object->Has(key)) {
+            result = object->Get(key);
+          }
         }
       }
 
-      return v8::Null(isolate);
+      if (result.IsEmpty()) {
+        result = v8::Null(isolate);
+      } else if (result->IsObject()) {
+        v8::Local<v8::Object> resultObj = result.As<v8::Object>();
+        v8::Local<v8::String> resultKey = v8pp::to_v8(isolate, "__filterValue");
+        if (resultObj->Has(resultKey)) {
+          return resultObj->Get(resultKey);
+        }
+      }
+
+      return result;
     });
   } else if (type == "BinaryExpression") {
     const FilterFunc &lf = makeFilter(json["left"]);

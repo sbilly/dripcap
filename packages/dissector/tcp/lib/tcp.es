@@ -20,16 +20,18 @@ export default class Dissector {
     let source = parentLayer.payload.readUInt16BE(0);
     layer.items.push({
       name: 'Source port',
-      value: source,
+      id: 'srcPort',
       range: '0:2'
     });
+    layer.attrs.srcPort = source;
 
     let destination = parentLayer.payload.readUInt16BE(2);
     layer.items.push({
       name: 'Destination port',
-      value: destination,
+      id: 'dstPort',
       range: '2:4'
     });
+    layer.attrs.dstPort = destination;
 
     let srcAddr = parentLayer.attrs.src;
     let dstAddr = parentLayer.attrs.dst;
@@ -44,7 +46,7 @@ export default class Dissector {
     let seq = parentLayer.payload.readUInt32BE(4);
     layer.items.push({
       name: 'Sequence number',
-      value: seq,
+      id: 'seq',
       range: '4:8'
     });
     layer.attrs.seq = seq;
@@ -52,7 +54,7 @@ export default class Dissector {
     let ack = parentLayer.payload.readUInt32BE(8);
     layer.items.push({
       name: 'Acknowledgment number',
-      value: ack,
+      id: 'ack',
       range: '8:12'
     });
     layer.attrs.ack = ack;
@@ -60,7 +62,7 @@ export default class Dissector {
     let dataOffset = parentLayer.payload.readUInt8(12) >> 4;
     layer.items.push({
       name: 'Data offset',
-      value: dataOffset,
+      id: 'dataOffset',
       range: '12:13'
     });
     layer.attrs.dataOffset = dataOffset;
@@ -82,61 +84,62 @@ export default class Dissector {
 
     layer.items.push({
       name: 'Flags',
-      value: flags,
+      id: 'flags',
       data: '12:14',
       items: [
         {
           name: 'NS',
-          value: flags.data['NS'],
+          id: 'NS',
           range: '12:13'
         },
         {
           name: 'CWR',
-          value: flags.data['CWR'],
+          id: 'CWR',
           range: '13:14'
         },
         {
           name: 'ECE',
-          value: flags.data['ECE'],
+          id: 'ECE',
           range: '13:14'
         },
         {
           name: 'URG',
-          value: flags.data['URG'],
+          id: 'URG',
           range: '13:14'
         },
         {
           name: 'ACK',
-          value: flags.data['ACK'],
+          id: 'ACK',
           range: '13:14'
         },
         {
           name: 'PSH',
-          value: flags.data['PSH'],
+          id: 'PSH',
           range: '13:14'
         },
         {
           name: 'RST',
-          value: flags.data['RST'],
+          id: 'RST',
           range: '13:14'
         },
         {
           name: 'SYN',
-          value: flags.data['SYN'],
+          id: 'SYN',
           range: '13:14'
         },
         {
           name: 'FIN',
-          value: flags.data['FIN'],
+          id: 'FIN',
           range: '13:14'
         }
       ]
     });
+    layer.attrs.flags = flags;
 
     let window = parentLayer.payload.readUInt16BE(14);
     layer.items.push({
       name: 'Window size',
-      value: window,
+      id: 'window',
       range: '14:16'
     });
     layer.attrs.window = window;
@@ -144,7 +147,7 @@ export default class Dissector {
     let checksum = parentLayer.payload.readUInt16BE(16);
     layer.items.push({
       name: 'Checksum',
-      value: checksum,
+      id: 'checksum',
       range: '16:18'
     });
     layer.attrs.checksum = checksum;
@@ -152,7 +155,7 @@ export default class Dissector {
     let urgent = parentLayer.payload.readUInt16BE(18);
     layer.items.push({
       name: 'Urgent pointer',
-      value: urgent,
+      id: 'urgent',
       range: '18:20'
     })
     layer.attrs.urgent = urgent;
@@ -256,7 +259,7 @@ export default class Dissector {
     layer.payload = parentLayer.payload.slice(optionDataOffset);
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: optionDataOffset + ':'
     });
 

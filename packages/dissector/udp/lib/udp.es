@@ -19,16 +19,18 @@ export default class UDPDissector {
     let source = parentLayer.payload.readUInt16BE(0);
     layer.items.push({
       name: 'Source port',
-      value: source,
+      id: 'srcPort',
       range: '0:2'
     });
+    layer.attrs.srcPort = source;
 
     let destination = parentLayer.payload.readUInt16BE(2);
     layer.items.push({
       name: 'Destination port',
-      value: destination,
+      id: 'dstPort',
       range: '2:4'
     });
+    layer.attrs.dstPort = destination;
 
     let srcAddr = parentLayer.attrs.src;
     let dstAddr = parentLayer.attrs.dst;
@@ -43,15 +45,15 @@ export default class UDPDissector {
     let length = parentLayer.payload.readUInt16BE(4);
     layer.items.push({
       name: 'Length',
-      value: length,
+      id: 'len',
       range: '4:6'
     });
-    layer.attrs.length = length;
+    layer.attrs.len = length;
 
     let checksum = parentLayer.payload.readUInt16BE(6);
     layer.items.push({
       name: 'Checksum',
-      value: checksum,
+      id: 'checksum',
       range: '6:8'
     });
     layer.attrs.checksum = checksum;
@@ -61,7 +63,7 @@ export default class UDPDissector {
 
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: '8:' + length
     });
 
