@@ -13,6 +13,7 @@
   <script>
     this.on('update', () => {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
+      keys = keys.map(k => opts.val._name[k]);
       this.name = keys.length > 0 ? keys.join(', ') : '[None]';
       this.value = opts.val._value;
     });
@@ -111,7 +112,7 @@
 
   this.context = e => {
     if (window.getSelection().toString().length > 0) {
-      if (this.path) {
+      if (this.path && typeof this.val !== 'object') {
         e.filterText = `${this.path} == ${JSON.stringify(this.val)}`;
       }
       Menu.popup('packet-view:context-menu', this, remote.getCurrentWindow(), {event: e});
@@ -124,17 +125,19 @@
     this.val = opts.field.value.data;
     this.type = null;
     this.tag = null;
+    let valType = opts.field.value.type;
 
     let id = opts.field.id;
     if (id) {
       this.path = opts.path + '.' + id;
       if (id in opts.parent.attrs) {
         this.val = opts.parent.attrs[id].data;
+        valType = opts.parent.attrs[id].type;
       }
     }
 
-    if (opts.field.value.type !== '') {
-      let tag = 'packet-view-' + opts.field.value.type.replace(/\//g, '-');
+    if (valType !== '') {
+      let tag = 'packet-view-' + valType.replace(/\//g, '-');
       try {
         riot.render(tag, {val: this.val});
         this.type = 'custom';

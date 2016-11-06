@@ -57,41 +57,36 @@ export default class Dissector {
     layer.attrs.id = id;
 
     let flagTable = {
-      'Reserved': 0x1,
-      'Don\'t Fragment': 0x2,
-      'More Fragments': 0x4,
+      'reserved':      {value: 0x1, name: 'Reserved'},
+      'doNotFragment': {value: 0x2, name: 'Don\'t Fragment'},
+      'moreFragments': {value: 0x4, name: 'More Fragments'},
     };
 
     let flags = Flags(flagTable, (parentLayer.payload.readUInt8(6) >> 5) & 0x7);
 
     layer.items.push({
       name: 'Flags',
-      value: flags,
+      id: 'flags',
       range: '6:7',
       items: [
         {
-          name: 'Reserved',
-          value: flags.data['Reserved'],
+          name: flagTable['reserved'].name,
+          id: 'reserved',
           range: '6:7'
         },
         {
-          name: 'Don\'t Fragment',
-          value: flags.data['Don\'t Fragment'],
-          range: '6:7',
-          attrs: { _filterHint: `${layer.id}.flags.DoNotFragment` }
+          name: flagTable['doNotFragment'].name,
+          id: 'doNotFragment',
+          range: '6:7'
         },
         {
-          name: 'More Fragments',
-          value: flags.data['More Fragments'],
-          range: '6:7',
-          attrs: { _filterHint: `${layer.id}.flags.MoreFragments` }
+          name: flagTable['moreFragments'].name,
+          id: 'moreFragments',
+          range: '6:7'
         }
       ]
     });
-    layer.attrs.flags = {
-      DoNotFragment: flags.data['Don\'t Fragment'],
-      MoreFragments: flags.data['More Fragments']
-    };
+    layer.attrs.flags = flags;
 
     let fragmentOffset = parentLayer.payload.readUInt8(6) & 0b0001111111111111;
     layer.items.push({

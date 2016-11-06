@@ -10,10 +10,14 @@ export function Enum(table, value) {
 
 export function Flags(table, value) {
   let val = {};
+  let nameTable = {};
   for (let name in table) {
-    val[name] = !!(table[name] & value);
+    let item = table[name];
+    nameTable[name] = (typeof item === 'object' ? item.name : name);
+    val[name] = !!((typeof item === 'object' ? item.value : item) & value);
   }
   val._value = value;
+  val._name = nameTable;
   return new Value(val, 'dripcap/flags');
 }
 
