@@ -1,10 +1,12 @@
 import {Value} from 'dripcap';
 
 export function Enum(table, value) {
-  let name = (value in table) ? table[value] : 'Unknown';
+  let item = table[value];
+  let id = (value in table) ? (typeof item === 'object' ? item.id : item) : 'Unknown';
   let val = {};
-  val[name] = true;
+  val[id] = true;
   val._value = value;
+  val._name = (typeof item === 'object' ? item.name : item);
   return new Value(val, 'dripcap/enum');
 }
 

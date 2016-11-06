@@ -3,6 +3,7 @@
     this.on('update', () => {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
       this.name = keys.length > 0 ? keys.join(', ') : '[Unknown]';
+      if (opts.val._name) this.name = opts.val._name;
       this.value = opts.val._value;
     });
   </script>

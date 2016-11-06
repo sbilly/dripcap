@@ -104,8 +104,8 @@ let hardwareTable = {
 };
 
 let protocolTable = {
-  0x0800: 'IPv4',
-  0x86DD: 'IPv6'
+  0x0800: {id: 'ipv4', name: 'IPv4'},
+  0x86DD: {id: 'ipv6', name: 'IPv6'}
 };
 
 let operationTable = {
