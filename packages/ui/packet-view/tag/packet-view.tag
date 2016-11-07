@@ -113,8 +113,18 @@
 
   this.context = e => {
     if (window.getSelection().toString().length > 0) {
-      if (this.path && typeof this.val !== 'object') {
-        e.filterText = `${this.path} == ${JSON.stringify(this.val)}`;
+      if (this.path) {
+        switch (typeof this.val) {
+          case 'boolean':
+            e.filterText = (this.val ? '' : '!') + this.path;
+            break;
+          case 'object':
+            e.filterText = this.path;
+            break;
+          default:
+            e.filterText = `${this.path} == ${JSON.stringify(this.val)}`;
+            break;
+        }
       }
       Menu.popup('packet-view:context-menu', this, remote.getCurrentWindow(), {event: e});
       e.stopPropagation();
@@ -136,6 +146,8 @@
         valType = opts.parent.attrs[id].type;
       } else if (opts.parentval && id in opts.parentval) {
         this.val = opts.parentval[id];
+      } else if (opts.parent.hasOwnProperty(id)) {
+        this.val = opts.parent[id];
       }
     }
 

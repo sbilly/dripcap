@@ -20,16 +20,18 @@ export default class Dissector {
     let source = parentLayer.payload.readUInt16BE(0);
     layer.items.push({
       name: 'Source port',
-      id: 'src',
+      id: 'srcPort',
       range: '0:2'
     });
+    layer.attrs.srcPort = source;
 
     let destination = parentLayer.payload.readUInt16BE(2);
     layer.items.push({
       name: 'Destination port',
-      id: 'dst',
+      id: 'dstPort',
       range: '2:4'
     });
+    layer.attrs.dstPort = destination;
 
     let srcAddr = parentLayer.attrs.src;
     let dstAddr = parentLayer.attrs.dst;
@@ -257,7 +259,7 @@ export default class Dissector {
     layer.payload = parentLayer.payload.slice(optionDataOffset);
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: optionDataOffset + ':'
     });
 
