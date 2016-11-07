@@ -146,7 +146,7 @@ export default class Dissector {
     layer.payload = parentLayer.payload.slice(20, totalLength.data);
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: '20:' + totalLength
     });
 

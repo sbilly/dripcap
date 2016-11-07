@@ -135,7 +135,7 @@ export default class DNSDissector {
     layer.payload = parentLayer.payload.slice(12);
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: '12:'
     });
 

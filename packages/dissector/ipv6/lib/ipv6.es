@@ -152,7 +152,7 @@ export default class IPv6Dissector {
 
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: offset + ':'
     });
 

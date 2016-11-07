@@ -63,7 +63,7 @@ export default class UDPDissector {
 
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: '8:' + length
     });
 

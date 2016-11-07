@@ -74,7 +74,7 @@ export default class Dissector {
     layer.payload = parentLayer.payload.slice(14);
     layer.items.push({
       name: 'Payload',
-      value: layer.payload,
+      id: 'payload',
       range: '14:'
     });
 
