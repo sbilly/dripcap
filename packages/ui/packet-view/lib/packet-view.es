@@ -42,12 +42,14 @@ export default class PacketListView {
     });
 
     this.copyMenu = function(menu, e) {
-      let copy = () => remote.getCurrentWebContents().copy();
-      menu.append(new MenuItem({
-        label: 'Copy',
-        click: copy,
-        accelerator: 'CmdOrCtrl+C'
-      }));
+      if (window.getSelection().toString().length > 0) {
+        let copy = () => remote.getCurrentWebContents().copy();
+        menu.append(new MenuItem({
+          label: 'Copy',
+          click: copy,
+          accelerator: 'CmdOrCtrl+C'
+        }));
+      }
       return menu;
     };
 

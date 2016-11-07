@@ -112,27 +112,25 @@
   };
 
   this.context = e => {
-    if (window.getSelection().toString().length > 0) {
-      if (this.path) {
-        switch (typeof this.val) {
-          case 'boolean':
-            e.filterText = (this.val ? '' : '!') + this.path;
-            break;
-          case 'object':
-            if (this.val.__filterValue) {
-              e.filterText = `${this.path} == ${JSON.stringify(this.val.__filterValue)}`;
-            } else {
-              e.filterText = this.path;
-            }
-            break;
-          default:
-            e.filterText = `${this.path} == ${JSON.stringify(this.val)}`;
-            break;
-        }
+    if (this.path) {
+      switch (typeof this.val) {
+        case 'boolean':
+          e.filterText = (this.val ? '' : '!') + this.path;
+          break;
+        case 'object':
+          if (this.val.__filterValue) {
+            e.filterText = `${this.path} == ${JSON.stringify(this.val.__filterValue)}`;
+          } else {
+            e.filterText = this.path;
+          }
+          break;
+        default:
+          e.filterText = `${this.path} == ${JSON.stringify(this.val)}`;
+          break;
       }
-      Menu.popup('packet-view:context-menu', this, remote.getCurrentWindow(), {event: e});
-      e.stopPropagation();
     }
+    Menu.popup('packet-view:context-menu', this, remote.getCurrentWindow(), {event: e});
+    e.stopPropagation();
   };
 
   this.on('update', () => {
