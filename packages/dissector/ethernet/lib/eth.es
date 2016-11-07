@@ -19,7 +19,7 @@ export default class Dissector {
     let destination = MACAddress(parentLayer.payload.slice(0, 6));
     layer.items.push({
       name: 'Destination',
-      value: destination,
+      id: 'dst',
       range: '0:6'
     });
     layer.attrs.dst = destination;
@@ -27,7 +27,7 @@ export default class Dissector {
     let source = MACAddress(parentLayer.payload.slice(6, 12));
     layer.items.push({
       name: 'Source',
-      value: source,
+      id: 'src',
       range: '6:12'
     });
     layer.attrs.src = source;
@@ -37,9 +37,10 @@ export default class Dissector {
     if (type <= 1500) {
       layer.items.push({
         name: 'Length',
-        value: type,
+        value: 'len',
         range: '12:14'
       });
+      layer.attrs.len = type;
     } else {
       let table = {
         0x0800: 'IPv4',
@@ -53,7 +54,7 @@ export default class Dissector {
       let etherType = Enum(table, type);
       layer.items.push({
         name: 'EtherType',
-        value: etherType,
+        id: 'etherType',
         range: '12:14'
       });
       layer.attrs.etherType = etherType;
