@@ -27,6 +27,7 @@ public:
   StreamDissectorThread &operator=(const StreamDissectorThread &) = delete;
   void insert(std::unique_ptr<StreamChunk> chunk);
   void clearStream(const std::string &ns, const std::string &id);
+  uint32_t queueSize() const;
 
 private:
   class Private;

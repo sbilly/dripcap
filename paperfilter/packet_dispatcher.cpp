@@ -42,3 +42,8 @@ void PacketDispatcher::analyze(std::unique_ptr<Packet> packet) {
   }
   d->dissCtx->cond.notify_all();
 }
+
+uint32_t PacketDispatcher::queueSize() const {
+  std::lock_guard<std::mutex> lock(d->dissCtx->mutex);
+  return d->dissCtx->queue.size();
+}

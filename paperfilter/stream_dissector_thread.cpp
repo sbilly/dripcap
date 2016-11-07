@@ -142,7 +142,6 @@ StreamDissectorThread::Private::Private(const std::shared_ptr<Context> &ctx)
           break;
 
         std::unique_ptr<StreamChunk> chunk = std::move(chunks.front());
-        chunks.pop();
         lock.unlock();
 
         const std::string &key = chunk->ns() + "@" + chunk->id();
@@ -245,6 +244,7 @@ StreamDissectorThread::Private::Private(const std::shared_ptr<Context> &ctx)
         }
 
         lock.lock();
+        chunks.pop();
       }
     }
 
@@ -311,4 +311,9 @@ void StreamDissectorThread::insert(std::unique_ptr<StreamChunk> chunk) {
 void StreamDissectorThread::clearStream(const std::string &ns,
                                         const std::string &id) {
   std::lock_guard<std::mutex> lock(d->mutex);
+}
+
+uint32_t StreamDissectorThread::queueSize() const {
+  std::lock_guard<std::mutex> lock(d->mutex);
+  return d->chunks.size();
 }

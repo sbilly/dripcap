@@ -94,3 +94,12 @@ void StreamDispatcher::insert(
     }
   }
 }
+
+uint32_t StreamDispatcher::queueSize() const {
+  std::lock_guard<std::mutex> lock(d->mutex);
+  uint32_t size = d->streamChunks.size();
+  for (const auto &thread : d->dissectorThreads) {
+    size += thread->queueSize();
+  }
+  return d->streamChunks.size();
+}

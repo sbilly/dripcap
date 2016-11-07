@@ -28,6 +28,7 @@ public:
   void insert(uint32_t seq,
               std::vector<std::unique_ptr<StreamChunk>> streamChunks);
   void insert(std::vector<std::unique_ptr<StreamChunk>> streamChunks);
+  uint32_t queueSize() const;
 
 private:
   class Private;

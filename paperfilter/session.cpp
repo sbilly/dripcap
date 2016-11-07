@@ -104,6 +104,9 @@ Session::Private::Private() {
       Local<Object> obj = Object::New(isolate);
       v8pp::set_option(isolate, obj, "capturing", d->capturing);
       v8pp::set_option(isolate, obj, "packets", d->store->maxSeq());
+      v8pp::set_option(isolate, obj, "queue",
+                       d->packetDispatcher->queueSize() +
+                           d->streamDispatcher->queueSize());
       Local<Object> filtered = Object::New(isolate);
 
       for (auto &pair : d->filterThreads) {
