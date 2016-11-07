@@ -119,7 +119,11 @@
             e.filterText = (this.val ? '' : '!') + this.path;
             break;
           case 'object':
-            e.filterText = this.path;
+            if (this.val.__filterValue) {
+              e.filterText = `${this.path} == ${JSON.stringify(this.val.__filterValue)}`;
+            } else {
+              e.filterText = this.path;
+            }
             break;
           default:
             e.filterText = `${this.path} == ${JSON.stringify(this.val)}`;
