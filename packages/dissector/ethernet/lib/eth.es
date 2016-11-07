@@ -37,7 +37,7 @@ export default class Dissector {
     if (type <= 1500) {
       layer.items.push({
         name: 'Length',
-        value: 'len',
+        id: 'len',
         range: '12:14'
       });
       layer.attrs.len = type;

@@ -108,7 +108,7 @@ export default class Dissector {
     let protocol = Enum(protocolTable, protocolNumber);
     layer.items.push({
       name: 'Protocol',
-      value: protocol,
+      id: 'protocol',
       range: '9:10'
     });
     layer.attrs.protocol = protocol;

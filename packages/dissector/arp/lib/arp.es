@@ -21,7 +21,7 @@ export default class ARPDissector {
     let htype = Enum(hardwareTable, htypeNumber);
     layer.items.push({
       name: 'Hardware type',
-      value: htype,
+      id: 'htype',
       range: '0:2'
     });
     layer.attrs.htype = htype;
@@ -30,7 +30,7 @@ export default class ARPDissector {
     let ptype = Enum(protocolTable, ptypeNumber);
     layer.items.push({
       name: 'Protocol type',
-      value: ptype,
+      id: 'ptype',
       range: '2:4'
     });
     layer.attrs.ptype = ptype;
@@ -38,7 +38,7 @@ export default class ARPDissector {
     let hlen = parentLayer.payload.readUInt8(4);
     layer.items.push({
       name: 'Hardware length',
-      value: hlen,
+      id: 'hlen',
       range: '4:5'
     });
     layer.attrs.hlen = hlen;
@@ -46,7 +46,7 @@ export default class ARPDissector {
     let plen = parentLayer.payload.readUInt8(5);
     layer.items.push({
       name: 'Protocol length',
-      value: plen,
+      id: 'plen',
       range: '5:6'
     });
     layer.attrs.plen = plen;
@@ -56,7 +56,7 @@ export default class ARPDissector {
     let operationName = operationTable[operationNumber];
     layer.items.push({
       name: 'Operation',
-      value: operation,
+      id: 'operation',
       range: '6:8'
     });
     layer.attrs.operation = operation;
@@ -64,7 +64,7 @@ export default class ARPDissector {
     let sha = MACAddress(parentLayer.payload.slice(8, 14));
     layer.items.push({
       name: 'Sender hardware address',
-      value: sha,
+      id: 'sha',
       range: '8:14'
     });
     layer.attrs.sha = sha;
@@ -72,7 +72,7 @@ export default class ARPDissector {
     let spa = IPv4Address(parentLayer.payload.slice(14, 18));
     layer.items.push({
       name: 'Sender protocol address',
-      value: spa,
+      id: 'spa',
       range: '14:18'
     });
     layer.attrs.spa = spa;
@@ -80,7 +80,7 @@ export default class ARPDissector {
     let tha = MACAddress(parentLayer.payload.slice(18, 24));
     layer.items.push({
       name: 'Target hardware address',
-      value: tha,
+      id: 'tha',
       range: '18:24'
     });
     layer.attrs.tha = tha;
@@ -88,7 +88,7 @@ export default class ARPDissector {
     let tpa = IPv4Address(parentLayer.payload.slice(24, 28));
     layer.items.push({
       name: 'Target protocol address',
-      value: tpa,
+      id: 'tpa',
       range: '24:28'
     });
     layer.attrs.tpa = tpa;

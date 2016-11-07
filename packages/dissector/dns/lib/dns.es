@@ -50,84 +50,84 @@ export default class DNSDissector {
 
     layer.items.push({
       name: 'ID',
-      value: id,
+      id: 'id',
       range: '0:2'
     });
     layer.attrs.id = id;
 
     layer.items.push({
       name: 'Query/Response Flag',
-      value: qr,
+      id: 'qr',
       range: '2:3'
     });
     layer.attrs.qr = qr;
 
     layer.items.push({
       name: 'Operation Code',
-      value: opcode,
+      id: 'opcode',
       range: '2:3'
     });
     layer.attrs.opcode = opcode;
 
     layer.items.push({
       name: 'Authoritative Answer Flag',
-      value: aa,
+      id: 'aa',
       range: '2:3'
     });
     layer.attrs.aa = aa;
 
     layer.items.push({
       name: 'Truncation Flag',
-      value: tc,
+      id: 'tc',
       range: '2:3'
     });
     layer.attrs.tc = tc;
 
     layer.items.push({
       name: 'Recursion Desired',
-      value: rd,
+      id: 'rd',
       range: '2:3'
     });
     layer.attrs.rd = rd;
 
     layer.items.push({
       name: 'Recursion Available',
-      value: ra,
+      id: 'ra',
       range: '3:4'
     });
     layer.attrs.ra = ra;
 
     layer.items.push({
       name: 'Response Code',
-      value: rcode,
+      id: 'rcode',
       range: '3:4'
     });
     layer.attrs.rcode = rcode;
 
     layer.items.push({
       name: 'Question Count',
-      value: qdCount,
+      id: 'qdCount',
       range: '4:6'
     });
     layer.attrs.qdCount = qdCount;
 
     layer.items.push({
       name: 'Answer Record Count',
-      value: anCount,
+      id: 'anCount',
       range: '6:8'
     });
     layer.attrs.anCount = anCount;
 
     layer.items.push({
       name: 'Authority Record Count',
-      value: nsCount,
+      id: 'nsCount',
       range: '8:10'
     });
     layer.attrs.nsCount = nsCount;
 
     layer.items.push({
       name: 'Additional Record Count',
-      value: arCount,
+      id: 'arCount',
       range: '10:12'
     });
     layer.attrs.arCount = arCount;

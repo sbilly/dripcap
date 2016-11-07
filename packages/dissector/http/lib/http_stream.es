@@ -28,7 +28,7 @@ export default class Dissector {
 
       layer.items.push({
         name: 'Method',
-        value: method,
+        id: 'method',
         range: '0:' + cursor
       });
       layer.attrs.method = method;
@@ -37,7 +37,7 @@ export default class Dissector {
       cursor++;
       layer.items.push({
         name: 'Path',
-        value: path,
+        id: 'path',
         range: cursor + ':' + (cursor + path.length)
       });
       layer.attrs.path = path;
@@ -46,11 +46,11 @@ export default class Dissector {
       cursor += path.length + 1;
       layer.items.push({
         name: 'Version',
-        value: version,
+        id: 'version',
         range: cursor + ':' + (cursor + version.length)
       });
-
       layer.attrs.version = version;
+
       layer.attrs.src = parentLayer.attrs.src;
       layer.attrs.dst = parentLayer.attrs.dst;
       return new Layer(layer);
