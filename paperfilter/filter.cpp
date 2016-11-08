@@ -282,6 +282,11 @@ FilterFunc makeFilter(const json11::Json &json) {
       };
       if (const std::shared_ptr<Layer> &layer =
               findLayer(name, pkt->layers())) {
+        v8::Local<v8::Object> layerObject =
+            v8pp::class_<Layer>::find_object(isolate, layer.get());
+        if (!layerObject.IsEmpty()) {
+          return layerObject;
+        }
         return v8pp::class_<Layer>::reference_external(isolate, layer.get());
       }
       if (name == "$") {
