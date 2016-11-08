@@ -8,7 +8,7 @@
 
 class SessionItemWrapper : public Nan::ObjectWrap {
 private:
-  SessionItemWrapper(const Item &item) : item(item) {}
+  SessionItemWrapper(const std::shared_ptr<Item> &item) : item(item) {}
   SessionItemWrapper(const SessionItemWrapper &) = delete;
   SessionItemWrapper &operator=(const SessionItemWrapper &) = delete;
 
@@ -41,28 +41,28 @@ public:
     SessionItemWrapper *wrapper =
         ObjectWrap::Unwrap<SessionItemWrapper>(info.Holder());
     info.GetReturnValue().Set(
-        v8pp::to_v8(v8::Isolate::GetCurrent(), wrapper->item.name()));
+        v8pp::to_v8(v8::Isolate::GetCurrent(), wrapper->item->name()));
   }
 
   static NAN_GETTER(id) {
     SessionItemWrapper *wrapper =
         ObjectWrap::Unwrap<SessionItemWrapper>(info.Holder());
     info.GetReturnValue().Set(
-        v8pp::to_v8(v8::Isolate::GetCurrent(), wrapper->item.id()));
+        v8pp::to_v8(v8::Isolate::GetCurrent(), wrapper->item->id()));
   }
 
   static NAN_GETTER(range) {
     SessionItemWrapper *wrapper =
         ObjectWrap::Unwrap<SessionItemWrapper>(info.Holder());
     info.GetReturnValue().Set(
-        v8pp::to_v8(v8::Isolate::GetCurrent(), wrapper->item.range()));
+        v8pp::to_v8(v8::Isolate::GetCurrent(), wrapper->item->range()));
   }
 
   static NAN_GETTER(value) {
     SessionItemWrapper *wrapper =
         ObjectWrap::Unwrap<SessionItemWrapper>(info.Holder());
     info.GetReturnValue().Set(
-        SessionItemValueWrapper::create(wrapper->item.value()));
+        SessionItemValueWrapper::create(wrapper->item->value()));
   }
 
   static NAN_GETTER(items) {
@@ -73,7 +73,7 @@ public:
     v8::Local<v8::Object> obj;
 
     if (wrapper->itemsCache.IsEmpty()) {
-      const auto &items = wrapper->item.items();
+      const auto &items = wrapper->item->items();
       v8::Local<v8::Array> array = v8::Array::New(isolate, items.size());
       for (size_t i = 0; i < items.size(); ++i) {
         array->Set(i, SessionItemWrapper::create(items[i]));
@@ -95,7 +95,7 @@ public:
     v8::Local<v8::Object> obj;
 
     if (wrapper->attrsCache.IsEmpty()) {
-      const auto &attrs = wrapper->item.attrs();
+      const auto &attrs = wrapper->item->attrs();
       obj = v8::Object::New(isolate);
       for (const auto &pair : attrs) {
         obj->Set(v8pp::to_v8(isolate, pair.first),
@@ -109,7 +109,7 @@ public:
     info.GetReturnValue().Set(obj);
   }
 
-  static v8::Local<v8::Object> create(const Item &item) {
+  static v8::Local<v8::Object> create(const std::shared_ptr<Item> &item) {
     v8::Local<v8::Function> cons = Nan::New(constructor());
     v8::Local<v8::Value> argv[1] = {
         v8::Isolate::GetCurrent()->GetCurrentContext()->Global()};
@@ -120,7 +120,7 @@ public:
   }
 
 private:
-  Item item;
+  std::shared_ptr<Item> item;
 };
 
 #endif

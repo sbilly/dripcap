@@ -16,7 +16,7 @@ public:
   std::string range;
   std::unordered_map<std::string, std::shared_ptr<Layer>> layers;
   std::weak_ptr<Packet> pkt;
-  std::vector<Item> items;
+  std::vector<std::shared_ptr<Item>> items;
   std::unordered_map<std::string, ItemValue> attrs;
   std::unique_ptr<Buffer> payload;
   std::unique_ptr<LargeBuffer> largePayload;
@@ -117,13 +117,13 @@ std::shared_ptr<Packet> Layer::packet() const { return d->pkt.lock(); }
 void Layer::addItem(v8::Local<v8::Object> obj) {
   Isolate *isolate = Isolate::GetCurrent();
   if (Item *item = v8pp::class_<Item>::unwrap_object(isolate, obj)) {
-    d->items.emplace_back(*item);
+    d->items.emplace_back(std::make_shared<Item>(*item));
   } else if (obj->IsObject()) {
-    d->items.emplace_back(obj);
+    d->items.emplace_back(std::make_shared<Item>(obj));
   }
 }
 
-std::vector<Item> Layer::items() const { return d->items; }
+std::vector<std::shared_ptr<Item>> Layer::items() const { return d->items; }
 
 std::unique_ptr<Buffer> Layer::payload() const {
   if (d->payload) {

@@ -39,7 +39,7 @@ public:
   std::shared_ptr<Packet> packet() const;
 
   void addItem(v8::Local<v8::Object> obj);
-  std::vector<Item> items() const;
+  std::vector<std::shared_ptr<Item>> items() const;
 
   std::unique_ptr<Buffer> payload() const;
   std::unique_ptr<LargeBuffer> largePayload() const;

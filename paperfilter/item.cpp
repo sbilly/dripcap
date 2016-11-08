@@ -12,13 +12,15 @@ public:
   std::string id;
   std::string range;
   ItemValue value;
-  std::vector<Item> items;
+  std::vector<std::shared_ptr<Item>> items;
   std::unordered_map<std::string, ItemValue> attrs;
 };
 
 Item::Item() : d(new Private()) {}
 
 Item::Item(const v8::FunctionCallbackInfo<v8::Value> &args) : Item(args[0]) {}
+
+Item::Item(const Item &item) : d(new Private(*item.d)) {}
 
 Item::Item(v8::Local<v8::Value> value) : d(new Private()) {
   Isolate *isolate = Isolate::GetCurrent();
@@ -62,8 +64,6 @@ Item::Item(v8::Local<v8::Value> value) : d(new Private()) {
   }
 }
 
-Item::Item(const Item &item) : d(new Private(*item.d)) {}
-
 Item::~Item() {}
 
 std::string Item::name() const { return d->name; }
@@ -93,14 +93,14 @@ void Item::setValue(v8::Local<v8::Object> value) {
   }
 }
 
-std::vector<Item> Item::items() const { return d->items; }
+std::vector<std::shared_ptr<Item>> Item::items() const { return d->items; }
 
 void Item::addItem(v8::Local<v8::Object> obj) {
   Isolate *isolate = Isolate::GetCurrent();
   if (Item *item = v8pp::class_<Item>::unwrap_object(isolate, obj)) {
-    d->items.emplace_back(*item);
+    d->items.emplace_back(std::make_shared<Item>(*item));
   } else if (obj->IsObject()) {
-    d->items.emplace_back(obj);
+    d->items.emplace_back(std::make_shared<Item>(obj));
   }
 }
 
