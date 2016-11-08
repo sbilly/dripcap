@@ -140,6 +140,17 @@ export default class PcapFile {
     for (let pkt of pcap.packets) {
       sess.analyze(pkt);
     }
+    let start = new Date();
+    sess.on('status', stat => {
+      if (stat.packets > 0 && stat.queue === 0) {
+        let elapsed = ((new Date()).getTime() - start.getTime()) / 1000.0;
+        PubSub.pub('core:log', {
+          level: 'debug',
+          message: `pcap-file: ${stat.packets} packets ${elapsed} sec`,
+          timestamp: new Date()
+        });
+      }
+    });
   }
 
   async deactivate() {
