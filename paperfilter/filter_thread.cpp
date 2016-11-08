@@ -76,13 +76,13 @@ FilterThread::Private::Private(const std::shared_ptr<Context> &ctx) : ctx(ctx) {
           break;
         uint32_t maxSeq = ctx.store->maxSeq();
         if (ctx.maxSeq < maxSeq) {
-          std::vector<std::shared_ptr<Packet>> packets;
-          std::vector<std::pair<uint32_t, bool>> results;
-          for (int i = 0; i < filterQuota && ctx.maxSeq < maxSeq; ++i) {
-            uint32_t seq = ++ctx.maxSeq;
-            packets.push_back(ctx.store->get(seq));
-          }
+          uint32_t start = ctx.maxSeq + 1;
+          uint32_t end = std::min(start + filterQuota, maxSeq);
+          ctx.maxSeq = end;
           lock.unlock();
+          const std::vector<std::shared_ptr<Packet>> &packets =
+              ctx.store->get(start, end);
+          std::vector<std::pair<uint32_t, bool>> results;
           for (const auto &pkt : packets) {
             v8::Local<v8::Value> result = func(pkt.get());
             ctx.packets.insert(pkt->seq(), result->BooleanValue());
