@@ -2,7 +2,7 @@
   <input class="compact" type="text" placeholder="Filter" name="filter" onkeypress={apply}>
   <div class="acview popup">
     <ul>
-      <li each={ c in candidates }>
+      <li class="list-item" each={ c in candidates } onclick={ parent.select }>
         {c}
       </li>
     </ul>
@@ -16,17 +16,31 @@
         border-bottom-width: 0;
       }
 
+      ul {
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        white-space: nowrap;
+        list-style: none;
+        padding: 8px;
+        margin: 0;
+      }
+
       .acview {
         width: 320px;
         height: 100px;
         position: absolute;
-        padding: 10px;
+        padding: 0;
         bottom: 48px;
         color: #fff;
         z-index: 1;
         border-radius: 5px;
         border-style: solid;
         display: none;
+        overflow-y: scroll;
+        overflow-x: hidden;
       }
     }
   </style>
@@ -52,6 +66,15 @@
       }
       return true;
     };
+
+    this.select = (e) => {
+      this.acview.hide();
+      let value = e.item.c;
+      let text = this.input.val();
+      let cur = text.lastIndexOf(' ');
+      this.input.val(text.substring(0, (cur >= 0 ? cur + 1 : 0)) + value);
+      this.input.focus();
+    }
 
     this.on('mount', () => {
       $(() => {
@@ -109,7 +132,9 @@
           this.acview.hide();
         }
       } else {
-        this.acview.hide();
+        setTimeout(() => {
+          this.acview.hide();
+        }, 100);
       }
     };
 
