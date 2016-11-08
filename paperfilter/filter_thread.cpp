@@ -50,6 +50,8 @@ FilterThread::Private::Private(const std::shared_ptr<Context> &ctx) : ctx(ctx) {
     char dummyData[128] = {0};
     isolate->SetData(0, dummyData);
 
+    static const int filterQuota = 1024;
+
     {
       v8::Isolate::Scope isolate_scope(isolate);
       v8::HandleScope handle_scope(isolate);
@@ -72,13 +74,23 @@ FilterThread::Private::Private(const std::shared_ptr<Context> &ctx) : ctx(ctx) {
         });
         if (closed)
           break;
-        if (ctx.maxSeq < ctx.store->maxSeq()) {
-          uint32_t seq = ++ctx.maxSeq;
+        uint32_t maxSeq = ctx.store->maxSeq();
+        if (ctx.maxSeq < maxSeq) {
+          std::vector<std::shared_ptr<Packet>> packets;
+          std::vector<std::pair<uint32_t, bool>> results;
+          for (int i = 0; i < filterQuota && ctx.maxSeq < maxSeq; ++i) {
+            uint32_t seq = ++ctx.maxSeq;
+            packets.push_back(ctx.store->get(seq));
+          }
           lock.unlock();
-          const std::shared_ptr<Packet> &pkt = ctx.store->get(seq);
-          v8::Local<v8::Value> result = func(pkt.get());
+          for (const auto &pkt : packets) {
+            v8::Local<v8::Value> result = func(pkt.get());
+            ctx.packets.insert(pkt->seq(), result->BooleanValue());
+          }
           lock.lock();
-          ctx.packets.insert(pkt->seq(), result->BooleanValue());
+          for (const auto &pair : results) {
+            ctx.packets.insert(pair.first, pair.second);
+          }
         }
       }
     }
