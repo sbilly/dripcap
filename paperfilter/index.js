@@ -2,6 +2,7 @@ const EventEmitter = require('events');
 const rollup = require('rollup').rollup;
 const nodeResolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
+const includePaths = require('rollup-plugin-includepaths');
 const esprima = require('esprima');
 const msgpack = require('msgpack-lite');
 const _ = require('underscore');
@@ -22,7 +23,8 @@ function roll(script) {
     },
     plugins: [
       nodeResolve({ jsnext: true, main: true }),
-      commonjs()
+      commonjs(),
+      includePaths({extensions: ['.js', '.es']})
     ],
     onwarn: (e) => {
       console.log(e)
