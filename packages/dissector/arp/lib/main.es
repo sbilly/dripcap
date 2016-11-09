@@ -4,7 +4,7 @@ import {
 
 export default class ARP {
   activate() {
-    Session.registerDissector(`${__dirname}/arp.es`);
+    Session.registerDissector(`${__dirname}/arp`);
     Session.registerFilterHints('arp', [
       {filter: 'arp',           description: 'ARP'},
       {filter: 'arp.htype',     description: 'Hardware type'},
@@ -20,7 +20,7 @@ export default class ARP {
   }
 
   deactivate() {
-    Session.unregisterDissector(`${__dirname}/arp.es`);
+    Session.unregisterDissector(`${__dirname}/arp`);
     Session.unregisterFilterHints('arp');
   }
 }

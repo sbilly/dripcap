@@ -4,8 +4,8 @@ import {
 
 export default class TCP {
   activate() {
-    Session.registerDissector(`${__dirname}/tcp.es`);
-    Session.registerStreamDissector(`${__dirname}/tcp_stream.es`);
+    Session.registerDissector(`${__dirname}/tcp`);
+    Session.registerStreamDissector(`${__dirname}/tcp_stream`);
     Session.registerFilterHints('tcp', [
       {filter: 'tcp',                description: 'TCP'},
       {filter: 'tcp.srcPort',        description: 'Source port'},
@@ -34,8 +34,8 @@ export default class TCP {
   }
 
   deactivate() {
-    Session.unregisterDissector(`${__dirname}/tcp.es`);
-    Session.unregisterStreamDissector(`${__dirname}/tcp_stream.es`);
+    Session.unregisterDissector(`${__dirname}/tcp`);
+    Session.unregisterStreamDissector(`${__dirname}/tcp_stream`);
     Session.unregisterFilterHints('tcp');
   }
 }

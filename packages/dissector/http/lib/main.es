@@ -4,7 +4,7 @@ import {
 
 export default class TCP {
   activate() {
-    Session.registerStreamDissector(`${__dirname}/http_stream.es`);
+    Session.registerStreamDissector(`${__dirname}/http_stream`);
     Session.registerFilterHints('http', [
       {filter: 'http',         description: 'HTTP'},
       {filter: 'http.method',  description: 'Method'},
@@ -15,7 +15,7 @@ export default class TCP {
   }
 
   deactivate() {
-    Session.unregisterStreamDissector(`${__dirname}/http_stream.es`);
+    Session.unregisterStreamDissector(`${__dirname}/http_stream`);
     Session.unregisterFilterHints('http');
   }
 }

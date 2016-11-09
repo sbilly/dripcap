@@ -4,7 +4,7 @@ import {
 
 export default class UDP {
   activate() {
-    Session.registerDissector(`${__dirname}/udp.es`);
+    Session.registerDissector(`${__dirname}/udp`);
     Session.registerFilterHints('udp', [
       {filter: 'udp',                description: 'UDP'},
       {filter: 'udp.srcPort',        description: 'Source port'},
@@ -19,7 +19,7 @@ export default class UDP {
   }
 
   deactivate() {
-    Session.unregisterDissector(`${__dirname}/udp.es`);
+    Session.unregisterDissector(`${__dirname}/udp`);
     Session.unregisterFilterHints('udp');
   }
 }

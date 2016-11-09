@@ -4,7 +4,7 @@ import {
 
 export default class IPv6 {
   activate() {
-    Session.registerDissector(`${__dirname}/ipv6.es`);
+    Session.registerDissector(`${__dirname}/ipv6`);
     Session.registerFilterHints('ipv6', [
       {filter: 'ipv6',                description: 'IPv6'},
       {filter: 'ipv6.version',        description: 'Version'},
@@ -21,7 +21,7 @@ export default class IPv6 {
   }
 
   deactivate() {
-    Session.unregisterDissector(`${__dirname}/ipv6.es`);
+    Session.unregisterDissector(`${__dirname}/ipv6`);
     Session.unregisterFilterHints('ipv6');
   }
 }

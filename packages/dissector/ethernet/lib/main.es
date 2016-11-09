@@ -4,7 +4,7 @@ import {
 
 export default class Ethernet {
   activate() {
-    Session.registerDissector(`${__dirname}/eth.es`);
+    Session.registerDissector(`${__dirname}/eth`);
     Session.registerFilterHints('eth', [
       {filter: 'eth',                description: 'Ethernet'},
       {filter: 'eth.dst',            description: 'Destination'},
@@ -17,7 +17,7 @@ export default class Ethernet {
   }
 
   deactivate() {
-    Session.unregisterDissector(`${__dirname}/eth.es`);
+    Session.unregisterDissector(`${__dirname}/eth`);
     Session.unregisterFilterHints('eth');
   }
 }
