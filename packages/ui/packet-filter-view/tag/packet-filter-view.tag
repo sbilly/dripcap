@@ -3,8 +3,8 @@
   <div class="acview popup">
     <ul>
       <li each={ c, i in candidates } class={ list-item: true, selected: i === parent.index } onclick={ parent.clickCandidate }>
-        {c}
-        <span> Description </span>
+        {c.filter}
+        <span>{c.description}</span>
       </li>
     </ul>
   </div>
@@ -84,7 +84,7 @@
         break;
       case "Tab":
         if (this.index >= 0) {
-          this.select(this.candidates[this.index]);
+          this.select(this.candidates[this.index].filter);
           return false;
         }
         break;
@@ -99,7 +99,7 @@
     };
 
     this.clickCandidate = e => {
-      this.select(e.item.c);
+      this.select(e.item.c.filter);
       this.input.focus();
     }
 
@@ -128,16 +128,10 @@
       });
     });
 
-    let candidates = [
-      'ipv4.payload',
-      'eth.payload',
-      'eth.payload.length',
-      'eth.payload.length > 256',
-      'tcp',
-      'ipv4',
-      'eth'
-    ]
-    candidates.sort();
+    let candidates = []
+    PubSub.sub('core:filter-hints', (hints) => {
+      candidates = hints;
+    });
 
     this.reload = () => {
       if (this.input.is(':focus')) {
@@ -155,7 +149,7 @@
           this.candidates = candidates;
         } else {
           for (let key of candidates) {
-            if (key.startsWith(keyword)) {
+            if (key.filter.startsWith(keyword)) {
               this.candidates.push(key);
             }
           }

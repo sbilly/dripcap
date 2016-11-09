@@ -11,6 +11,7 @@ export default class SessionInterface extends EventEmitter {
     this.list = [];
     this._dissectors = [];
     this._streamDissectors = [];
+    this._filterHints = {};
   }
 
   async getInterfaceList() {
@@ -53,6 +54,29 @@ export default class SessionInterface extends EventEmitter {
     for (let sess of this.list) {
       sess.unregisterStreamDissector(script);
     }
+  }
+
+  registerFilterHints(name, hints) {
+    this._filterHints[name] = hints;
+    this._updateFilterHints();
+  }
+
+  unregisterFilterHints(name) {
+    if (delete this._filterHints[name]) {
+      this._updateFilterHints();
+    }
+  }
+
+  _updateFilterHints() {
+    let hints = [];
+    for (let key in this._filterHints) {
+      hints = hints.concat(this._filterHints[key]);
+    }
+    hints.sort((a, b) => {
+      if (a.filter === b.filter) return 0;
+      return (a.filter < b.filter) ? 1 : -1;
+    });
+    this.parent.pubsub.pub('core:filter-hints', hints);
   }
 
   async create(iface = '', options = {}) {
