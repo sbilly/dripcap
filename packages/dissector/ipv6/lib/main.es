@@ -15,13 +15,8 @@ export default class IPv6 {
       {filter: 'ipv6.src',            description: 'Source IP Address'},
       {filter: 'ipv6.dst',            description: 'Destination IP Address'},
       {filter: 'ipv6.protocol',       description: 'Protocol'},
-      {filter: 'ipv6.version',        description: 'Version'},
-      {filter: 'ipv6.version',        description: 'Version'},
-      {filter: 'ipv6.version',        description: 'Version'},
-      {filter: 'ipv6.version',        description: 'Version'},
-      {filter: 'ipv6.version',        description: 'Version'},
       {filter: 'ipv6.payload',        description: 'Payload'},
-      {filter: 'ipv4.payload.length', description: 'Payload Length'}
+      {filter: 'ipv6.payload.length', description: 'Payload Length'}
     ]);
   }
 
