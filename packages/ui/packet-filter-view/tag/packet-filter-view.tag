@@ -37,7 +37,7 @@
 
       .acview {
         width: 420px;
-        height: 100px;
+        height: 220px;
         position: absolute;
         padding: 0;
         bottom: 48px;
