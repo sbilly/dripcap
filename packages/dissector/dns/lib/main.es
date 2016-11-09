@@ -4,7 +4,7 @@ import {
 
 export default class DNS {
   activate() {
-    Session.registerDissector(`${__dirname}/dns`);
+    Session.registerDissector(`${__dirname}/dns.es`);
     Session.registerFilterHints('dns', [
       {filter: 'dns',                description: 'DNS'},
       {filter: 'dns.id',             description: 'ID'},
@@ -25,7 +25,7 @@ export default class DNS {
   }
 
   deactivate() {
-    Session.unregisterDissector(`${__dirname}/dns`);
+    Session.unregisterDissector(`${__dirname}/dns.es`);
     Session.unregisterFilterHints('dns');
   }
 }

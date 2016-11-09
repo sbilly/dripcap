@@ -4,7 +4,7 @@ import {
 
 export default class IPv4 {
   activate() {
-    Session.registerDissector(`${__dirname}/ipv4`);
+    Session.registerDissector(`${__dirname}/ipv4.es`);
     Session.registerFilterHints('ipv4', [
       {filter: 'ipv4',                     description: 'IPv4'},
       {filter: 'ipv4.version',             description: 'Version'},
@@ -28,7 +28,7 @@ export default class IPv4 {
   }
 
   deactivate() {
-    Session.unregisterDissector(`${__dirname}/ipv4`);
+    Session.unregisterDissector(`${__dirname}/ipv4.es`);
     Session.unregisterFilterHints('ipv4');
   }
 }

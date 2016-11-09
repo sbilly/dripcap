@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'underscore';
 import { rollup } from 'rollup';
-import includePaths from 'rollup-plugin-includepaths';
 import config from 'dripcap/config';
 import {
   EventEmitter
@@ -57,7 +56,7 @@ export default class Package extends EventEmitter {
             plugins: [{
               name: 'globalPaths',
               banner: `require('module').globalPaths.push('${this.path}/node_modules')`
-            }, includePaths({extensions: ['.es', '.js']})],
+            }],
             onwarn: (e) => {}
           }).then((bundle) => {
             const result = bundle.generate({
