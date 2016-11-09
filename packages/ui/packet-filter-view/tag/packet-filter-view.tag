@@ -27,6 +27,7 @@
         list-style: none;
         padding: 8px;
         margin: 0;
+        cursor: default;
 
         span {
           opacity: 0.6;
@@ -100,7 +101,10 @@
 
     this.clickCandidate = e => {
       this.select(e.item.c.filter);
-      this.input.focus();
+      this.fixed = true;
+      setTimeout(() => {
+        this.input.focus();
+      }, 100);
     }
 
     this.select = (value) => {
