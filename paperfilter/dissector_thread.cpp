@@ -11,6 +11,7 @@
 #include <thread>
 #include <unordered_set>
 #include <v8.h>
+#include <v8-profiler.h>
 #include <v8pp/class.hpp>
 #include <v8pp/object.hpp>
 
@@ -126,6 +127,16 @@ DissectorThread::Private::Private(
               stringNamespaces, regexNamespaces,
               v8::UniquePersistent<v8::Function>(isolate, func)};
         }
+      }
+
+      v8::Local<v8::String> profTitle = v8pp::to_v8(isolate, "diss");
+      v8::CpuProfiler *prof = nullptr;
+      const char *profFlag = std::getenv("PAPERFILTER_PROFILE");
+
+      if (profFlag && strlen(profFlag)) {
+        prof = isolate->GetCpuProfiler();
+        prof->SetSamplingInterval(100);
+        prof->StartProfiling(profTitle, true);
       }
 
       while (true) {
@@ -252,6 +263,28 @@ DissectorThread::Private::Private(
         }
 
         lock.lock();
+      }
+
+      if (prof) {
+        v8::CpuProfile *pr = prof->StopProfiling(profTitle);
+        std::function<void(const v8::CpuProfileNode *, int)> printTree;
+        printTree = [&printTree](const v8::CpuProfileNode *node, int depth) {
+          v8::Isolate *isolate = v8::Isolate::GetCurrent();
+          const std::string &func =
+              v8pp::from_v8<std::string>(isolate, node->GetFunctionName(), "");
+          for (int i = 0; i < depth; ++i) {
+            printf("  ");
+          }
+          printf("+ %d %s", node->GetHitCount(), func.c_str());
+          printf("\n");
+
+          for (int i = 0; i < node->GetChildrenCount(); ++i) {
+            printTree(node->GetChild(i), depth + 1);
+          }
+        };
+
+        printTree(pr->GetTopDownRoot(), 0);
+        pr->Delete();
       }
     }
 
