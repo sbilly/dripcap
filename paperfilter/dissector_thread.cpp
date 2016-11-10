@@ -123,9 +123,22 @@ DissectorThread::Private::Private(
             }
           }
 
-          dissectors[diss.resourceName] = {
-              stringNamespaces, regexNamespaces,
-              v8::UniquePersistent<v8::Function>(isolate, func)};
+          v8::Local<v8::Object> obj = func->NewInstance();
+          if (obj.IsEmpty()) {
+            if (ctx.logCb) {
+              ctx.logCb(
+                  LogMessage::fromMessage(try_catch.Message(), "dissector"));
+            }
+          } else {
+            v8::Local<v8::Value> analyze =
+                obj->Get(v8pp::to_v8(isolate, "analyze"));
+            if (!analyze.IsEmpty() && analyze->IsFunction()) {
+              v8::Local<v8::Function> analyzeFunc = analyze.As<v8::Function>();
+              dissectors[diss.resourceName] = {
+                  stringNamespaces, regexNamespaces,
+                  v8::UniquePersistent<v8::Function>(isolate, analyzeFunc)};
+            }
+          }
         }
       }
 
@@ -172,62 +185,35 @@ DissectorThread::Private::Private(
 
               for (const DissectorFunc *diss :
                    findDessector(pair.first, dissectors, &nsMap)) {
-                v8::Local<v8::Function> func =
+
+                v8::Local<v8::Function> analyzeFunc =
                     v8::Local<v8::Function>::New(isolate, diss->func);
-                v8::Local<v8::Object> obj = func->NewInstance();
-                if (obj.IsEmpty()) {
+                v8::Local<v8::Object> layerObj =
+                    v8pp::class_<Layer>::reference_external(isolate,
+                                                            pair.second.get());
+                v8::Handle<v8::Value> args[2] = {packetObj, layerObj};
+                v8::Local<v8::Value> result = analyzeFunc->Call(
+                    isolate->GetCurrentContext()->Global(), 2, args);
+
+                v8pp::class_<Layer>::unreference_external(isolate,
+                                                          pair.second.get());
+
+                std::vector<std::shared_ptr<Layer>> childLayers;
+
+                if (result.IsEmpty()) {
                   if (ctx.logCb) {
                     ctx.logCb(LogMessage::fromMessage(try_catch.Message(),
                                                       "dissector"));
                   }
-                } else {
-                  v8::Local<v8::Value> analyze =
-                      obj->Get(v8pp::to_v8(isolate, "analyze"));
-                  if (!analyze.IsEmpty() && analyze->IsFunction()) {
-                    v8::Local<v8::Function> analyzeFunc =
-                        analyze.As<v8::Function>();
-                    v8::Local<v8::Object> layerObj =
-                        v8pp::class_<Layer>::reference_external(
-                            isolate, pair.second.get());
-                    v8::Handle<v8::Value> args[2] = {packetObj, layerObj};
-                    v8::Local<v8::Value> result = analyzeFunc->Call(
-                        isolate->GetCurrentContext()->Global(), 2, args);
-
-                    v8pp::class_<Layer>::unreference_external(
-                        isolate, pair.second.get());
-
-                    std::vector<std::shared_ptr<Layer>> childLayers;
-
-                    if (result.IsEmpty()) {
-                      if (ctx.logCb) {
-                        ctx.logCb(LogMessage::fromMessage(try_catch.Message(),
-                                                          "dissector"));
-                      }
-                    } else if (result->IsArray()) {
-                      v8::Local<v8::Array> array = result.As<v8::Array>();
-                      for (uint32_t i = 0; i < array->Length(); ++i) {
-                        if (Layer *layer = v8pp::class_<Layer>::unwrap_object(
-                                isolate, array->Get(i))) {
-                          childLayers.push_back(
-                              std::make_shared<Layer>(*layer));
-                        } else if (StreamChunk *stream =
-                                       v8pp::class_<StreamChunk>::unwrap_object(
-                                           isolate, array->Get(i))) {
-                          auto chunk = std::unique_ptr<StreamChunk>(
-                              new StreamChunk(*stream));
-                          if (!chunk->layer()) {
-                            chunk->setLayer(pair.second);
-                          }
-                          streams.push_back(std::move(chunk));
-                        }
-                      }
-                    } else if (Layer *layer =
-                                   v8pp::class_<Layer>::unwrap_object(isolate,
-                                                                      result)) {
+                } else if (result->IsArray()) {
+                  v8::Local<v8::Array> array = result.As<v8::Array>();
+                  for (uint32_t i = 0; i < array->Length(); ++i) {
+                    if (Layer *layer = v8pp::class_<Layer>::unwrap_object(
+                            isolate, array->Get(i))) {
                       childLayers.push_back(std::make_shared<Layer>(*layer));
                     } else if (StreamChunk *stream =
                                    v8pp::class_<StreamChunk>::unwrap_object(
-                                       isolate, result)) {
+                                       isolate, array->Get(i))) {
                       auto chunk = std::unique_ptr<StreamChunk>(
                           new StreamChunk(*stream));
                       if (!chunk->layer()) {
@@ -235,12 +221,24 @@ DissectorThread::Private::Private(
                       }
                       streams.push_back(std::move(chunk));
                     }
-
-                    for (const auto &child : childLayers) {
-                      nextLayers[child->ns()] = child;
-                      pair.second->layers()[child->ns()] = child;
-                    }
                   }
+                } else if (Layer *layer = v8pp::class_<Layer>::unwrap_object(
+                               isolate, result)) {
+                  childLayers.push_back(std::make_shared<Layer>(*layer));
+                } else if (StreamChunk *stream =
+                               v8pp::class_<StreamChunk>::unwrap_object(
+                                   isolate, result)) {
+                  auto chunk =
+                      std::unique_ptr<StreamChunk>(new StreamChunk(*stream));
+                  if (!chunk->layer()) {
+                    chunk->setLayer(pair.second);
+                  }
+                  streams.push_back(std::move(chunk));
+                }
+
+                for (const auto &child : childLayers) {
+                  nextLayers[child->ns()] = child;
+                  pair.second->layers()[child->ns()] = child;
                 }
               }
             }
