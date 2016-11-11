@@ -67,7 +67,11 @@ DissectorThread::Private::Private(
     static const int dissectorQuota = 4;
 
     {
+      std::unique_ptr<v8::Locker> locker;
       v8::Isolate::Scope isolate_scope(isolate);
+      if (v8::Locker::IsActive()) {
+        locker.reset(new v8::Locker(isolate));
+      }
       v8::HandleScope handle_scope(isolate);
       v8::Local<v8::Context> context = v8::Context::New(isolate);
       v8::Context::Scope context_scope(context);
