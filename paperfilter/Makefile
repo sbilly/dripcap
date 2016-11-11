@@ -4,19 +4,19 @@ ifeq ($(OS),Windows_NT)
 
 CONFIG = build/binding.sln
 all: $(CONFIG)
-	node-gyp build --target=$(ELECTRON_VERSION) --arch=x64 --dist-url=https://atom.io/download/atom-shell
+	node-gyp build --target=$(ELECTRON_VERSION) --arch=x64 --dist-url=https://atom.io/download/electron
 
 $(CONFIG):
-	node-gyp configure --target=$(ELECTRON_VERSION) --arch=x64 --dist-url=https://atom.io/download/atom-shell
+	node-gyp configure --target=$(ELECTRON_VERSION) --arch=x64 --dist-url=https://atom.io/download/electron
 
 else
 
 CONFIG = build/Makefile
 all: $(CONFIG)
-	JOBS=4 HOME=~/.electron-gyp node-gyp build --target=$(ELECTRON_VERSION) --arch=x64 --dist-url=https://atom.io/download/atom-shell
+	JOBS=4 HOME=~/.electron-gyp node-gyp build --target=$(ELECTRON_VERSION) --arch=x64 --dist-url=https://atom.io/download/electron
 
 $(CONFIG):
-	HOME=~/.electron-gyp node-gyp configure --target=$(ELECTRON_VERSION) --arch=x64 --dist-url=https://atom.io/download/atom-shell
+	HOME=~/.electron-gyp node-gyp configure --target=$(ELECTRON_VERSION) --arch=x64 --dist-url=https://atom.io/download/electron
 
 endif
 
