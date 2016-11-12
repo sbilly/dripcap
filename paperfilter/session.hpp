@@ -45,7 +45,7 @@ public:
 
 private:
   class Private;
-  std::unique_ptr<Private> d;
+  Private *d;
 };
 
 #endif

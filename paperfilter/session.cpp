@@ -148,6 +148,7 @@ void Session::Private::log(const LogMessage &msg) {
 Session::Private::~Private() {
   filterThreads.clear();
   streamDispatcher.reset();
+  packetDispatcher.reset();
   pcap.reset();
   uv_close((uv_handle_t *)&statusCbAsync, nullptr);
   uv_close((uv_handle_t *)&logCbAsync, nullptr);
@@ -157,7 +158,10 @@ Session::Session(v8::Local<v8::Object> option) : d(new Private()) {
   reset(option);
 }
 
-Session::~Session() {}
+Session::~Session() {
+  delete d;
+  d = nullptr;
+}
 
 void Session::analyze(std::unique_ptr<Packet> pkt) {
   const auto &layer = std::make_shared<Layer>(d->ns);
@@ -302,7 +306,8 @@ void Session::reset(v8::Local<v8::Object> opt) {
   };
   dissCtx->streamsCb = [this](
       uint32_t seq, std::vector<std::unique_ptr<StreamChunk>> streams) {
-    d->streamDispatcher->insert(seq, std::move(streams));
+    if (d->streamDispatcher)
+      d->streamDispatcher->insert(seq, std::move(streams));
   };
   dissCtx->dissectors.swap(dissectors);
   dissCtx->logCb = std::bind(&Private::log, std::ref(d), std::placeholders::_1);
