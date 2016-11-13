@@ -27,7 +27,8 @@
             "filter.cpp",
             "filter_thread.cpp",
             "stream_dispatcher.cpp",
-            "vendor/json11/json11.cpp"
+            "vendor/json11/json11.cpp",
+            "vendor/v8pp/v8pp/context.cpp"
          ],
          "include_dirs":[
             "<!(node -e \"require('nan')\")",

@@ -15,6 +15,7 @@
 #include <v8.h>
 #include <v8pp/class.hpp>
 #include <v8pp/object.hpp>
+#include <v8pp/context.hpp>
 
 using namespace v8;
 
@@ -76,23 +77,20 @@ StreamDissectorThread::Private::Private(const std::shared_ptr<Context> &ctx)
         locker.reset(new v8::Locker(isolate));
       }
       v8::HandleScope handle_scope(isolate);
-      v8::Local<v8::Context> context = v8::Context::New(isolate);
-      v8::Context::Scope context_scope(context);
+      v8pp::context ppctx(isolate);
       v8::TryCatch try_catch;
       PaperContext::init(isolate);
 
       v8::Local<v8::Object> console = v8pp::class_<Console>::create_object(
           isolate, ctx.logCb, "stream_dissector");
-      isolate->GetCurrentContext()->Global()->Set(
-          v8pp::to_v8(isolate, "console"), console);
+      ppctx.set("console", console);
 
       std::unordered_map<std::string, DissectorFunc> dissectors;
       std::unordered_map<std::string, std::vector<const DissectorFunc *>> nsMap;
 
       for (const Dissector &diss : ctx.dissectors) {
         v8::Local<v8::Object> moduleObj = v8::Object::New(isolate);
-        context->Global()->Set(v8::String::NewFromUtf8(isolate, "module"),
-                               moduleObj);
+        ppctx.set("module", moduleObj);
 
         v8::Local<v8::Function> func;
         Nan::MaybeLocal<Nan::BoundScript> script = Nan::CompileScript(

@@ -10,6 +10,7 @@
 #include <thread>
 #include <v8pp/class.hpp>
 #include <v8pp/object.hpp>
+#include <v8pp/context.hpp>
 
 namespace {
 class ArrayBufferAllocator : public v8::ArrayBuffer::Allocator {
@@ -59,15 +60,13 @@ FilterThread::Private::Private(const std::shared_ptr<Context> &ctx) : ctx(ctx) {
         locker.reset(new v8::Locker(isolate));
       }
       v8::HandleScope handle_scope(isolate);
-      v8::Local<v8::Context> context = v8::Context::New(isolate);
-      v8::Context::Scope context_scope(context);
+      v8pp::context ppctx(isolate);
       v8::TryCatch try_catch;
       PaperContext::init(isolate);
 
       v8::Local<v8::Object> console =
           v8pp::class_<Console>::create_object(isolate, ctx.logCb, "filter");
-      isolate->GetCurrentContext()->Global()->Set(
-          v8pp::to_v8(isolate, "console"), console);
+      ppctx.set("console", console);
 
       const FilterFunc &func = makeFilter(ctx.filter);
 
