@@ -65,7 +65,7 @@ DissectorThread::Private::Private(
     char dummyData[128] = {0};
     isolate->SetData(0, dummyData);
 
-    static const int dissectorQuota = 4;
+    static const int dissectorQuota = 16;
 
     {
       std::unique_ptr<v8::Locker> locker;

@@ -137,9 +137,7 @@ export default class PcapFile {
     }
     Session.list = [sess];
     Session.emit('created', sess);
-    for (let pkt of pcap.packets) {
-      sess.analyze(pkt);
-    }
+    sess.analyze(pcap.packets);
     let start = new Date();
     sess.on('status', stat => {
       if (stat.packets > 0 && stat.queue === 0) {

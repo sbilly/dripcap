@@ -43,6 +43,19 @@ void PacketDispatcher::analyze(std::unique_ptr<Packet> packet) {
   d->dissCtx->cond.notify_all();
 }
 
+void PacketDispatcher::analyze(std::vector<std::unique_ptr<Packet>> packets) {
+  {
+    std::lock_guard<std::mutex> lock(d->dissCtx->mutex);
+    for (auto &pkt : packets) {
+      if (pkt->seq() == 0) {
+        pkt->setSeq(++d->packetSeq);
+      }
+      d->dissCtx->queue.push(std::move(pkt));
+    }
+  }
+  d->dissCtx->cond.notify_all();
+}
+
 uint32_t PacketDispatcher::queueSize() const {
   std::lock_guard<std::mutex> lock(d->dissCtx->mutex);
   return d->dissCtx->queue.size();

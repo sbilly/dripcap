@@ -171,6 +171,16 @@ void Session::analyze(std::unique_ptr<Packet> pkt) {
   d->packetDispatcher->analyze(std::move(pkt));
 }
 
+void Session::analyze(std::vector<std::unique_ptr<Packet>> packets) {
+  for (auto &pkt : packets) {
+    const auto &layer = std::make_shared<Layer>(d->ns);
+    layer->setName("Raw Layer");
+    layer->setPayload(pkt->payload());
+    pkt->addLayer(layer);
+  }
+  d->packetDispatcher->analyze(std::move(packets));
+}
+
 void Session::filter(const std::string &name, const std::string &filter) {
   d->filterThreads.erase(name);
 

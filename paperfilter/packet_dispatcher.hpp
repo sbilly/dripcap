@@ -42,6 +42,7 @@ public:
   PacketDispatcher(const PacketDispatcher &) = delete;
   PacketDispatcher &operator=(const PacketDispatcher &) = delete;
   void analyze(std::unique_ptr<Packet> packet);
+  void analyze(std::vector<std::unique_ptr<Packet>> packets);
   uint32_t queueSize() const;
 
 private:

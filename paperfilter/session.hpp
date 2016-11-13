@@ -21,6 +21,7 @@ public:
   void setStatusCallback(const v8::Local<v8::Function> &cb);
 
   void analyze(std::unique_ptr<Packet> pkt);
+  void analyze(std::vector<std::unique_ptr<Packet>> packets);
   void filter(const std::string &name, const std::string &filter);
   std::shared_ptr<const Packet> get(uint32_t seq) const;
   std::vector<uint32_t> getFiltered(const std::string &name, uint32_t start,

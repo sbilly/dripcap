@@ -61,9 +61,15 @@ public:
     SessionWrapper *wrapper = ObjectWrap::Unwrap<SessionWrapper>(info.Holder());
     if (!wrapper->session)
       return;
-    auto obj = Nan::To<v8::Object>(info[0]);
-    if (!obj.IsEmpty()) {
-      std::unique_ptr<Packet> pkt(new Packet(obj.ToLocalChecked()));
+    if (info[0]->IsArray()) {
+      v8::Local<v8::Array> array = info[0].As<v8::Array>();
+      std::vector<std::unique_ptr<Packet>> packets;
+      for (uint32_t i = 0; i < array->Length(); ++i) {
+        packets.emplace_back(new Packet(array->Get(i).As<v8::Object>()));
+      }
+      wrapper->session->analyze(std::move(packets));
+    } else if (info[0]->IsObject()) {
+      std::unique_ptr<Packet> pkt(new Packet(info[0].As<v8::Object>()));
       wrapper->session->analyze(std::move(pkt));
     }
   }
