@@ -14,6 +14,7 @@
 #include <nan.h>
 #include <thread>
 #include <chrono>
+#include <cmath>
 #include <unordered_set>
 #include <uv.h>
 #include <v8pp/class.hpp>
@@ -52,6 +53,7 @@ public:
   std::mutex errorMutex;
   std::unordered_map<std::string, LogMessage> recentLogs;
 
+  uint32_t prevQueue = 0;
   bool capturing = false;
   int threads;
 };
@@ -100,13 +102,26 @@ Session::Private::Private() {
   uv_async_init(uv_default_loop(), &statusCbAsync, [](uv_async_t *handle) {
     Session::Private *d = static_cast<Session::Private *>(handle->data);
     if (!d->statusCb.IsEmpty()) {
+      uint32_t packets = d->store->maxSeq();
+      uint32_t queue =
+          d->packetDispatcher->queueSize() + d->streamDispatcher->queueSize();
+
+
+      if (packets > 1024 && d->prevQueue > 0 && queue > 1024) {
+        int plog = 2 << static_cast<int>(std::log2(d->prevQueue));
+        int qlog = 2 << static_cast<int>(std::log2(queue));
+        if (plog == qlog && (d->prevQueue / plog) == (queue / plog)) {
+          d->prevQueue = queue;
+          return;
+        }
+      }
+      d->prevQueue = queue;
+
       Isolate *isolate = Isolate::GetCurrent();
       Local<Object> obj = Object::New(isolate);
       v8pp::set_option(isolate, obj, "capturing", d->capturing);
-      v8pp::set_option(isolate, obj, "packets", d->store->maxSeq());
-      v8pp::set_option(isolate, obj, "queue",
-                       d->packetDispatcher->queueSize() +
-                           d->streamDispatcher->queueSize());
+      v8pp::set_option(isolate, obj, "packets", packets);
+      v8pp::set_option(isolate, obj, "queue", queue);
       Local<Object> filtered = Object::New(isolate);
 
       for (auto &pair : d->filterThreads) {
@@ -279,6 +294,7 @@ void Session::stop() {
 
 void Session::reset(v8::Local<v8::Object> opt) {
   Isolate *isolate = Isolate::GetCurrent();
+  d->prevQueue = 0;
 
   v8pp::get_option(isolate, opt, "namespace", d->ns);
 
