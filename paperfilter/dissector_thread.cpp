@@ -65,7 +65,7 @@ DissectorThread::Private::Private(
     char dummyData[128] = {0};
     isolate->SetData(0, dummyData);
 
-    static const int dissectorQuota = 16;
+    static const int dissectorQuota = 512;
 
     {
       std::unique_ptr<v8::Locker> locker;
@@ -253,14 +253,12 @@ DissectorThread::Private::Private(
 
           v8pp::class_<Packet>::unreference_external(isolate, pkt.get());
 
-          uint32_t seq = pkt->seq();
-
-          if (ctx.packetCb)
-            ctx.packetCb(pkt);
-
           if (ctx.streamsCb)
-            ctx.streamsCb(seq, std::move(streams));
+            ctx.streamsCb(pkt->seq(), std::move(streams));
         }
+
+        if (ctx.packetCb)
+          ctx.packetCb(packets);
 
         lock.lock();
       }

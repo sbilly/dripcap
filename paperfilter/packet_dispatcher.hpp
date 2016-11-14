@@ -16,7 +16,7 @@ struct LogMessage;
 
 struct DissectorSharedContext {
   std::vector<Dissector> dissectors;
-  std::function<void(const std::shared_ptr<Packet> &)> packetCb;
+  std::function<void(const std::vector<std::shared_ptr<Packet>> &)> packetCb;
   std::function<void(uint32_t, std::vector<std::unique_ptr<StreamChunk>>)>
       streamsCb;
   std::function<void(const LogMessage &)> logCb;
@@ -30,7 +30,7 @@ public:
   struct Context {
     int threads;
     std::vector<Dissector> dissectors;
-    std::function<void(const std::shared_ptr<Packet> &)> packetCb;
+    std::function<void(const std::vector<std::shared_ptr<Packet>> &)> packetCb;
     std::function<void(uint32_t, std::vector<std::unique_ptr<StreamChunk>>)>
         streamsCb;
     std::function<void(const LogMessage &)> logCb;

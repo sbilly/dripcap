@@ -24,21 +24,28 @@ PacketStore::PacketStore() : d(new Private()) {}
 
 PacketStore::~PacketStore() {}
 
-void PacketStore::insert(const std::shared_ptr<Packet> &pkt) {
+void PacketStore::insert(const std::vector<std::shared_ptr<Packet>> &packets) {
+  uint32_t oldMaxSeq = d->maxSeq;
+  uint32_t maxSeq = oldMaxSeq;
   uv_rwlock_wrlock(&d->rwlock);
-  d->packets[pkt->seq()] = pkt;
-  uint32_t seq = d->maxSeq;
-  for (auto it = d->packets.find(seq + 1); it != d->packets.end();
-       seq++, it = d->packets.find(seq + 1))
-    ;
-  if (d->maxSeq < seq) {
-    d->maxSeq = seq;
-    for (const auto &pair : d->handlers) {
-      if (pair.second)
-        pair.second(seq);
+  for (const auto &pkt : packets) {
+    d->packets[pkt->seq()] = pkt;
+    uint32_t seq = d->maxSeq;
+    for (auto it = d->packets.find(seq + 1); it != d->packets.end();
+         seq++, it = d->packets.find(seq + 1))
+      ;
+    if (d->maxSeq < seq) {
+      d->maxSeq = seq;
+      maxSeq = seq;
     }
   }
   uv_rwlock_wrunlock(&d->rwlock);
+  if (oldMaxSeq < maxSeq) {
+    for (const auto &pair : d->handlers) {
+      if (pair.second)
+        pair.second(maxSeq);
+    }
+  }
 }
 
 std::vector<std::shared_ptr<Packet>> PacketStore::get(uint32_t start,

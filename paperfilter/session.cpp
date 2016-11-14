@@ -106,7 +106,6 @@ Session::Private::Private() {
       uint32_t queue =
           d->packetDispatcher->queueSize() + d->streamDispatcher->queueSize();
 
-
       if (packets > 1024 && d->prevQueue > 0 && queue > 1024) {
         int plog = 2 << static_cast<int>(std::log2(d->prevQueue));
         int qlog = 2 << static_cast<int>(std::log2(queue));
@@ -327,8 +326,9 @@ void Session::reset(v8::Local<v8::Object> opt) {
 
   auto dissCtx = std::make_shared<PacketDispatcher::Context>();
   dissCtx->threads = d->threads;
-  dissCtx->packetCb = [this](const std::shared_ptr<Packet> &pkt) {
-    d->store->insert(pkt);
+  dissCtx->packetCb = [this](
+      const std::vector<std::shared_ptr<Packet>> &packets) {
+    d->store->insert(packets);
   };
   dissCtx->streamsCb = [this](
       uint32_t seq, std::vector<std::unique_ptr<StreamChunk>> streams) {

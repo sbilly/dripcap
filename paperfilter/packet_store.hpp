@@ -13,7 +13,7 @@ public:
   ~PacketStore();
   PacketStore(const PacketStore &) = delete;
   PacketStore &operator=(const PacketStore &) = delete;
-  void insert(const std::shared_ptr<Packet> &pkt);
+  void insert(const std::vector<std::shared_ptr<Packet>> &packets);
   std::vector<std::shared_ptr<Packet>> get(uint32_t start, uint32_t end) const;
   std::shared_ptr<Packet> get(uint32_t seq) const;
   uint32_t maxSeq() const;
