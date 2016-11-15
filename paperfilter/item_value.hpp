@@ -4,15 +4,15 @@
 #include <memory>
 #include <string>
 #include <v8.h>
-
-class Buffer;
+#include "buffer.hpp"
+#include "large_buffer.hpp"
 
 class ItemValue {
 public:
   enum BaseType { NUL, NUMBER, BOOLEAN, STRING, BUFFER, LARGE_BUFFER, JSON };
 
 public:
-  ItemValue();
+  ItemValue() = default;
   explicit ItemValue(const v8::FunctionCallbackInfo<v8::Value> &args);
   explicit ItemValue(const v8::Local<v8::Value> &val);
   ItemValue(const ItemValue &value);
@@ -22,8 +22,12 @@ public:
   std::string type() const;
 
 private:
-  class Private;
-  std::unique_ptr<Private> d;
+  BaseType base_ = NUL;
+  double num_;
+  std::string str_;
+  std::unique_ptr<Buffer> buf_;
+  std::unique_ptr<LargeBuffer> lbuf_;
+  std::string type_;
 };
 
 #endif

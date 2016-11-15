@@ -10,10 +10,9 @@
 
 class Item {
 public:
-  Item();
+  Item() = default;
   Item(const v8::FunctionCallbackInfo<v8::Value> &args);
   Item(v8::Local<v8::Value> value);
-  Item(const Item &item);
   ~Item();
 
   std::string name() const;
@@ -33,8 +32,12 @@ public:
   std::unordered_map<std::string, ItemValue> attrs() const;
 
 private:
-  class Private;
-  std::unique_ptr<Private> d;
+  std::string name_;
+  std::string id_;
+  std::string range_;
+  ItemValue value_;
+  std::vector<std::shared_ptr<Item>> items_;
+  std::unordered_map<std::string, ItemValue> attrs_;
 };
 
 #endif
