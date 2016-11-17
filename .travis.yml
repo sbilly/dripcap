@@ -13,10 +13,10 @@ addons:
     - g++-5
     - xvfb
     - lintian
-    - alien
     - libcap-dev
     - jq
     - chrpath
+    - rpm
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source travis/linux-before-install.sh
   ; fi
