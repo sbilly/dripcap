@@ -63,8 +63,9 @@ std::string hex(const char *data, size_t len) {
   std::string str;
   str.resize(len * 2);
   for (size_t i = 0; i < len; ++i) {
-    str[i * 2 + 0] = table[i][0];
-    str[i * 2 + 1] = table[i][1];
+    unsigned char index = static_cast<unsigned char>(data[i]);
+    str[i * 2 + 0] = table[index][0];
+    str[i * 2 + 1] = table[index][1];
   }
   return str;
 }
