@@ -118,8 +118,8 @@
           e.filterText = (this.val ? '' : '!') + this.path;
           break;
         case 'object':
-          if (this.val.__filterValue) {
-            e.filterText = `${this.path} == ${JSON.stringify(this.val.__filterValue)}`;
+          if (this.val._filter) {
+            e.filterText = `${this.path} == ${JSON.stringify(this.val._filter)}`;
           } else {
             e.filterText = this.path;
           }

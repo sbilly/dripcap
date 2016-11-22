@@ -6,7 +6,7 @@ export function Enum(table, value) {
   let val = {
     _value: value,
     _name: (typeof item === 'object' ? item.name : item),
-    __filterValue: id
+    _filter: id
   };
   return new Value(val, 'dripcap/enum');
 }
