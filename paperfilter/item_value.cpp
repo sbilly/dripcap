@@ -26,7 +26,7 @@ ItemValue::ItemValue(const v8::FunctionCallbackInfo<v8::Value> &args)
   d->type = v8pp::from_v8<std::string>(isolate, args[1], "");
 }
 
-ItemValue::ItemValue(const v8::Local<v8::Value> &val) : ItemValue() {
+ItemValue::ItemValue(v8::Local<v8::Value> val) : ItemValue() {
   v8::Isolate *isolate = v8::Isolate::GetCurrent();
   if (!val.IsEmpty()) {
     if (val->IsNumber()) {
@@ -38,6 +38,9 @@ ItemValue::ItemValue(const v8::Local<v8::Value> &val) : ItemValue() {
     } else if (val->IsString()) {
       d->str = v8pp::from_v8<std::string>(isolate, val, "");
       d->base = STRING;
+    } else if (val->IsDate()) {
+      d->num = val.As<v8::Date>()->ValueOf();
+      d->base = DATE;
     } else if (val->IsObject()) {
       if (Buffer *buffer = v8pp::class_<Buffer>::unwrap_object(isolate, val)) {
         d->buf = buffer->slice();
@@ -87,6 +90,9 @@ v8::Local<v8::Value> ItemValue::data() const {
     break;
   case STRING:
     val = v8pp::to_v8(isolate, d->str);
+    break;
+  case DATE:
+    val = v8::Date::New(isolate, d->num);
     break;
   case BUFFER:
     if (d->buf) {
