@@ -1,6 +1,6 @@
 import {Layer, Item, Value} from 'dripcap';
-import {IPv4Host} from 'dripcap/ipv4';
-import {IPv6Host} from 'dripcap/ipv6';
+import {IPv4Host} from 'driptool/ipv4';
+import {IPv6Host} from 'driptool/ipv6';
 
 export default class UDPDissector {
   static get namespaces() {

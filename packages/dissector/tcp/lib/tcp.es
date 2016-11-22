@@ -1,7 +1,8 @@
 import {Layer, Item, Value, StreamChunk} from 'dripcap';
-import {Flags, Enum} from 'dripcap/utils';
-import {IPv4Host} from 'dripcap/ipv4';
-import {IPv6Host} from 'dripcap/ipv6';
+import Flags from 'driptool/flags';
+import Enum from 'driptool/enum';
+import {IPv4Host} from 'driptool/ipv4';
+import {IPv6Host} from 'driptool/ipv6';
 
 export default class Dissector {
   static get namespaces() {

@@ -1,7 +1,8 @@
 import {Layer, Item, Value} from 'dripcap';
-import {Flags, Enum} from 'dripcap/utils';
-import {IPv4Address} from 'dripcap/ipv4';
-import {MACAddress} from 'dripcap/mac';
+import Flags from 'driptool/flags';
+import Enum from 'driptool/enum';
+import MACAddress from 'driptool/mac';
+import {IPv4Address} from 'driptool/ipv4';
 
 export default class ARPDissector {
   static get namespaces() {

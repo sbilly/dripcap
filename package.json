@@ -18,6 +18,7 @@
   "dependencies": {
     "dripcap": "file:./dripcap",
     "dripcap-helper": "^0.1.0",
+    "driptool": "0.0.2",
     "esprima": "^3.1.1",
     "font-awesome": "^4.7.0",
     "geit": "0.0.7",

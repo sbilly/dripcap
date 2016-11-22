@@ -1,6 +1,7 @@
 import {Layer, Item, Value, StreamChunk} from 'dripcap';
-import {Flags, Enum} from 'dripcap/utils';
-import {IPv6Address} from 'dripcap/ipv6';
+import Flags from 'driptool/flags';
+import Enum from 'driptool/enum';
+import {IPv6Address} from 'driptool/ipv6';
 
 export default class IPv6Dissector {
   static get namespaces() {

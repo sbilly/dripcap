@@ -1,6 +1,6 @@
 import {Layer, Item, Value} from 'dripcap';
-import {Enum} from 'dripcap/utils';
-import {MACAddress} from 'dripcap/mac';
+import Enum from 'driptool/enum';
+import MACAddress from 'driptool/mac';
 
 export default class Dissector {
   static get namespaces() {

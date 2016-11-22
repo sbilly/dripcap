@@ -1,5 +1,6 @@
 import {Layer, Item, Value} from 'dripcap';
-import {Flags, Enum} from 'dripcap/utils';
+import Flags from 'driptool/flags';
+import Enum from 'driptool/enum';
 
 export default class DNSDissector {
   static get namespaces() {
