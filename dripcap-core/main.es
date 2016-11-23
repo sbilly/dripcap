@@ -13,6 +13,7 @@ app.on('ready', () => {
     width: 1200,
     height: 800,
     show: false,
+    vibrancy: 'dark',
     titleBarStyle: 'hidden-inset'
   };
 

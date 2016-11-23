@@ -16,6 +16,7 @@
   "author": "h2so5",
   "license": "MIT",
   "dependencies": {
+    "css": "^2.2.1",
     "dripcap-core": "file:./dripcap-core",
     "dripcap-helper": "^0.1.0",
     "driptool": "0.0.2",

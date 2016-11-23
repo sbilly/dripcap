@@ -1,4 +1,5 @@
 import path from 'path';
+import $ from 'jquery';
 import config from 'dripcap-core/config';
 import Profile from 'dripcap-core/profile';
 import Theme from 'dripcap-core/theme';
@@ -17,4 +18,8 @@ export default function(profileName = 'default') {
     }
     return load(request, parent, isMain);
   };
+
+  dripcap.Theme.registerLess(__dirname + '/layout.less', (css) => {
+    console.log(css)
+  });
 }
