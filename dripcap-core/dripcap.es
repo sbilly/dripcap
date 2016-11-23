@@ -7,7 +7,7 @@ export default function(profileName = 'default') {
   let profile = new Profile(path.join(config.profilePath, profileName))
   let dripcap = {
     Profile: profile,
-    Theme: new Theme(profile.getConfig('theme'))
+    Theme: new Theme(profile.getConfig('theme') + '_')
   };
 
   const load = require('module')._load;
