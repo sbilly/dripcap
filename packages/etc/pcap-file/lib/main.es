@@ -8,7 +8,8 @@ import {
   Menu,
   KeyBind,
   Action,
-  PubSub
+  PubSub,
+  Logger
 } from 'dripcap';
 
 class Pcap {
@@ -117,6 +118,9 @@ export default class PcapFile {
   async _open(path) {
     let pcap = new Pcap(path);
     let sess = await Session.create();
+    for (let err of sess.errors) {
+      Logger.error(err.message);
+    }
     PubSub.pub('core:session-created', sess);
     sess.on('status', stat => {
       PubSub.pub('core:capturing-status', stat);

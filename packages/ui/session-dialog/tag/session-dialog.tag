@@ -29,7 +29,7 @@
 
   <script>
     import $ from 'jquery';
-    import { Session, PubSub, Profile } from 'dripcap';
+    import { Session, PubSub, Profile, Logger } from 'dripcap';
 
     this.setInterfaceList = list => {
       return this.interfaceList = list;
@@ -51,6 +51,9 @@
         promiscuous: promisc,
         snaplen: snaplen
       }).then(sess => {
+        for (let err of sess.errors) {
+          Logger.error(err.message);
+        }
         PubSub.pub('core:session-created', sess);
         sess.on('status', stat => {
           PubSub.pub('core:capturing-status', stat);

@@ -38,13 +38,14 @@ function roll(script) {
 }
 
 class Session extends EventEmitter {
-  constructor(option) {
+  constructor(option, errors) {
     super();
     if (paperfilter == null) {
      throw new Error('failed to load the native module');
     }
 
     this._option = option;
+    this._errors = errors;
     this._sess = new paperfilter.Session(option);
     this._sess.logCallback = (log) => {
       this.emit('log', {
@@ -67,7 +68,7 @@ class Session extends EventEmitter {
       dissectors: [],
       stream_dissectors: []
     };
-
+    let errors = [];
     let tasks = [];
     if (Array.isArray(option.dissectors)) {
       for (let diss of option.dissectors) {
@@ -76,6 +77,8 @@ class Session extends EventEmitter {
             script: code,
             resourceName: diss.script
           });
+        }).catch((e) => {
+          errors.push(e);
         }));
       }
     }
@@ -86,11 +89,13 @@ class Session extends EventEmitter {
             script: code,
             resourceName: diss.script
           });
+        }).catch((e) => {
+          errors.push(e);
         }));
       }
     }
     return Promise.all(tasks).then(() => {
-      return new Session(sessOption);
+      return new Session(sessOption, errors);
     });
   }
 
@@ -144,6 +149,10 @@ class Session extends EventEmitter {
       return [];
     }
     return paperfilter.Session.devices;
+  }
+
+  get errors() {
+    return this._errors;
   }
 
   static get tmpDir() {
