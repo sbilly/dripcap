@@ -1,12 +1,12 @@
 import $ from 'jquery';
 import riot from 'riot';
 import _ from 'underscore';
-import Component from 'dripcap/component';
+import Component from 'dripcap-core/component';
 import {
   Session,
   Package,
   Profile
-} from 'dripcap';
+} from 'dripcap-core';
 
 export default class WelcomeDialog {
   async activate() {

@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import riot from 'riot';
-import Component from 'dripcap/component';
+import Component from 'dripcap-core/component';
 import {
   remote
 } from 'electron';
@@ -20,7 +20,7 @@ import {
   Package,
   PubSub,
   Session
-} from 'dripcap';
+} from 'dripcap-core';
 
 export default class PacketListView {
   async activate() {

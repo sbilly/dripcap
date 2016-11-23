@@ -8,7 +8,7 @@
     "url": "https://github.com/dripcap/dripcap.git"
   },
   "readme": "see README.md",
-  "main": "node_modules/dripcap/main.js",
+  "main": "node_modules/dripcap-core/main.js",
   "scripts": {
     "test": "node --harmony_async_await node_modules/gulp/bin/gulp.js mocha",
     "bench": "electron --enable-logging --js-flags=--no-memory-reducer uispec/benchmark/main.es"
@@ -16,7 +16,7 @@
   "author": "h2so5",
   "license": "MIT",
   "dependencies": {
-    "dripcap": "file:./dripcap",
+    "dripcap-core": "file:./dripcap-core",
     "dripcap-helper": "^0.1.0",
     "driptool": "0.0.2",
     "esprima": "^3.1.1",

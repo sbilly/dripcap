@@ -1,12 +1,12 @@
-import config from 'dripcap/config';
+import config from 'dripcap-core/config';
 import {
   shell
 } from 'electron';
 import $ from 'jquery';
 
-import Profile from 'dripcap/profile';
+import Profile from 'dripcap-core/profile';
 let prof = new Profile(config.profilePath + '/default');
-require('dripcap')(prof);
+require('dripcap-core')(prof);
 
 import {
   remote
@@ -16,7 +16,7 @@ import {
   Session,
   Package,
   Action
-} from 'dripcap';
+} from 'dripcap-core';
 
 Package.sub('core:package-loaded', () => process.nextTick(() => $('#splash').fadeOut()));
 Package.sub('core:package-file-updated', () => {
@@ -25,7 +25,7 @@ Package.sub('core:package-file-updated', () => {
   }
 });
 
-Action.on('core:new-window', () => remote.getGlobal('dripcap').newWindow());
+Action.on('core:new-window', () => remote.getGlobal('dripcap-core').newWindow());
 Action.on('core:close-window', () => remote.getCurrentWindow().close());
 Action.on('core:reload-window', () => remote.getCurrentWindow().reload());
 Action.on('core:toggle-devtools', () => remote.getCurrentWindow().toggleDevTools());

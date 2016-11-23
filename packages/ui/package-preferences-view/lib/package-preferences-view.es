@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import riot from 'riot';
-import Component from 'dripcap/component';
+import Component from 'dripcap-core/component';
 import {
   Package
-} from 'dripcap';
+} from 'dripcap-core';
 
 export default class PackagePreferencesView {
   async activate() {

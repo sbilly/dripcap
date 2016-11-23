@@ -55,7 +55,7 @@
 
   <script>
     import $ from 'jquery';
-    import { Session, PubSub } from 'dripcap';
+    import { Session, PubSub } from 'dripcap-core';
     import caret from 'textarea-caret';
 
     PubSub.sub('packet-filter-view:set-filter', (text) => {

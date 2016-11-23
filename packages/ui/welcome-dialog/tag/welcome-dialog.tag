@@ -42,7 +42,7 @@
 
   <script>
     import $ from 'jquery';
-    import { Action, Profile } from 'dripcap';
+    import { Action, Profile } from 'dripcap-core';
 
     this.on('mount', () => {
       return this.startup = Profile.getConfig('startupDialog');

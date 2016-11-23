@@ -1,11 +1,11 @@
 import $ from 'jquery';
 import riot from 'riot';
-import Component from 'dripcap/component';
+import Component from 'dripcap-core/component';
 import {
   Package,
   Theme,
   Profile
-} from 'dripcap';
+} from 'dripcap-core';
 
 export default class GeneralPreferencesView {
   async activate() {

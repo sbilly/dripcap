@@ -10,7 +10,7 @@ import {
   PubSub,
   Config,
   Profile
-} from 'dripcap';
+} from 'dripcap-core';
 let {
   app
 } = remote;

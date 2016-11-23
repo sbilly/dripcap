@@ -2,7 +2,7 @@ import $ from 'jquery';
 import _ from 'underscore';
 import {
   Package
-} from 'dripcap';
+} from 'dripcap-core';
 
 $.fn.extend({
   actualHeight() {

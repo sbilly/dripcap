@@ -39,7 +39,7 @@
 
 <script>
   import _ from 'underscore';
-  import { Package } from 'dripcap';
+  import { Package } from 'dripcap-core';
 
   this.setEnabled = e => {
     let {pkg} = e.item;

@@ -10,7 +10,7 @@ import {
   Action,
   PubSub,
   Logger
-} from 'dripcap';
+} from 'dripcap-core';
 
 class Pcap {
   constructor(path) {

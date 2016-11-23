@@ -2,7 +2,7 @@ import $ from 'jquery';
 import _ from 'underscore';
 import riot from 'riot';
 import fs from 'fs';
-import Component from 'dripcap/component';
+import Component from 'dripcap-core/component';
 import {
   remote
 } from 'electron';
@@ -16,7 +16,7 @@ import {
   Package,
   PubSub,
   KeyBind
-} from 'dripcap';
+} from 'dripcap-core';
 
 export default class PacketListView {
   async activate() {

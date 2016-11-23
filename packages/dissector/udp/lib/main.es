@@ -1,6 +1,6 @@
 import {
   Session
-} from 'dripcap';
+} from 'dripcap-core';
 
 export default class UDP {
   activate() {

@@ -47,7 +47,7 @@ gulp.task('copy', () =>
     './package.json',
     './*.html',
     './packages/**/*',
-    './dripcap/**/*',
+    './dripcap-core/**/*',
     './paperfilter/**/*',
     '!./**/node_modules'
   ], {base: './'})
@@ -64,7 +64,7 @@ gulp.task('npm', () => {
   p = p.then(() => {
     return new Promise(function(res) {
      npm.prefix = './.build/';
-     return npm.commands.uninstall(['dripcap'], res);
+     return npm.commands.uninstall(['dripcap-core'], res);
    });
   });
 
@@ -92,7 +92,7 @@ gulp.task('npm', () => {
 
   return p.then(() => {
     return new Promise(function(res) {
-    rimraf('./.build/dripcap', () => {
+    rimraf('./.build/dripcap-core', () => {
       rimraf('./.build/paperfilter', res);
       });
     });

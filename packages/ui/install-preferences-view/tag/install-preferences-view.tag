@@ -44,7 +44,7 @@
   import request from 'request';
   import semver from 'semver';
   import url from 'url';
-  import { Package, Action, Profile } from 'dripcap';
+  import { Package, Action, Profile } from 'dripcap-core';
 
   this.installing = false;
   this.message = '';

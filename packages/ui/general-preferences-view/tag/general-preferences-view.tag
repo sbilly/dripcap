@@ -32,7 +32,7 @@
 
   <script>
     import $ from 'jquery';
-    import { Theme, Profile } from 'dripcap';
+    import { Theme, Profile } from 'dripcap-core';
 
     this.on('mount', () => {
       this.currentSnaplen = Profile.getConfig('snaplen');

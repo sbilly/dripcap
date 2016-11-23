@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import Component from 'dripcap/component';
-import Panel from 'dripcap/panel';
+import Component from 'dripcap-core/component';
+import Panel from 'dripcap-core/panel';
 
 export default class MainView {
   async activate() {

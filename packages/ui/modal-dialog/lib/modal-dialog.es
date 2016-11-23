@@ -1,4 +1,4 @@
-import Component from 'dripcap/component';
+import Component from 'dripcap-core/component';
 
 export default class ModalDialog {
   async activate() {

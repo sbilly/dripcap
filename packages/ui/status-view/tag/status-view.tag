@@ -56,7 +56,7 @@
 
   <script>
     import $ from 'jquery';
-    import {Action} from 'dripcap';
+    import {Action} from 'dripcap-core';
 
     this.on('mount', () => {
       if (process.platform === 'darwin') {

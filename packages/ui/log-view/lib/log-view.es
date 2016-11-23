@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import riot from 'riot';
-import Component from 'dripcap/component';
-import Panel from 'dripcap/panel';
+import Component from 'dripcap-core/component';
+import Panel from 'dripcap-core/panel';
 import {
   Package,
   Menu,
@@ -9,7 +9,7 @@ import {
   Config,
   Logger,
   Action
-} from 'dripcap';
+} from 'dripcap-core';
 import {
   remote
 } from 'electron';

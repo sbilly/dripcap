@@ -1,11 +1,11 @@
 import $ from 'jquery';
 import riot from 'riot';
-import Component from 'dripcap/component';
-import Panel from 'dripcap/panel';
+import Component from 'dripcap-core/component';
+import Panel from 'dripcap-core/panel';
 import {
   Package,
   PubSub
-} from 'dripcap';
+} from 'dripcap-core';
 
 export default class StatusView {
   async activate() {

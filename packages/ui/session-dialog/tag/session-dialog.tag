@@ -29,7 +29,7 @@
 
   <script>
     import $ from 'jquery';
-    import { Session, PubSub, Profile, Logger } from 'dripcap';
+    import { Session, PubSub, Profile, Logger } from 'dripcap-core';
 
     this.setInterfaceList = list => {
       return this.interfaceList = list;

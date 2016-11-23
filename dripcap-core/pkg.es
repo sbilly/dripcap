@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'underscore';
 import { rollup } from 'rollup';
-import config from 'dripcap/config';
+import config from 'dripcap-core/config';
 import {
   EventEmitter
 } from 'events';

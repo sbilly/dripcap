@@ -1,6 +1,6 @@
 import {
   Theme
-} from 'dripcap';
+} from 'dripcap-core';
 
 export default class Base16 {
   activate() {

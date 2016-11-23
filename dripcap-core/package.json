@@ -1,10 +1,9 @@
 {
-  "name": "dripcap",
+  "name": "dripcap-core",
   "version": "0.0.1",
   "description": "Dripcap core",
   "main": "dripcap.js",
   "scripts": {
-    "test": "jasmine-node spec",
     "postinstall": "babel *.es -d ."
   },
   "author": "h2so5",

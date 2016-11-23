@@ -205,7 +205,7 @@
 <packet-view-layer each={ ns in rootKeys } layer={ rootLayers[ns] } range={ range }></packet-view-layer>
 
 <script>
-  import {Menu, PubSub} from 'dripcap';
+  import {Menu, PubSub} from 'dripcap-core';
   this.visible = true;
 
   this.on('update', () => {

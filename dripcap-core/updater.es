@@ -2,7 +2,7 @@ import http from 'http';
 import url from 'url';
 import geit from 'geit';
 import semver from 'semver';
-import config from 'dripcap/config';
+import config from 'dripcap-core/config';
 
 function createServer(cb) {
   let server = http.createServer(function(req, res) {

@@ -12,7 +12,7 @@ import {
 import path from 'path';
 import fs from 'fs';
 import mkpath from 'mkpath';
-import config from 'dripcap/config';
+import config from 'dripcap-core/config';
 import rimraf from 'rimraf';
 import helper from 'dripcap-helper';
 import {Session} from 'paperfilter';
