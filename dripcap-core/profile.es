@@ -66,8 +66,6 @@ export default class Profile {
     mkpath.sync(this.path);
     mkpath.sync(this._packagePath);
 
-    this._initPath = path.join(this.path, 'init.coffee');
-
     this._config = new Category(path.join(this.path, 'config.json'), {
       snaplen: 1600,
       theme: 'default',
@@ -112,15 +110,5 @@ export default class Profile {
       });
     }
     return this._packages[name];
-  }
-
-  init() {
-    try {
-      return require(this._initPath);
-    } catch (e) {
-      if (e.code !== "MODULE_NOT_FOUND") {
-        return console.warn(e);
-      }
-    }
   }
 }
