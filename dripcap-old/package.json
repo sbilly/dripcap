@@ -1,0 +1,18 @@
+{
+  "name": "dripcap-core",
+  "version": "0.0.1",
+  "description": "Dripcap core",
+  "main": "dripcap.js",
+  "scripts": {
+    "postinstall": "babel *.es -d ."
+  },
+  "author": "h2so5",
+  "license": "MIT",
+  "babel": {
+    "plugins": [
+      "add-module-exports", ["transform-es2015-modules-commonjs", {
+        "allowTopLevelThis": true
+      }]
+    ]
+  }
+}
