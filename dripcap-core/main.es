@@ -19,6 +19,8 @@ app.on('ready', () => {
   let mainWindow = new BrowserWindow(options);
   mainWindow.loadURL(`file://${__dirname}/layout.htm`);
   mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.show();
+    mainWindow.webContents.executeJavaScript('require("./dripcap")', false).then(() => {
+      mainWindow.show();
+    });
   });
 });
