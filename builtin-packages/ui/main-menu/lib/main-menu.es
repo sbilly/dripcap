@@ -1,11 +1,11 @@
 import fs from 'fs';
-import { Menu, KeyBind, Theme, Action, Config, Profile } from 'dripcap';
+import { Menu, KeyBind, Theme, PubSub, Config, Profile } from 'dripcap';
 import { remote } from 'electron';
 let { app, MenuItem } = remote;
 
 export default class MainMenu {
   async activate() {
-    let action = name => () => Action.emit(name);
+    let action = name => () => PubSub.emit(name);
 
     KeyBind.bind('command+shift+n', '!menu', 'core:new-window');
     KeyBind.bind('command+shift+w', '!menu', 'core:close-window');

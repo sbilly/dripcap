@@ -9,11 +9,9 @@ import KeyBind from './keybind';
 import PubSub from './pubsub';
 import Session from './session';
 import init from './init';
-import { EventEmitter } from 'events';
 
 export default function(profileName = 'default') {
   let profile = new Profile(path.join(config.profilePath, profileName));
-  let action = new EventEmitter();
   let pubsub = new PubSub();
   let dripcap = {
     Config: config,
@@ -21,8 +19,7 @@ export default function(profileName = 'default') {
     Theme: new Theme(profile.getConfig('theme') + '_'),
     Menu: new Menu(),
     Package: new PackageHub(profile),
-    KeyBind: new KeyBind(profile, action),
-    Action: action,
+    KeyBind: new KeyBind(profile, pubsub),
     PubSub: pubsub,
     Session: new Session(pubsub)
   };

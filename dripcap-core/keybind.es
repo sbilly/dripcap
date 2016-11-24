@@ -4,10 +4,10 @@ import Mousetrap from 'mousetrap';
 import { EventEmitter } from 'events';
 
 export default class KeybindInterface extends EventEmitter {
-  constructor(profile, action) {
+  constructor(profile, pubsub) {
     super();
     this._profile = profile;
-    this._action = action;
+    this._pubsub = pubsub;
     this._builtinCommands = {};
     this._commands = {};
   }
@@ -96,7 +96,7 @@ export default class KeybindInterface extends EventEmitter {
                     e.stopPropagation();
                   }
                 } else {
-                  this._action.emit(act);
+                  this._pubsub.emit(act);
                   e.preventDefault();
                   e.stopPropagation();
                 }

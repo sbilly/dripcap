@@ -32,6 +32,14 @@ export default class PubSub {
     }
   }
 
+  on(name, cb) {
+    this.sub(name, cb);
+  }
+
+  emit(name, data) {
+    this.pub(name, data, 0);
+  }
+
   get(name, index = 0) {
     const ch = this._getChannel(name);
     return ch.queue[ch.queue.length - index - 1];
