@@ -2,6 +2,7 @@ import PubSub from './pubsub';
 import css from 'css';
 import less from 'less';
 import fs from 'fs';
+import { remote } from 'electron';
 
 export default class ThemeInterface extends PubSub {
   constructor(id) {
@@ -80,6 +81,7 @@ export default class ThemeInterface extends PubSub {
       for (let m of decl) {
         prop[m.property] = m.value;
       }
+      remote.getCurrentWindow().setVibrancy(prop.vibrancy.replace(/'/g, ''));
     });
   }
 
