@@ -27,6 +27,10 @@ export default function(profileName = 'default') {
     Session: new Session(pubsub)
   };
 
+  //
+  // TODO: Action to pubsub
+  //
+
   const load = require('module')._load;
   require('module')._load = (request, parent, isMain) => {
     if (request === 'dripcap') {
