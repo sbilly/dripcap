@@ -6,8 +6,8 @@ import Theme from './theme';
 import Menu from './menu';
 import PackageHub from './package-hub';
 import KeyBind from './keybind';
+import init from './init';
 import { EventEmitter } from 'events';
-import { remote } from 'electron';
 
 export default function(profileName = 'default') {
   let profile = new Profile(path.join(config.profilePath, profileName));
@@ -31,14 +31,4 @@ export default function(profileName = 'default') {
   };
 
   init(dripcap);
-}
-
-function init(dripcap) {
-  let { Theme, Action, Package } = dripcap;
-  Theme.registerLess(__dirname + '/layout.less', (css) => {
-    console.log(css)
-  });
-
-  Action.on('core:toggle-devtools', () => remote.getCurrentWindow().toggleDevTools());
-  Package.updatePackageList();
 }

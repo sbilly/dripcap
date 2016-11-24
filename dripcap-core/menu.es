@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { EventEmitter } from 'events';
-import { remote } from 'electron';
+import { remote, shell } from 'electron';
 
 export default class Menu extends EventEmitter {
   constructor() {
