@@ -6,12 +6,15 @@ import Theme from './theme';
 import Menu from './menu';
 import PackageHub from './package-hub';
 import KeyBind from './keybind';
+import PubSub from './pubsub';
+import Session from './session';
 import init from './init';
 import { EventEmitter } from 'events';
 
 export default function(profileName = 'default') {
   let profile = new Profile(path.join(config.profilePath, profileName));
   let action = new EventEmitter();
+  let pubsub = new PubSub();
   let dripcap = {
     Config: config,
     Profile: profile,
@@ -19,7 +22,9 @@ export default function(profileName = 'default') {
     Menu: new Menu(),
     Package: new PackageHub(profile),
     KeyBind: new KeyBind(profile, action),
-    Action: action
+    Action: action,
+    PubSub: pubsub,
+    Session: new Session(pubsub)
   };
 
   const load = require('module')._load;
