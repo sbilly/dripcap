@@ -46,7 +46,7 @@ gulp.task('copy', () =>
   gulp.src([
     './package.json',
     './*.html',
-    './packages/**/*',
+    './builtin-packages/**/*',
     './dripcap-core/**/*',
     './paperfilter/**/*',
     '!./**/node_modules'
@@ -76,7 +76,7 @@ gulp.task('npm', () => {
   });
 
   let dirs = [];
-  glob.sync('./.build/packages/**/package.json').forEach(function(conf) {
+  glob.sync('./.build/builtin-packages/**/package.json').forEach(function(conf) {
     let cwd = path.dirname(conf);
     dirs.push(cwd);
   });
@@ -225,7 +225,7 @@ gulp.task('out-files', cb => {
     './.build/package.json',
     './.build/js/*',
     './.build/*.html',
-    './.build/packages/**/*',
+    './.build/builtin-packages/**/*',
     './.build/node_modules/**/*',
     '!./.build/node_modules/paperfilter/**'
   ], {base: '.build'})

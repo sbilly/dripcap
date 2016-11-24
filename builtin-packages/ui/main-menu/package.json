@@ -1,0 +1,11 @@
+{
+  "name": "main-menu",
+  "main": "./lib/main-menu.es",
+  "license": "MIT",
+  "description": "Dripcap Main Menu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dripcap/dripcap.git"
+  },
+  "readme": "see README.md"
+}

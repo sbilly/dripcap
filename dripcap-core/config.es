@@ -8,7 +8,7 @@ export default {
   homePath: homePath,
   userPackagePath: path.join(homePath, '/packages'),
   profilePath: path.join(homePath, '/profiles'),
-  packagePath: path.join(path.dirname(__dirname), '/../packages'),
+  packagePath: path.join(path.dirname(__dirname), '/../builtin-packages'),
   electronVersion: pkg.devDependencies.electron,
   version: pkg.version,
   crashReporter: {

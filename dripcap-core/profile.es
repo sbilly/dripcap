@@ -60,8 +60,8 @@ class Category {
 }
 
 export default class Profile {
-  constructor(path1) {
-    this.path = path1;
+  constructor(profilePath) {
+    this.path = profilePath;
     this._packagePath = path.join(this.path, 'packages');
     mkpath.sync(this.path);
     mkpath.sync(this._packagePath);

@@ -1,16 +1,25 @@
 import path from 'path';
 import $ from 'jquery';
-import config from 'dripcap-core/config';
-import Profile from 'dripcap-core/profile';
-import Theme from 'dripcap-core/theme';
-import Menu from 'dripcap-core/menu';
+import config from './config';
+import Profile from './profile';
+import Theme from './theme';
+import Menu from './menu';
+import PackageHub from './package-hub';
+import KeyBind from './keybind';
+import { EventEmitter } from 'events';
+import { remote } from 'electron';
 
 export default function(profileName = 'default') {
-  let profile = new Profile(path.join(config.profilePath, profileName))
+  let profile = new Profile(path.join(config.profilePath, profileName));
+  let action = new EventEmitter();
   let dripcap = {
+    Config: config,
     Profile: profile,
     Theme: new Theme(profile.getConfig('theme') + '_'),
-    Menu: new Menu()
+    Menu: new Menu(),
+    Package: new PackageHub(profile),
+    KeyBind: new KeyBind(profile, action),
+    Action: action
   };
 
   const load = require('module')._load;
@@ -21,9 +30,15 @@ export default function(profileName = 'default') {
     return load(request, parent, isMain);
   };
 
-  dripcap.Theme.registerLess(__dirname + '/layout.less', (css) => {
+  init(dripcap);
+}
+
+function init(dripcap) {
+  let { Theme, Action, Package } = dripcap;
+  Theme.registerLess(__dirname + '/layout.less', (css) => {
     console.log(css)
   });
 
-  dripcap.Menu.updateMainMenu();
+  Action.on('core:toggle-devtools', () => remote.getCurrentWindow().toggleDevTools());
+  Package.updatePackageList();
 }
