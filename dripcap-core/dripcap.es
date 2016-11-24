@@ -3,12 +3,14 @@ import $ from 'jquery';
 import config from 'dripcap-core/config';
 import Profile from 'dripcap-core/profile';
 import Theme from 'dripcap-core/theme';
+import Menu from 'dripcap-core/menu';
 
 export default function(profileName = 'default') {
   let profile = new Profile(path.join(config.profilePath, profileName))
   let dripcap = {
     Profile: profile,
-    Theme: new Theme(profile.getConfig('theme') + '_')
+    Theme: new Theme(profile.getConfig('theme') + '_'),
+    Menu: new Menu()
   };
 
   const load = require('module')._load;
@@ -22,4 +24,6 @@ export default function(profileName = 'default') {
   dripcap.Theme.registerLess(__dirname + '/layout.less', (css) => {
     console.log(css)
   });
+
+  dripcap.Menu.updateMainMenu();
 }
