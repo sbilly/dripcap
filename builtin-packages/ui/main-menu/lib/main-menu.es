@@ -17,16 +17,6 @@ export default class MainMenu {
     KeyBind.bind('command+alt+ctrl+m', '!menu', 'core:window-zoom');
 
     this.fileMenu = function(menu, e) {
-      menu.append(new MenuItem({
-        label: 'New Window',
-        accelerator: KeyBind.get('!menu', 'core:new-window'),
-        click: action('core:new-window')
-      }));
-      menu.append(new MenuItem({
-        label: 'Close Window',
-        accelerator: KeyBind.get('!menu', 'core:close-window'),
-        click: action('core:close-window')
-      }));
       if (process.platform !== 'darwin') {
         menu.append(new MenuItem({
           type: 'separator'

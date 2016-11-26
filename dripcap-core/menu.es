@@ -25,6 +25,7 @@ export default class Menu extends EventEmitter {
             }));
           }
         }
+        if (menu.items.length === 0) continue;
         let item = {
           label: k,
           submenu: menu,
