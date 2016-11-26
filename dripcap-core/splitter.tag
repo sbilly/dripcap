@@ -78,6 +78,7 @@
       if (this.dragging) {
         this.updateRatio((e.clientY - top) / height);
       }
+      e.preventUpdate = true;
       return false;
     }
 
@@ -151,6 +152,7 @@
       if (this.dragging) {
         this.updateRatio((e.clientX - left) / width);
       }
+      e.preventUpdate = true;
       return false;
     }
 
