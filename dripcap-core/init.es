@@ -17,6 +17,10 @@ export default function init(dripcap) {
 
   Package.updatePackageList();
 
-  riot.require(__dirname + '/layout.tag');
-  riot.mount(document.body, 'conetnt-root');
+  riot.require(__dirname + '/content-root.tag');
+  riot.mount(document.body, 'drip-content-root');
+
+  return new Promise((res) => {
+    Package.sub('core:package-loaded', res);
+  });
 }
