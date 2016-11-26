@@ -1,4 +1,5 @@
 import { remote, shell } from 'electron';
+import * as riot from 'riot';
 
 export default function init(dripcap) {
   let { Theme, PubSub, Package } = dripcap;
@@ -15,4 +16,7 @@ export default function init(dripcap) {
   PubSub.on('core:quit', () => remote.app.quit());
 
   Package.updatePackageList();
+
+  riot.require(__dirname + '/layout.tag');
+  riot.mount(document.body, 'conetnt-root');
 }
