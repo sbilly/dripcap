@@ -24,13 +24,15 @@ export default function(profileName = 'default') {
     Session: new Session(pubsub)
   };
 
-  const load = require('module')._load;
-  require('module')._load = (request, parent, isMain) => {
+  let module = require('module');
+  const load = module._load;
+  module._load = (request, parent, isMain) => {
     if (request === 'dripcap') {
       return dripcap;
     }
     return load(request, parent, isMain);
   };
 
+  module.globalPaths.push(path.dirname(__dirname));
   return init(dripcap);
 }
