@@ -12,7 +12,7 @@ app.on('window-all-closed', () => app.quit());
 app.on('ready', () => {
   let options = {
     width: 1200,
-    height: 800,
+    height: 600,
     show: false,
     vibrancy: 'dark',
     titleBarStyle: 'hidden-inset'
