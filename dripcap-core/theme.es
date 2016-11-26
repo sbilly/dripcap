@@ -1,18 +1,16 @@
 import PubSub from './pubsub';
-import css from 'css';
-import less from 'less';
 import fs from 'fs';
 import { remote } from 'electron';
+import $ from 'jquery';
 
 export default class ThemeInterface extends PubSub {
   constructor(id) {
     super();
     this.registry = {};
-    this._less = {};
 
     this._defaultScheme = {
       name: 'Default',
-      less: [`${__dirname}/default-theme.less`]
+      css: [`${__dirname}/default-theme.css`]
     };
 
     this.registerScheme('default', this._defaultScheme);
@@ -25,64 +23,31 @@ export default class ThemeInterface extends PubSub {
     if (this._id === id) {
       this.scheme = this.registry[id];
       this.pub('update', this.scheme, 1);
+      this._update();
     }
   }
 
   unregisterScheme(id) {
-    delete this.registry[id];
-    this.pub('registry-updated', null, 1);
-    if (id === this.id) {
-      this.id = 'default';
-    }
-  }
-
-  registerLess(file, cb) {
-    if (this._less[file] == null) {
-      this._less[file] = cb;
-      this._render(file);
-    }
-  }
-
-  unregisterLess(file) {
-    delete this._less[file];
-  }
-
-  _render(file) {
-    fs.readFile(file, 'utf8', (err, input) => {
-      for (let less of this.scheme.less) {
-        input = `@import "${less}";\n` + input;
+    if (delete this.registry[id]) {
+      this.pub('registry-updated', null, 1);
+      if (id === this._id) {
+        this.setId('default');
       }
-      less.render(input, {})
-      .then((output) => {
-        if (this._less[file] != null) {
-          this._less[file](output.css);
-        }
-      });
-    });
+    }
   }
 
   _update() {
-    let virtual = `
-      @vibrancy: 'dark';
-    `;
-    for (let less of this.scheme.less) {
-      virtual += `@import "${less}";\n`;
+    $('style.theme-syle').remove();
+    let styles = [];
+    for (let css of this.scheme.css) {
+      let data = fs.readFileSync(css, 'utf8');
+      styles.push($('<style>').addClass('theme-syle').text(data));
     }
-    virtual += `
-      :void {
-        vibrancy: @vibrancy;
-      }
-    `;
-    less.render(virtual, {})
-    .then((output) => {
-      let result = css.parse(output.css);
-      let decl = result.stylesheet.rules[0].declarations;
-      let prop = {};
-      for (let m of decl) {
-        prop[m.property] = m.value;
-      }
-      remote.getCurrentWindow().setVibrancy(prop.vibrancy.replace(/'/g, ''));
-    });
+    $('head').append(styles);
+
+    let computed = getComputedStyle(document.documentElement);
+    let vibrancy = JSON.parse(computed.getPropertyValue('--vibrancy'));
+    remote.getCurrentWindow().setVibrancy(vibrancy);
   }
 
   get id() {
@@ -92,18 +57,12 @@ export default class ThemeInterface extends PubSub {
   setId(id) {
     if (id != this._id) {
       this._id = id;
-      if (this.registry[id] != null) {
-        this.scheme = this.registry[id];
-        this.pub('update', this.scheme, 1);
-      } else {
+      if (this.registry[id] == null) {
         id = 'default';
       }
       if (this.scheme != this.registry[id]) {
         this.scheme = this.registry[id];
         this.pub('update', this.scheme, 1);
-        for (let file in this._less) {
-          this._render(file);
-        }
         this._update();
       }
     }

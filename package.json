@@ -16,7 +16,6 @@
   "author": "h2so5",
   "license": "MIT",
   "dependencies": {
-    "css": "^2.2.1",
     "dripcap-core": "file:./dripcap-core",
     "dripcap-helper": "^0.1.0",
     "driptool": "0.0.2",
@@ -25,7 +24,6 @@
     "geit": "0.0.7",
     "glob": "^7.1.1",
     "jquery": "^3.1.1",
-    "less": "^2.7.1",
     "mkpath": "^1.0.0",
     "mousetrap": "^1.6.0",
     "msgpack-lite": "^0.1.26",

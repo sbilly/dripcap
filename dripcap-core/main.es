@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 
 app.commandLine.appendSwitch('js-flags', '--harmony-async-await --no-memory-reducer');
+app.commandLine.appendSwitch('--enable-experimental-web-platform-features');
 
 app.on('quit', () => {
 
