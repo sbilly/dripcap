@@ -43,8 +43,8 @@
 
     this.activeIndex = 0;
     this.items = [
-      {center: 'drip-tab', name: "aaa", id: "aaaa"},
-      {center: 'drip-tab2', name: 'bbb', id: "bb"}
+      {center: {tag: 'drip-tab', id: "acaaa"}, name: "aaa", id: "aaaa"},
+      {center: {tag: 'drip-tab2', id: "xxaaaa"}, name: 'bbb', id: "bb"}
     ];
 
     setIndex(e) {
