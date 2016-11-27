@@ -10,7 +10,7 @@
 <drip-splitter-bar>
   <style>
     :scope {
-      background-color: var(--background2);
+      background-color: var(--background3);
       -webkit-app-region: no-drag;
     }
   </style>

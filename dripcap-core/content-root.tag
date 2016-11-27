@@ -7,14 +7,19 @@
 </drip-tab2>
 
 <drip-tab-view>
-  <virtual each={ item in items }>
-    <div data-is={ item.tag } class={ show-tab: items.length > 1 }></div>
+  <div class="tab-bar" show={ items.length > 1 }>
+    <div each={ item, i in items }  class={ tab: true, selected: i == this.activeIndex } onclick={ setIndex }> { item.name } </div>
+  </div>
+  <virtual each={ item, i in items }>
+    <div show={ i == this.activeIndex } class={ show-tab: items.length > 1 }>
+       <virtual data-is={ item.tag }></virtual>
+    </div>
   </virtual>
   <style>
     :scope {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 24px 1fr;
+      grid-template-rows: 32px 1fr;
     }
     :scope > div {
       grid-column: 1 / 1;
@@ -23,13 +28,36 @@
     :scope > div.show-tab {
       grid-row: 2 / 3;
     }
+    :scope > div.tab-bar {
+      grid-row: 1 / 2;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: stretch;
+      border-bottom: 2px solid var(--background2);
+      -webkit-user-select: none;
+      display: flex;
+    }
+    :scope > div.tab-bar div.tab {
+      padding: 4px 20px;
+      cursor: pointer;
+      border-top: 4px solid transparent;
+    }
+    :scope > div.tab-bar div.tab.selected {
+      border-top-color: var(--color1);
+    }
   </style>
 
   <script>
+    this.activeIndex = 0;
     this.items = [
-      {tag: 'drip-tab'},
-      {tag: 'drip-tab2'}
+      {tag: 'drip-tab', name: "aaa"},
+      {tag: 'drip-tab2', name: 'bbb'}
     ];
+
+    setIndex(e) {
+      this.activeIndex = e.item.i;
+    }
   </script>
 </drip-tab-view>
 
@@ -76,7 +104,7 @@
     body {
       -webkit-user-select: none;
       height: 100%;
-      overflow: auto;
+      overflow: hidden;
     }
 
     :scope {
