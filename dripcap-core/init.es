@@ -22,6 +22,8 @@ export default function init(dripcap) {
 
   Package.updatePackageList();
 
+  riot.require(__dirname + '/tab-view.tag');
+  riot.require(__dirname + '/grid-container.tag');
   riot.require(__dirname + '/splitter.tag');
   riot.require(__dirname + '/content-root.tag');
   riot.mount(document.body, 'drip-content-root');
