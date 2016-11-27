@@ -18,6 +18,7 @@
 </drip-content-right>
 
 <drip-content-root>
+  <div class="sidebg"></div>
   <aside></aside>
   <drip-hsplitter ratio="0.4">
     <yield to="left">
@@ -27,6 +28,7 @@
       <virtual data-is="drip-content-right"></virtual>
     </yield>
   </drip-hsplitter>
+  <drip-modal-view data-container-id="drip-modal"></drip-modal-view>
   <style>
     * {
       font-family: 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, 'Droid Sans Fallback', sans-serif;
@@ -61,7 +63,7 @@
       margin: 0;
       padding: 0;
       display: grid;
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: 160px 1fr;
       grid-template-rows: 1fr;
       grid-template-areas: "side body";
       -webkit-app-region: drag;
@@ -70,11 +72,26 @@
 
     :scope > aside {
       grid-area: side;
+      border-right: 1px solid var(--background3);
+      z-index: 2;
+    }
+
+    :scope > div.sidebg {
+      grid-area: side;
+      background-color: var(--background1);
+      opacity: 0.6;
+      z-index: 1;
+      background-blend-mode: overlay;
     }
 
     :scope > drip-hsplitter {
       grid-area: body;
       background-color: var(--background1);
+    }
+
+    :scope > drip-modal-view {
+      grid-column: 1 / 3;
+      grid-row: 1 / 1;
     }
   </style>
 </drip-content-root>

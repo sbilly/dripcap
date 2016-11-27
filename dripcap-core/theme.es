@@ -45,9 +45,9 @@ export default class ThemeInterface extends PubSub {
     }
     $('head').append(styles);
 
-    let computed = getComputedStyle(document.documentElement);
-    let vibrancy = JSON.parse(computed.getPropertyValue('--vibrancy'));
-    remote.getCurrentWindow().setVibrancy(vibrancy);
+    //let computed = getComputedStyle(document.documentElement);
+    //let vibrancy = JSON.parse(computed.getPropertyValue('--vibrancy'));
+    //remote.getCurrentWindow().setVibrancy(vibrancy);
   }
 
   get id() {
