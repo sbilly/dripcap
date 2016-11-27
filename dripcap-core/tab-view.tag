@@ -24,7 +24,7 @@
       margin: 0;
       display: flex;
       align-items: stretch;
-      border-bottom: 2px solid var(--background2);
+      border-bottom: 2px solid var(--color-lighter-background);
       -webkit-user-select: none;
       display: flex;
     }
@@ -34,7 +34,7 @@
       border-top: 4px solid transparent;
     }
     :scope > div.tab-bar div.tab.selected {
-      border-top-color: var(--color1);
+      border-top-color: var(--color-variables);
     }
   </style>
 

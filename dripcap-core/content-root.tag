@@ -67,18 +67,18 @@
       grid-template-rows: 1fr;
       grid-template-areas: "side body";
       -webkit-app-region: drag;
-      color: var(--foreground1);
+      color: var(--color-dark-foreground);
     }
 
     :scope > aside {
       grid-area: side;
-      border-right: 1px solid var(--background3);
+      border-right: 1px solid var(--color-selection-background);
       z-index: 2;
     }
 
     :scope > div.sidebg {
       grid-area: side;
-      background-color: var(--background1);
+      background-color: var(--color-default-background);
       opacity: 0.6;
       z-index: 1;
       background-blend-mode: overlay;
@@ -86,7 +86,7 @@
 
     :scope > drip-hsplitter {
       grid-area: body;
-      background-color: var(--background1);
+      background-color: var(--color-default-background);
     }
 
     :scope > drip-modal-view {

@@ -14,7 +14,7 @@
     }
 
     :scope > div.mask {
-      background-color: var(--background3);
+      background-color: var(--color-selection-background);
       opacity: 0.6;
       grid-column: 1 / 4;
       grid-row: 1 / 4;
@@ -24,9 +24,9 @@
     :scope > div.dialog {
       display: grid;
       grid-area: center;
-      background-color: var(--background1);
+      background-color: var(--color-default-background);
       border-radius: 5px;
-      border: 1px solid var(--color1);
+      border: 1px solid var(--color-variables);
       z-index: 2;
     }
   </style>

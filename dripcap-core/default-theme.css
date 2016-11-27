@@ -4,22 +4,27 @@ base16-oceanicnext
 */
 
 :root {
-  --background1: #1B2B34;
-  --background2: #343D46;
-  --background3: #4F5B66;
-  --background4: #65737E;
+  --color-default-background: #1B2B34;
+  --color-lighter-background: #343D46;
+  --color-selection-background: #4F5B66;
+  --color-comments: #65737E;
 
-  --foreground1: #D8DEE9;
-  --foreground2: #CDD3DE;
-  --foreground3: #C0C5CE;
-  --foreground4: #A7ADBA;
+  --color-dark-foreground: #D8DEE9;
+  --color-default-foreground: #CDD3DE;
+  --color-light-foreground: #C0C5CE;
+  --color-light-background: #A7ADBA;
 
-  --color1: #EC5f67;
-  --color2: #F99157;
-  --color3: #FAC863;
-  --color4: #99C794;
-  --color5: #5FB3B3;
-  --color6: #6699CC;
-  --color7: #C594C5;
-  --color8: #AB7967;
+  --color-variables: #EC5f67;
+  --color-integers: #F99157;
+  --color-classes: #FAC863;
+  --color-strings: #99C794;
+  --color-support: #5FB3B3;
+  --color-functions: #6699CC;
+  --color-keywords: #C594C5;
+  --color-deprecated: #AB7967;
+
+  --color-debug: var(--color-dark-foreground);
+  --color-info: var(--color-functions);
+  --color-warn: var(--color-integers);
+  --color-error: var(--color-variables);
 }
