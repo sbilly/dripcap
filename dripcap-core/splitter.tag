@@ -82,6 +82,10 @@
       return false;
     }
 
+    shouldUpdate(force) {
+      return !this.dragging || force;
+    }
+
     updateRatio(ratio) {
       if (ratio >= 0.05 && ratio <= 0.95) {
         $(this.root).css('grid-template-rows', `${ratio*100}fr 2px ${(1-ratio)*100}fr`);
@@ -90,11 +94,13 @@
 
     startDrag() {
       this.dragging = true;
+      this.update(true);
       return false;
     }
 
     stopDrag() {
       this.dragging = false;
+      this.update(true);
       return false;
     }
   </script>
@@ -145,6 +151,10 @@
       this.updateRatio(opts.ratio || 0.5);
     });
 
+    shouldUpdate(force) {
+      return !this.dragging || force;
+    }
+
     move(e) {
       let $this = $(this.root);
       let left = $this.offset().left;
@@ -164,11 +174,13 @@
 
     startDrag() {
       this.dragging = true;
+      this.update(true);
       return false;
     }
 
     stopDrag() {
       this.dragging = false;
+      this.update(true);
       return false;
     }
   </script>

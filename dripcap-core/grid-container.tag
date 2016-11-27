@@ -16,23 +16,49 @@
                            "left center right"
                            "bottom bottom bottom";
     }
-
     :scope > div {
       display: grid;
     }
-
     :scope > div.center {
       grid-area: center;
+    }
+    :scope > div.top {
+      grid-area: top;
+    }
+    :scope > div.bottom {
+      grid-area: bottom;
+    }
+    :scope > div.left {
+      grid-area: left;
+    }
+    :scope > div.right {
+      grid-area: right;
     }
   </style>
 
   <script>
     const {Layout} = require('dripcap');
+    const $ = require('jquery');
 
+    updateLayout() {
+      let top = '0';
+      let bottom = '0';
+      let left = '0';
+      let right = '0';
+
+      $(this.root)
+        .css('grid-template-columns', `${left} 1fr ${right}`)
+        .css('grid-template-rows', `${top} 1fr ${bottom}`);
+    }
+
+    this.on('update', () => {
+      this.updateLayout();
+    });
     this.on('mount', () => {
       if (opts.item.id) {
         Layout.registerContainer(opts.item.id, this);
       }
+      this.updateLayout();
     });
     this.on('unmount', () => {
       if (opts.item.id) {

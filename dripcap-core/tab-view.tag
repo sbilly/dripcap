@@ -49,6 +49,8 @@
 
     setIndex(e) {
       this.activeIndex = e.item.i;
+      e.preventUpdate = true;
+      this.update();
     }
 
     _append(item) {
