@@ -53,12 +53,12 @@
       this.update();
     }
 
-    _append(item) {
+    append(item) {
       this.items.push(item);
       this.update();
     }
 
-    _remove(id) {
+    remove(id) {
       let index = this.items.findIndex((ele) => ele.id === id);
       if (index >= 0) {
         this.items.splice(index, 1);
@@ -74,12 +74,7 @@
 
     this.on('mount', () => {
       if (opts.dataContainerId) {
-        Layout.registerContainer(opts.dataContainerId, (function (view) {
-          return {
-            append: view._append,
-            remove: view._remove,
-          };
-        })(this));
+        Layout.registerContainer(opts.dataContainerId, this);
       }
     });
     this.on('unmount', () => {

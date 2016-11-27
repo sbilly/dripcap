@@ -1,5 +1,13 @@
 <drip-container>
   <div data-is={ opts.item.tag }></div>
+  <script>
+    const {Layout} = require('dripcap');
+    this.on('mount', () => {
+      if (opts.item.id) {
+        Layout.registerContainer(opts.item.id, this);
+      }
+    });
+  </script>
 </drip-container>
 
 <drip-grid-container>
@@ -76,35 +84,35 @@
         .css('grid-template-rows', `${top} 1fr ${bottom}`);
     }
 
-    _setCenter(item) {
+    setCenter(item) {
       if (opts.item.center != item) {
         opts.item.center = item;
         this.updateLayout();
         this.update();
       }
     }
-    _setTop(item) {
+    setTop(item) {
       if (opts.item.top != item) {
         opts.item.top = item;
         this.updateLayout();
         this.update();
       }
     }
-    _setBottom(item) {
+    setBottom(item) {
       if (opts.item.bottom != item) {
         opts.item.bottom = item;
         this.updateLayout();
         this.update();
       }
     }
-    _setLeft(item) {
+    setLeft(item) {
       if (opts.item.left != item) {
         opts.item.left = item;
         this.updateLayout();
         this.update();
       }
     }
-    _setRight(item) {
+    setRight(item) {
       if (opts.item.right != item) {
         opts.item.right = item;
         this.updateLayout();
@@ -117,15 +125,7 @@
     });
     this.on('mount', () => {
       if (opts.item.id) {
-        Layout.registerContainer(opts.item.id, (function (view) {
-          return {
-            setCenter: view._setCenter,
-            setTop: view._setTop,
-            setBottom: view._setBottom,
-            setLeft: view._setLeft,
-            setRight: view._setRight
-          };
-        })(this));
+        Layout.registerContainer(opts.item.id, this);
       }
       this.updateLayout();
     });
