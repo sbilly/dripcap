@@ -5,6 +5,7 @@ import config from './config';
 import Profile from './profile';
 import Theme from './theme';
 import Menu from './menu';
+import Layout from './layout';
 import PackageHub from './package-hub';
 import KeyBind from './keybind';
 import PubSub from './pubsub';
@@ -19,6 +20,7 @@ export default function(profileName = 'default') {
     Profile: profile,
     Theme: new Theme(profile.getConfig('theme') + '_'),
     Menu: new Menu(),
+    Layout: new Layout(),
     Package: new PackageHub(profile),
     KeyBind: new KeyBind(profile, pubsub),
     PubSub: pubsub,

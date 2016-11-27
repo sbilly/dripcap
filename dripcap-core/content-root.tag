@@ -6,14 +6,32 @@
   <a>ttttddddddd</a>
 </drip-tab2>
 
+<drip-container>
+  <div>
+     <div data-is={ opts.item.tag }></div>
+  </div>
+  <script>
+    const {Layout} = require('dripcap');
+    
+    this.on('mount', () => {
+      if (opts.item.id) {
+        Layout.registerContainer(opts.item.id, this);
+      }
+    });
+    this.on('unmount', () => {
+      if (opts.item.id) {
+        Layout.unregisterContainer(opts.item.id);
+      }
+    });
+  </script>
+</drip-container>
+
 <drip-tab-view>
   <div class="tab-bar" show={ items.length > 1 }>
     <div each={ item, i in items }  class={ tab: true, selected: i == this.activeIndex } onclick={ setIndex }> { item.name } </div>
   </div>
   <virtual each={ item, i in items }>
-    <div show={ i == this.activeIndex } class={ show-tab: items.length > 1 }>
-       <virtual data-is={ item.tag }></virtual>
-    </div>
+    <drip-container item={ item } show={ i == this.activeIndex } class={ show-tab: items.length > 1 }></drip-container>
   </virtual>
   <style>
     :scope {
@@ -25,7 +43,7 @@
       grid-column: 1 / 1;
       grid-row: 1 / 3;
     }
-    :scope > div.show-tab {
+    :scope > drip-container.show-tab {
       grid-row: 2 / 3;
     }
     :scope > div.tab-bar {
@@ -49,25 +67,62 @@
   </style>
 
   <script>
+    const {Layout} = require('dripcap');
+
     this.activeIndex = 0;
     this.items = [
-      {tag: 'drip-tab', name: "aaa"},
-      {tag: 'drip-tab2', name: 'bbb'}
+      {tag: 'drip-tab', name: "aaa", id: "aaaa"},
+      {tag: 'drip-tab2', name: 'bbb', id: "bb"}
     ];
 
     setIndex(e) {
       this.activeIndex = e.item.i;
     }
+
+    _append(item) {
+      this.items.push(item);
+      this.update();
+    }
+
+    _remove(id) {
+      let index = this.items.findIndex((ele) => ele.id === id);
+      if (index >= 0) {
+        this.items.splice(index, 1);
+        this.update();
+      }
+    }
+
+    this.on('update', () => {
+      if (this.activeIndex >= this.items.length) {
+        this.activeIndex = this.items.length - 1;
+      }
+    });
+
+    this.on('mount', () => {
+      if (opts.dataContainerId) {
+        Layout.registerContainer(opts.dataContainerId, (function (view) {
+          return {
+            append: view._append,
+            remove: view._remove,
+          };
+        })(this));
+      }
+    });
+    this.on('unmount', () => {
+      if (opts.dataContainerId) {
+        Layout.unregisterContainer(opts.dataContainerId);
+      }
+    });
   </script>
 </drip-tab-view>
 
 <drip-content-right>
   <drip-vsplitter>
     <yield to="top">
-      <drip-tab-view data-view-id="drip-top"></drip-tab-view>
+      <drip-tab-view data-container-id="drip-tab-top"></drip-tab-view>
     </yield>
     <yield to="bottom">
-      <drip-tab-view data-view-id="drip-bottom"></drip-tab-view>
+      <drip-tab-view data-container-id="drip-tab-bottom"></drip-tab-view>
     </yield>
   </drip-vsplitter>
 </drip-content-right>
@@ -76,7 +131,7 @@
   <aside></aside>
   <drip-hsplitter ratio="0.4">
     <yield to="left">
-      <drip-tab-view data-view-id="drip-list"></drip-tab-view>
+      <drip-tab-view data-container-id="drip-tab-list"></drip-tab-view>
     </yield>
     <yield to="right">
       <virtual data-is="drip-content-right"></virtual>
