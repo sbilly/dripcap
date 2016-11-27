@@ -1,0 +1,2 @@
+<log-view>
+</log-view>

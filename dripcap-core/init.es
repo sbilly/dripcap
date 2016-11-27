@@ -1,4 +1,5 @@
 import { remote, shell } from 'electron';
+import { webFrame } from 'electron';
 import * as riot from 'riot';
 
 export default function init(dripcap) {
@@ -14,6 +15,10 @@ export default function init(dripcap) {
   PubSub.on('core:open-wiki', () => shell.openExternal('https://github.com/dripcap/dripcap/wiki'));
   PubSub.on('core:show-license', () => shell.openExternal('https://github.com/dripcap/dripcap/blob/master/LICENSE'));
   PubSub.on('core:quit', () => remote.app.quit());
+
+  PubSub.on('core:zoom-in', () => webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.1));
+  PubSub.on('core:zoom-out', () => webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.1));
+  PubSub.on('core:zoom-reset', () => webFrame.setZoomFactor(1.0));
 
   Package.updatePackageList();
 

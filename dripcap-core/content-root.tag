@@ -76,7 +76,7 @@
   <aside></aside>
   <drip-hsplitter ratio="0.4">
     <yield to="left">
-      My beautiful post is just awesome
+      <drip-tab-view data-view-id="drip-list"></drip-tab-view>
     </yield>
     <yield to="right">
       <virtual data-is="drip-content-right"></virtual>

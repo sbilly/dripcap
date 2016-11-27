@@ -1,5 +1,6 @@
 import path from 'path';
 import $ from 'jquery';
+import { webFrame } from 'electron';
 import config from './config';
 import Profile from './profile';
 import Theme from './theme';
@@ -32,6 +33,8 @@ export default function(profileName = 'default') {
     }
     return load(request, parent, isMain);
   };
+
+  webFrame.setZoomLevelLimits(1.0, 1.0);
 
   module.globalPaths.push(path.dirname(__dirname));
   return init(dripcap);

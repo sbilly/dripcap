@@ -15,6 +15,8 @@ export default class MainMenu {
     KeyBind.bind('command+shift+i', '!menu', 'core:toggle-devtools');
     KeyBind.bind('command+m', '!menu', 'core:window-minimize');
     KeyBind.bind('command+alt+ctrl+m', '!menu', 'core:window-zoom');
+    KeyBind.bind('command+Plus', '!menu', 'core:zoom-in');
+    KeyBind.bind('command+-', '!menu', 'core:zoom-out');
 
     this.fileMenu = function(menu, e) {
       if (process.platform !== 'darwin') {
@@ -143,6 +145,23 @@ export default class MainMenu {
     };
 
     this.windowMenu = function(menu, e) {
+      menu.append(new MenuItem({
+        label: 'Actual Size',
+        click: action('core:zoom-reset')
+      }));
+      menu.append(new MenuItem({
+        label: 'Zoom In',
+        accelerator: KeyBind.get('!menu', 'core:zoom-in'),
+        click: action('core:zoom-in')
+      }));
+      menu.append(new MenuItem({
+        label: 'Zoom Out',
+        accelerator: KeyBind.get('!menu', 'core:zoom-out'),
+        click: action('core:zoom-out')
+      }));
+      menu.append(new MenuItem({
+        type: 'separator'
+      }));
       menu.append(new MenuItem({
         label: 'Minimize',
         accelerator: KeyBind.get('!menu', 'core:window-minimize'),
