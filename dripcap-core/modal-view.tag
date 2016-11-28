@@ -1,13 +1,11 @@
 <drip-modal-view>
   <div class="mask"></div>
   <div class="dialog">
-    <drip-grid-container if={ item } item={ item }></drip-grid-container>
+    <drip-tab-view if={ items } items={ items }></drip-tab-view>
   </div>
   <style>
     :scope {
       display: grid;
-      grid-template-columns: 1fr 480px 1fr;
-      grid-template-rows: 1fr 300px 1fr;
       grid-template-areas: ". . ."
                            ". center ."
                            ". . .";
@@ -34,15 +32,20 @@
   <script>
     const $ = require('jquery');
     const {Layout} = require('dripcap');
-    this.item = null;
+    this.items = null;
 
-    set(item) {
-      this.item = item;
+    set(items, opts = {}) {
+      this.items = items;
+      let width = opts.width || '480px';
+      let height = opts.height || '300px';
+      $(this.root)
+        .css('grid-template-columns', `1fr ${width} 1fr`)
+        .css('grid-template-rows', `1fr ${height} 1fr`);
       this.update();
     }
 
     this.on('update', () => {
-      $(this.root).toggle(!!this.item);
+      $(this.root).toggle(!!this.items);
     });
     this.on('mount', () => {
       $(this.root).hide();
