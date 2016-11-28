@@ -75,6 +75,7 @@
         sess.start();
       }
       e.preventUpdate = true;
+      e.stopPropagation();
     }
 
     pause(e) {
@@ -83,6 +84,7 @@
         sess.stop();
       }
       e.preventUpdate = true;
+      e.stopPropagation();
     }
 
     remove(e) {
@@ -91,6 +93,7 @@
         PubSub.emit('core:session-removed', sess);
       }
       e.preventUpdate = true;
+      e.stopPropagation();
     }
 
     setIndex(e) {
