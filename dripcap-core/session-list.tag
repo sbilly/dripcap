@@ -3,6 +3,11 @@
     <li each={ sess, i in sessions } class={ session: true, selected: i == activeIndex } onclick={ setIndex }>
       <i class={ fa: true, fa-cog: true, fa-spin: status.get(sess).capturing }></i>
       { sess.interface } <span>{ status.get(sess).packets }</span>
+      <ul show={ i == activeIndex }>
+        <li onclick={ pause } show={ status.get(sess).capturing }><i class="fa fa-pause"></i> Pause</li>
+        <li onclick={ start } show={ !status.get(sess).capturing }><i class="fa fa-play"></i> Start</li>
+        <li onclick={ remove }><i class="fa fa-trash"></i> Remove</li>
+      </ul>
     </li>
     <li class="button"><i class="fa fa-plus"></i> New Session</li>
   </ul>
@@ -29,6 +34,20 @@
       border-left: 5px solid var(--color-selection-background);
     }
 
+    :scope > ul > li.session > ul {
+      list-style: none;
+      margin-top: 5px;
+      padding: 5px 10px;
+    }
+
+    :scope > ul > li.session > ul > li {
+      padding: 5px;
+    }
+
+    :scope > ul > li.session > ul > li:hover {
+      text-decoration: underline;
+    }
+
     :scope > ul > li.session > span {
       border-radius: 15px;
       background-color: var(--color-variables);
@@ -44,10 +63,35 @@
   </style>
 
   <script>
+    const _ = require('underscore');
     const {PubSub} = require('dripcap');
     this.sessions = [];
     this.status = new WeakMap();
     this.activeIndex = -1;
+
+    start(e) {
+      let sess = this.sessions[e.item.i];
+      if (sess) {
+        sess.start();
+      }
+      e.preventUpdate = true;
+    }
+
+    pause(e) {
+      let sess = this.sessions[e.item.i];
+      if (sess) {
+        sess.stop();
+      }
+      e.preventUpdate = true;
+    }
+
+    remove(e) {
+      let sess = this.sessions[e.item.i];
+      if (sess) {
+        PubSub.emit('core:session-removed', sess);
+      }
+      e.preventUpdate = true;
+    }
 
     setIndex(e) {
       this._setIndex(e.item.i);
@@ -63,10 +107,10 @@
     PubSub.on('core:session-added', (sess) => {
       this.sessions.push(sess);
       this.status.set(sess, {capturing: false, packets: 0});
-      sess.on('status', (stat) => {
+      sess.on('status', _.throttle((stat) => {
         this.status.set(sess, stat);
         this.update();
-      });
+      }, 500));
       if (this.activeIndex < 0) this._setIndex(0);
       this.update();
     });
@@ -74,7 +118,9 @@
     PubSub.on('core:session-removed', (sess) => {
       let index = this.sessions.indexOf(sess);
       if (index >= 0) {
-        this.sessions[index].removeAllListeners();
+        let sess = this.sessions[index];
+        sess.stop();
+        sess.removeAllListeners();
         this.sessions.splice(index, 1);
         if (this.activeIndex >= this.sessions.length)
           this._setIndex(this.sessions.length - 1);

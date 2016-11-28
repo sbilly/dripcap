@@ -82,7 +82,6 @@
     :scope > drip-hsplitter {
       grid-area: body;
       background-color: var(--color-default-background);
-      border-left: 1px solid var(--color-selection-background);
     }
 
     :scope > drip-modal-view {
