@@ -1,18 +1,18 @@
-import $ from 'jquery';
-import { Package, Menu, PubSub, Config, Logger } from 'dripcap-core';
-import { remote } from 'electron';
-let { MenuItem, app } = remote;
+import { Layout } from 'dripcap';
+import riot from 'riot';
 
 export default class LogView {
-  constructor(pkg) {
-    this.config = pkg.config;
+  constructor() {
   }
 
   async activate() {
+    riot.require(__dirname + '/../tag/log-view.tag');
 
+    let modal = Layout.container('drip-modal');
+    modal.set([{center: {tag: 'log-view', id: "log-view"}}]);
   }
 
   async deactivate() {
-
+    riot.unregister('log-view');
   }
 }

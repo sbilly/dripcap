@@ -20,8 +20,6 @@ export default function init(dripcap) {
   PubSub.on('core:zoom-out', () => webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.1));
   PubSub.on('core:zoom-reset', () => webFrame.setZoomFactor(1.0));
 
-  Package.updatePackageList();
-
   riot.require(__dirname + '/session-list.tag');
   riot.require(__dirname + '/tab-view.tag');
   riot.require(__dirname + '/grid-container.tag');
@@ -29,6 +27,8 @@ export default function init(dripcap) {
   riot.require(__dirname + '/modal-view.tag');
   riot.require(__dirname + '/content-root.tag');
   riot.mount(document.body, 'drip-content-root');
+
+  Package.updatePackageList();
 
   Session.create('en0').then((sess) => {
     sess.on('stat', (s) => console.log(s));
