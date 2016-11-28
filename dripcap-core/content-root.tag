@@ -18,8 +18,7 @@
 </drip-content-right>
 
 <drip-content-root>
-  <div class="sidebg"></div>
-  <aside></aside>
+  <drip-session-list class={ darwin-margin: process.platform == 'darwin' }></drip-session-list>
   <drip-hsplitter ratio="0.4">
     <yield to="left">
       <drip-tab-view data-container-id="drip-tab-list"></drip-tab-view>
@@ -70,23 +69,18 @@
       color: var(--color-dark-foreground);
     }
 
-    :scope > aside {
+    :scope > drip-session-list {
       grid-area: side;
-      border-right: 1px solid var(--color-selection-background);
-      z-index: 2;
     }
 
-    :scope > div.sidebg {
-      grid-area: side;
-      background-color: var(--color-default-background);
-      opacity: 0.6;
-      z-index: 1;
-      background-blend-mode: overlay;
+    :scope > .darwin-margin {
+      margin-top: 42px;
     }
 
     :scope > drip-hsplitter {
       grid-area: body;
       background-color: var(--color-default-background);
+      border-left: 2px solid var(--color-selection-background);
     }
 
     :scope > drip-modal-view {

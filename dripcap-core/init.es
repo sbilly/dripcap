@@ -3,7 +3,7 @@ import { webFrame } from 'electron';
 import * as riot from 'riot';
 
 export default function init(dripcap) {
-  let { Theme, PubSub, Package } = dripcap;
+  let { Theme, PubSub, Package, Session } = dripcap;
 
   PubSub.on('core:new-window', () => remote.getGlobal('dripcap-core').newWindow());
   PubSub.on('core:close-window', () => remote.getCurrentWindow().close());
@@ -22,12 +22,23 @@ export default function init(dripcap) {
 
   Package.updatePackageList();
 
+  riot.require(__dirname + '/session-list.tag');
   riot.require(__dirname + '/tab-view.tag');
   riot.require(__dirname + '/grid-container.tag');
   riot.require(__dirname + '/splitter.tag');
   riot.require(__dirname + '/modal-view.tag');
   riot.require(__dirname + '/content-root.tag');
   riot.mount(document.body, 'drip-content-root');
+
+  Session.create('en0').then((sess) => {
+    sess.on('stat', (s) => console.log(s));
+    PubSub.emit('core:session-added', sess);
+  });
+  
+  Session.create('en1').then((sess) => {
+    sess.on('stat', (s) => console.log(s));
+    PubSub.emit('core:session-added', sess);
+  });
 
   return new Promise((res) => {
     Package.sub('core:package-loaded', res);

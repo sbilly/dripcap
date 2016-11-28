@@ -27,4 +27,6 @@ base16-oceanicnext
   --color-info: var(--color-functions);
   --color-warn: var(--color-integers);
   --color-error: var(--color-variables);
+
+  --vibrancy: 'dark';
 }

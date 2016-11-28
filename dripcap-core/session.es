@@ -78,11 +78,6 @@ export default class Session extends EventEmitter {
       sess.setBPF(options.filter);
     }
 
-    this._pubsub.pub('core:capturing-settings', {
-      iface,
-      options
-    });
-
     return sess;
   }
 }
