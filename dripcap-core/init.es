@@ -33,11 +33,18 @@ export default function init(dripcap) {
   Session.create('en0').then((sess) => {
     sess.on('stat', (s) => console.log(s));
     PubSub.emit('core:session-added', sess);
+    sess.start();
+    sess.on('log', log => {
+      console.log(log)
+    });
   });
-  
   Session.create('en1').then((sess) => {
     sess.on('stat', (s) => console.log(s));
     PubSub.emit('core:session-added', sess);
+    sess.start();
+    sess.on('log', log => {
+      console.log(log)
+    });
   });
 
   return new Promise((res) => {
