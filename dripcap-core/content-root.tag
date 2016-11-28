@@ -53,6 +53,81 @@
       overflow: hidden;
     }
 
+    select {
+      padding: 0.5em 1em 0.5em 0.75em;
+    }
+
+    input,
+    select,
+    textarea {
+      border-radius: 2px;
+      padding: 0.5em;
+      line-height: 1.2em;
+      width: 100%;
+    }
+    input[type="number"],
+    input[type="text"] {
+      box-sizing: border-box;
+    }
+    input[type=checkbox],
+    input[type=radio] {
+      display: inline-block;
+      line-height: 1em;
+      margin: 0 0.25em 0 0;
+      padding: 0;
+      width: 1.25em;
+      height: 1.25em;
+      border-radius: 0.25em;
+      vertical-align: text-top;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    input[type=button] {
+      height: 50px;
+    }
+
+    ::selection {
+      background: var(--color-selection-background);
+      color: var(--color-default-foreground);
+    }
+    // headline
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--color-light-foreground);
+    }
+    th {
+      color: var(--color-dark-foreground);
+    }
+    label {
+      color: var(--color-dark-foreground);
+    }
+    // form
+    select {
+      background: var(--color-lighter-background);
+    }
+    input,
+    select,
+    textarea {
+      border: 1px solid var(--color-selection-background);
+      background: var(--color-lighter-background);
+      color: var(--color-default-foreground);
+      outline-color: var(--color-variables);
+    }
+    input[type=checkbox]:checked {
+      background-color: var(--color-variables);
+    }
+
     :scope {
       position: absolute;
       top: 0;

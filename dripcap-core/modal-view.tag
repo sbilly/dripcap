@@ -1,7 +1,7 @@
 <drip-modal-view>
-  <div class="mask"></div>
+  <div class="mask" onclick={ close }></div>
   <div class="dialog">
-    <drip-tab-view if={ items } items={ items }></drip-tab-view>
+    <virtual data-is="drip-tab-view" if={ items } items={ items }></virtual>
   </div>
   <style>
     :scope {
@@ -27,6 +27,10 @@
       border: 1px solid var(--color-variables);
       z-index: 2;
     }
+
+    :scope > div.dialog > drip-grid-container > div.center {
+      padding: 20px;
+    }
   </style>
 
   <script>
@@ -42,6 +46,10 @@
         .css('grid-template-columns', `1fr ${width} 1fr`)
         .css('grid-template-rows', `1fr ${height} 1fr`);
       this.update();
+    }
+
+    close() {
+      this.set();
     }
 
     this.on('update', () => {
