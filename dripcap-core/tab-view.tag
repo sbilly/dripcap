@@ -42,9 +42,7 @@
     const {Layout} = require('dripcap');
 
     this.activeIndex = 0;
-    this.items = [
-      {center: {tag: 'drip-tab', id: "acaaa"}, name: "aaa", id: "aaaa"}
-    ];
+    this.items = opts.items || [];
 
     setIndex(e) {
       this.activeIndex = e.item.i;
@@ -76,6 +74,7 @@
         Layout.registerContainer(opts.dataContainerId, this);
       }
     });
+
     this.on('unmount', () => {
       if (opts.dataContainerId) {
         Layout.unregisterContainer(opts.dataContainerId);

@@ -1,7 +1,7 @@
 <drip-modal-view>
   <div class="mask"></div>
   <div class="dialog">
-    <drip-grid-container if={ this.items.length > 0 } item={ items[items.length - 1] }></drip-grid-container>
+    <drip-grid-container if={ item } item={ item }></drip-grid-container>
   </div>
   <style>
     :scope {
@@ -34,23 +34,15 @@
   <script>
     const $ = require('jquery');
     const {Layout} = require('dripcap');
-    this.items = [];
+    this.item = null;
 
-    append(item) {
-      this.items.push(item);
+    set(item) {
+      this.item = item;
       this.update();
     }
 
-    remove(id) {
-      let index = this.items.findIndex((ele) => ele.id === id);
-      if (index >= 0) {
-        this.items.splice(index, 1);
-        this.update();
-      }
-    }
-
     this.on('update', () => {
-      $(this.root).toggle(this.items.length > 0);
+      $(this.root).toggle(!!this.item);
     });
     this.on('mount', () => {
       $(this.root).hide();

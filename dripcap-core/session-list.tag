@@ -1,7 +1,7 @@
 <drip-session-list>
   <ul>
     <li each={ sess, i in sessions } class={ session: true, selected: i == activeIndex } onclick={ setIndex }>
-      <i class={ fa: true, fa-cog: true, fa-spin: status.get(sess).capturing }></i>
+      <i class={ fa: true, fa-circle-o-notch: true, fa-spin: status.get(sess).capturing }></i>
       { sess.interface } <span>{ status.get(sess).packets }</span>
       <ul show={ i == activeIndex }>
         <li onclick={ pause } show={ status.get(sess).capturing }><i class="fa fa-pause"></i> Pause</li>
@@ -11,7 +11,9 @@
     </li>
     <li class="button"><i class="fa fa-plus"></i> New Session</li>
   </ul>
-
+  <ul>
+    <li class="button"><i class="fa fa-cogs"></i> Preferences</li>
+  </ul>
   <style>
     :scope > ul {
       padding: 0;
@@ -31,6 +33,10 @@
     }
 
     :scope > ul > li.session {
+      border-left: 5px solid transparent;
+    }
+
+    :scope > ul > li.session:hover {
       border-left: 5px solid var(--color-selection-background);
     }
 
@@ -59,6 +65,10 @@
       border-left: 5px solid transparent;
       color: var(--color-default-background);
       background-color: var(--color-functions);
+    }
+
+    :scope > ul > li.button:hover {
+      border-left: 5px solid var(--color-selection-background);
     }
   </style>
 
