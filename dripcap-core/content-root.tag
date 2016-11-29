@@ -157,16 +157,13 @@
       bottom: 0;
       margin: 0;
       padding: 0;
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      grid-template-rows: 1fr;
-      grid-template-areas: "side body";
+      display: flex;
       -webkit-app-region: drag;
       color: var(--color-dark-foreground);
     }
 
     :scope > drip-session-list {
-      grid-area: side;
+      width: 160px;
       background-color: var(--color-default-background);
     }
 
@@ -176,13 +173,16 @@
     }
 
     :scope > drip-hsplitter {
-      grid-area: body;
+      flex-grow: 1;
       background-color: var(--color-default-background);
     }
 
     :scope > drip-modal-view {
-      grid-column: 1 / 3;
-      grid-row: 1 / 1;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
     }
   </style>
 </drip-content-root>
