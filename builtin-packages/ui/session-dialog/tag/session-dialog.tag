@@ -1,4 +1,4 @@
-<log-view>
+<session-dialog>
   <h2>New session</h2>
   <p>
     <select ref="interface">
@@ -48,4 +48,4 @@
       Layout.container('drip-modal').close();
     }
   </script>
-</log-view>
+</session-dialog>

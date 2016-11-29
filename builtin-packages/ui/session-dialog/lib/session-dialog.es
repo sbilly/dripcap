@@ -6,16 +6,16 @@ export default class LogView {
   }
 
   async activate() {
-    riot.require(__dirname + '/../tag/log-view.tag');
+    riot.require(__dirname + '/../tag/session-dialog.tag');
     PubSub.on('core:new-live-session', () => {
       let modal = Layout.container('drip-modal');
       modal.set([{
-        center: {tag: 'log-view', id: "new-live-session-view"}
+        center: {tag: 'session-dialog', id: "new-live-session-dialog"}
       }]);
     });
   }
 
   async deactivate() {
-    riot.unregister('log-view');
+    riot.unregister('session-dialog');
   }
 }
