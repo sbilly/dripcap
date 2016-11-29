@@ -41,18 +41,23 @@
     }
     :scope > div.center {
       grid-area: center;
+      overflow: auto;
     }
     :scope > div.top {
       grid-area: top;
+      overflow: hidden;
     }
     :scope > div.bottom {
       grid-area: bottom;
+      overflow: hidden;
     }
     :scope > div.left {
       grid-area: left;
+      overflow: hidden;
     }
     :scope > div.right {
       grid-area: right;
+      overflow: hidden;
     }
   </style>
 

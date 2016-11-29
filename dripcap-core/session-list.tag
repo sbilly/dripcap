@@ -9,10 +9,10 @@
         <li onclick={ remove }><i class="fa fa-trash"></i> Remove</li>
       </ul>
     </li>
-    <li class="button"><i class="fa fa-plus"></i> New Session</li>
+    <li class="button" onclick={ newSession }><i class="fa fa-plus"></i> New Session</li>
   </ul>
   <ul>
-    <li class="button"><i class="fa fa-cogs"></i> Preferences</li>
+    <li class="button" onclick={ showPreferences }><i class="fa fa-cogs"></i> Preferences</li>
   </ul>
   <style>
     :scope > ul {
@@ -102,6 +102,18 @@
       if (sess) {
         PubSub.emit('core:session-removed', sess);
       }
+      e.preventUpdate = true;
+      e.stopPropagation();
+    }
+
+    newSession(e) {
+      PubSub.emit('core:new-live-session');
+      e.preventUpdate = true;
+      e.stopPropagation();
+    }
+
+    showPreferences(e) {
+      PubSub.emit('core:show-preferences');
       e.preventUpdate = true;
       e.stopPropagation();
     }

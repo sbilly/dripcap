@@ -6,6 +6,7 @@ import Profile from './profile';
 import Theme from './theme';
 import Menu from './menu';
 import Layout from './layout';
+import Preferences from './preferences';
 import PackageHub from './package-hub';
 import KeyBind from './keybind';
 import PubSub from './pubsub';
@@ -15,12 +16,14 @@ import init from './init';
 export default function(profileName = 'default') {
   let profile = new Profile(path.join(config.profilePath, profileName));
   let pubsub = new PubSub();
+  let layout = new Layout();
   let dripcap = {
     Config: config,
     Profile: profile,
     Theme: new Theme(profile.getConfig('theme') + '_'),
     Menu: new Menu(),
-    Layout: new Layout(),
+    Layout: layout,
+    Preferences: new Preferences(layout, pubsub),
     Package: new PackageHub(profile),
     KeyBind: new KeyBind(profile, pubsub),
     PubSub: pubsub,

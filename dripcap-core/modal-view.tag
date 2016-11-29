@@ -17,6 +17,7 @@
       grid-column: 1 / 4;
       grid-row: 1 / 4;
       z-index: 1;
+      -webkit-app-region: none;
     }
 
     :scope > div.dialog {

@@ -57,6 +57,27 @@
       padding: 0.5em 1em 0.5em 0.75em;
     }
 
+    ::-webkit-scrollbar {
+      width: 6px;
+      background: var(--color-lighter-background);
+    }
+    ::-webkit-scrollbar:horizontal {
+      height: 6px;
+    }
+    ::-webkit-scrollbar-piece {
+      background: var(--color-lighter-background);
+    }
+    ::-webkit-scrollbar-piece:start {
+      background: var(--color-lighter-background);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-selection-background);
+      min-height: 50px;
+    }
+    ::-webkit-scrollbar-corner {
+      background: var(--color-selection-background);
+    }
+
     input,
     select,
     textarea {

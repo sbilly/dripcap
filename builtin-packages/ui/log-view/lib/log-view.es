@@ -1,4 +1,4 @@
-import { Layout } from 'dripcap';
+import { Layout, PubSub } from 'dripcap';
 import riot from 'riot';
 
 export default class LogView {
@@ -7,9 +7,12 @@ export default class LogView {
 
   async activate() {
     riot.require(__dirname + '/../tag/log-view.tag');
-
-    let modal = Layout.container('drip-modal');
-    modal.set([{center: {tag: 'log-view', id: "log-view"}}], {height: '280px'});
+    PubSub.on('core:new-live-session', () => {
+      let modal = Layout.container('drip-modal');
+      modal.set([{
+        center: {tag: 'log-view', id: "new-live-session-view"}
+      }]);
+    });
   }
 
   async deactivate() {
