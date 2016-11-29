@@ -38,14 +38,6 @@ export default function init(dripcap) {
       console.log(log)
     });
   });
-  Session.create('en1').then((sess) => {
-    sess.on('stat', (s) => console.log(s));
-    PubSub.emit('core:session-added', sess);
-    sess.start();
-    sess.on('log', log => {
-      console.log(log)
-    });
-  });
 
   return new Promise((res) => {
     Package.sub('core:package-loaded', res);
