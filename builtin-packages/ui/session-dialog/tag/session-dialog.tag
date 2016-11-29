@@ -1,22 +1,25 @@
 <session-dialog>
-  <h2>New session</h2>
-  <p>
-    <select ref="interface">
-      <option each={ interfaceList } if={ link===1 } value={ encodeURI(id) }>{ name }</option>
-    </select>
-  </p>
-  <p>
-    <input type="text" ref="filter" placeholder="filter (BPF)">
-  </p>
-  <p>
-    <label>
-      <input type="checkbox" ref="promisc">
-      Promiscuous mode
-    </label>
-  </p>
-  <p>
-    <input type="button" name="start" value="Start" onclick={ start }>
-  </p>
+  <div style="padding: 20px;">
+    <h2>New session</h2>
+    <p>
+      <select ref="interface">
+        <option each={ interfaceList } if={ link===1 } value={ encodeURI(id) }>{ name }</option>
+      </select>
+    </p>
+    <p>
+      <input type="text" ref="filter" placeholder="filter (BPF)">
+    </p>
+    <p>
+      <label>
+        <input type="checkbox" ref="promisc">
+        Promiscuous mode
+      </label>
+    </p>
+    <p>
+      <input type="button" name="start" value="Start" onclick={ start }>
+    </p>
+  </div>
+
   <script>
     const $ = require('jquery');
     const { Session, Layout, Profile, PubSub } = require('dripcap');

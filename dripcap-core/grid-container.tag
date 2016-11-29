@@ -1,5 +1,5 @@
 <drip-container>
-  <div data-is={ opts.item.tag }></div>
+  <virtual data-is={ opts.item.tag }></virtual>
   <script>
     const {Layout} = require('dripcap');
     this.on('mount', () => {

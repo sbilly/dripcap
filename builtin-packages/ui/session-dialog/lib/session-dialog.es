@@ -11,7 +11,7 @@ export default class LogView {
       let modal = Layout.container('drip-modal');
       modal.set([{
         center: {tag: 'session-dialog', id: "new-live-session-dialog"}
-      }]);
+      }], {height: '270px'});
     });
   }
 

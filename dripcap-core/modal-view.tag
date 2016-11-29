@@ -1,7 +1,7 @@
 <drip-modal-view>
   <div class="mask" onclick={ close }></div>
   <div class="dialog">
-    <virtual data-is="drip-tab-view" if={ items } items={ items }></virtual>
+    <drip-tab-view if={ items } items={ items }></drip-tab-view>
   </div>
   <style>
     :scope {
@@ -42,7 +42,7 @@
     set(items, opts = {}) {
       this.items = items;
       let width = opts.width || '480px';
-      let height = opts.height || '300px';
+      let height = opts.height || '320px';
       $(this.root)
         .css('grid-template-columns', `1fr ${width} 1fr`)
         .css('grid-template-rows', `1fr ${height} 1fr`);
