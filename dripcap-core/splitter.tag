@@ -3,6 +3,15 @@
   <style>
     :scope {
       display: grid;
+      overflow: hidden;
+    }
+
+    :scope > * {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
     }
   </style>
 </drip-splitter-content>
@@ -34,18 +43,23 @@
     <yield from="bottom"/>
   </drip-splitter-content>
   <style>
-    :scope {
-      display: flex;
-      flex-direction: column;
-    }
-
     :scope > drip-splitter-content:first-child {
-      flex-grow: 1;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 50%;
     }
 
     :scope > drip-splitter-bar {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      bottom: 0;
       height: 2px;
       cursor: row-resize;
+      z-index: 1;
     }
 
     :scope > drip-splitter-dragarea {
@@ -55,11 +69,15 @@
       left: 0;
       bottom: 0;
       cursor: row-resize;
-      z-index: 1;
+      z-index: 2;
     }
 
     :scope > drip-splitter-content:last-child {
-      flex-grow: 1;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      left: 0;
+      bottom: 0;
     }
   </style>
 
@@ -68,6 +86,9 @@
     const $ = require('jquery');
 
     this.on('mount', () => {
+      this._top = $(this.root).children('drip-splitter-content:first-child');
+      this._bottom = $(this.root).children('drip-splitter-content:last-child');
+      this._bar = $(this.root).children('drip-splitter-bar');
       this.updateRatio(opts.ratio || 0.5);
     });
 
@@ -89,8 +110,9 @@
 
     updateRatio(ratio) {
       if (ratio >= 0.05 && ratio <= 0.95) {
-        $(this.root).find('drip-splitter-content:first-child').css('flex-grow', `${2 * ratio}`);
-        $(this.root).find('drip-splitter-content:last-child').css('flex-grow', `1`);
+        this._top.css('bottom', `${(1-ratio)*100}%`);
+        this._bottom.css('top', `${ratio*100}%`);
+        this._bar.css('top', `${ratio*100}%`);
       }
     }
 
@@ -118,9 +140,6 @@
     <yield from="right"/>
   </drip-splitter-content>
   <style>
-    :scope {
-    }
-
     :scope > drip-splitter-content:first-child {
       position: absolute;
       top: 0;
@@ -164,6 +183,9 @@
     const $ = require('jquery');
 
     this.on('mount', () => {
+      this._left = $(this.root).children('drip-splitter-content:first-child');
+      this._right = $(this.root).children('drip-splitter-content:last-child');
+      this._bar = $(this.root).children('drip-splitter-bar');
       this.updateRatio(opts.ratio || 0.5);
     });
 
@@ -184,9 +206,9 @@
 
     updateRatio(ratio) {
       if (ratio >= 0.05 && ratio <= 0.95) {
-        $(this.root).find('drip-splitter-content:first-child').css('right', `${(1-ratio)*100}%`);
-        $(this.root).find('drip-splitter-content:last-child').css('left', `${ratio*100}%`);
-        $(this.root).find('drip-splitter-bar').css('left', `${ratio*100}%`);
+        this._left.css('right', `${(1-ratio)*100}%`);
+        this._right.css('left', `${ratio*100}%`);
+        this._bar.css('left', `${ratio*100}%`);
       }
     }
 

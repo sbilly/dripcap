@@ -18,6 +18,13 @@
     :scope > drip-grid-container.show-tab {
       grid-row: 2 / 3;
     }
+    :scope > drip-grid-container {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
     :scope > div.tab-bar {
       grid-row: 1 / 2;
       padding: 0;
@@ -42,7 +49,10 @@
     const {Layout} = require('dripcap');
 
     this.activeIndex = 0;
-    this.items = opts.items || [{center: {tag: 'drip-tab2'}}];
+    this.items = opts.items || [
+      {center: {tag: 'drip-tab2'}, name: 'TTT'},
+      {center: {tag: 'drip-tab'}, name: 'TTTx'}
+    ];
 
     setIndex(e) {
       this.activeIndex = e.item.i;
