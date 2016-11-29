@@ -35,31 +35,31 @@
   </drip-splitter-content>
   <style>
     :scope {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-areas: "top"
-                           "center"
-                           "bottom";
+      display: flex;
+      flex-direction: column;
     }
 
     :scope > drip-splitter-content:first-child {
-      grid-area: top;
+      flex-grow: 1;
     }
 
     :scope > drip-splitter-bar {
-      grid-area: center;
+      height: 2px;
       cursor: row-resize;
     }
 
     :scope > drip-splitter-dragarea {
-      grid-column: 1 / 1;
-      grid-row: row1-start / 1;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
       cursor: row-resize;
       z-index: 1;
     }
 
     :scope > drip-splitter-content:last-child {
-      grid-area: bottom;
+      flex-grow: 1;
     }
   </style>
 
@@ -76,7 +76,8 @@
       let top = $this.offset().top;
       let height = $this.height();
       if (this.dragging) {
-        this.updateRatio((e.clientY - top) / height);
+        console.log((e.clientY - top), height)
+        this.updateRatio((e.clientY - top) / (height - 2));
       }
       e.preventUpdate = true;
       return false;
@@ -88,7 +89,8 @@
 
     updateRatio(ratio) {
       if (ratio >= 0.05 && ratio <= 0.95) {
-        $(this.root).css('grid-template-rows', `${ratio*100}fr 2px ${(1-ratio)*100}fr`);
+        $(this.root).find('drip-splitter-content:first-child').css('flex-grow', `${2 * ratio}`);
+        $(this.root).find('drip-splitter-content:last-child').css('flex-grow', `1`);
       }
     }
 
@@ -117,29 +119,43 @@
   </drip-splitter-content>
   <style>
     :scope {
-      display: grid;
-      grid-template-rows: 1fr;
-      grid-template-areas: "left center right";
     }
 
     :scope > drip-splitter-content:first-child {
-      grid-area: left;
+      position: absolute;
+      top: 0;
+      right: 50%;
+      left: 0;
+      bottom: 0;
     }
 
     :scope > drip-splitter-bar {
-      grid-area: center;
-      cursor: col-resize;
-    }
-
-    :scope > drip-splitter-dragarea {
-      grid-row: 1 / 1;
-      grid-column: column1-start / 1;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      right: 0;
+      bottom: 0;
+      width: 2px;
       cursor: col-resize;
       z-index: 1;
     }
 
+    :scope > drip-splitter-dragarea {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      cursor: row-resize;
+      z-index: 2;
+    }
+
     :scope > drip-splitter-content:last-child {
-      grid-area: right;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      right: 0;
+      bottom: 0;
     }
   </style>
 
@@ -168,7 +184,9 @@
 
     updateRatio(ratio) {
       if (ratio >= 0.05 && ratio <= 0.95) {
-        $(this.root).css('grid-template-columns', `${ratio*100}fr 2px ${(1-ratio)*100}fr`);
+        $(this.root).find('drip-splitter-content:first-child').css('right', `${(1-ratio)*100}%`);
+        $(this.root).find('drip-splitter-content:last-child').css('left', `${ratio*100}%`);
+        $(this.root).find('drip-splitter-bar').css('left', `${ratio*100}%`);
       }
     }
 

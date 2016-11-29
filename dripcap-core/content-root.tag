@@ -157,12 +157,15 @@
       bottom: 0;
       margin: 0;
       padding: 0;
-      display: flex;
       -webkit-app-region: drag;
       color: var(--color-dark-foreground);
     }
 
     :scope > drip-session-list {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
       width: 160px;
       background-color: var(--color-default-background);
     }
@@ -173,7 +176,11 @@
     }
 
     :scope > drip-hsplitter {
-      flex-grow: 1;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 160px;
+      bottom: 0;
       background-color: var(--color-default-background);
     }
 
