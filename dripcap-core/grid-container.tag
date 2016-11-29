@@ -41,7 +41,7 @@
     }
     :scope > div.center {
       grid-area: center;
-      overflow: hidden;
+      overflow: auto;
       position: absolute;
       top: 0;
       bottom: 0;

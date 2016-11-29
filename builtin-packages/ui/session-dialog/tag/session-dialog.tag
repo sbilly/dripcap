@@ -1,5 +1,5 @@
 <session-dialog>
-  <div style="padding: 20px;">
+  <div style="padding: 10px 20px;">
     <h2>New session</h2>
     <p>
       <select ref="interface">
