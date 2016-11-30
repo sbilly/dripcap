@@ -23,7 +23,7 @@
                                     <a>ttttddddddd<br>b</a>
 </drip-tab2>
 
-<drip-content-right>
+<drip-content-right2>
   <drip-vsplitter>
     <yield to="top">
       <drip-tab-view data-container-id="drip-tab-top"></drip-tab-view>
@@ -32,13 +32,23 @@
       <drip-tab-view data-container-id="drip-tab-bottom"></drip-tab-view>
     </yield>
   </drip-vsplitter>
+</drip-content-right2>
+
+<drip-content-right>
+  <drip-hsplitter width="420">
+    <yield to="left">
+      <drip-tab-view data-container-id="drip-tab-list"></drip-tab-view>
+    </yield>
+    <yield to="right">
+      <virtual data-is="drip-content-right2"></virtual>
+    </yield>
+  </drip-hsplitter>
 </drip-content-right>
 
 <drip-content-root>
-  <drip-session-list class={ darwin: process.platform == 'darwin' }></drip-session-list>
-  <drip-hsplitter ratio="0.4">
+  <drip-hsplitter width="200">
     <yield to="left">
-      <drip-tab-view data-container-id="drip-tab-list"></drip-tab-view>
+      <drip-session-list class={ darwin: process.platform == 'darwin' }></drip-session-list>
     </yield>
     <yield to="right">
       <virtual data-is="drip-content-right"></virtual>
@@ -178,16 +188,16 @@
       color: var(--color-dark-foreground);
     }
 
-    :scope > drip-session-list {
+    :scope drip-session-list {
       position: absolute;
       top: 0;
       left: 0;
       bottom: 0;
-      width: 160px;
+      right: 0;
       background-color: var(--color-default-background);
     }
 
-    :scope > .darwin {
+    :scope .darwin {
       margin-top: 42px;
       background-color: transparent;
     }
@@ -196,8 +206,11 @@
       position: absolute;
       top: 0;
       right: 0;
-      left: 160px;
+      left: 0;
       bottom: 0;
+    }
+
+    :scope > drip-hsplitter > drip-splitter-content:last-child {
       background-color: var(--color-default-background);
     }
 

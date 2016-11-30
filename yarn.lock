@@ -1135,9 +1135,9 @@ electron-packager@^8.3.0:
     sanitize-filename "^1.6.0"
     semver "^5.3.0"
 
-electron@1.4.8:
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.4.8.tgz#5ac8cfa465f9ff4957a8da9974fa7c460c89d918"
+electron@1.4.10:
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.4.10.tgz#11492d82eb1d92fa36006c2376404d13a790f393"
   dependencies:
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
@@ -1199,6 +1199,10 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.3, escape-string-regexp@^
 esprima@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.1.tgz#02dbcc5ac3ece81070377f99158ec742ab5dda06"
+
+esprima@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.2.tgz#954b5d19321ca436092fa90f06d6798531fe8184"
 
 "esprima@~ 1.0.2":
   version "1.0.4"
@@ -4167,9 +4171,9 @@ riot-tmpl@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/riot-tmpl/-/riot-tmpl-3.0.0.tgz#fe8bb496dd8ef001f32a731d0d6c0d806bf1dbfd"
 
-riot@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/riot/-/riot-3.0.0.tgz#cbd5ddb98a38f6ac0fd0b4eba16c2d05c928bbea"
+riot@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/riot/-/riot-3.0.1.tgz#3eaf13b0c6205e459d0a8a6520a33d73ffda7a2a"
   dependencies:
     riot-cli "^3.0.0"
     riot-compiler "^3.0.0"

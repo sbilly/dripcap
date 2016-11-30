@@ -46,7 +46,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
     "babel-register": "^6.18.0",
-    "electron": "1.4.8",
+    "electron": "1.4.10",
     "electron-packager": "^8.3.0",
     "gulp": "^3.9.1",
     "gulp-atom-electron": "^1.10.0",

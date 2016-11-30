@@ -143,7 +143,7 @@
     :scope > drip-splitter-content:first-child {
       position: absolute;
       top: 0;
-      right: 50%;
+      width: 300px;
       left: 0;
       bottom: 0;
     }
@@ -151,7 +151,7 @@
     :scope > drip-splitter-bar {
       position: absolute;
       top: 0;
-      left: 50%;
+      left: 300px;
       right: 0;
       bottom: 0;
       width: 2px;
@@ -165,14 +165,14 @@
       right: 0;
       left: 0;
       bottom: 0;
-      cursor: row-resize;
+      cursor: col-resize;
       z-index: 2;
     }
 
     :scope > drip-splitter-content:last-child {
       position: absolute;
       top: 0;
-      left: 50%;
+      left: 300px;
       right: 0;
       bottom: 0;
     }
@@ -186,7 +186,7 @@
       this._left = $(this.root).children('drip-splitter-content:first-child');
       this._right = $(this.root).children('drip-splitter-content:last-child');
       this._bar = $(this.root).children('drip-splitter-bar');
-      this.updateRatio(opts.ratio || 0.5);
+      this.updateWidth(opts.width || 300);
     });
 
     shouldUpdate(force) {
@@ -196,19 +196,18 @@
     move(e) {
       let $this = $(this.root);
       let left = $this.offset().left;
-      let width = $this.width();
       if (this.dragging) {
-        this.updateRatio((e.clientX - left) / width);
+        this.updateWidth(e.clientX - left);
       }
       e.preventUpdate = true;
       return false;
     }
 
-    updateRatio(ratio) {
-      if (ratio >= 0.05 && ratio <= 0.95) {
-        this._left.css('right', `${(1-ratio)*100}%`);
-        this._right.css('left', `${ratio*100}%`);
-        this._bar.css('left', `${ratio*100}%`);
+    updateWidth(width) {
+      if (width >= 100) {
+        this._left.css('width', `${width}px`);
+        this._right.css('left', `${width}px`);
+        this._bar.css('left', `${width}px`);
       }
     }
 
