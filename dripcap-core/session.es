@@ -64,7 +64,7 @@ export default class Session extends EventEmitter {
     this._pubsub.pub('core:filter-hints', hints);
   }
 
-  async create(iface = '', options = {}) {
+  async create(options = {}) {
     let option = {
       namespace: '::<Ethernet>',
       dissectors: this._dissectors,
@@ -72,7 +72,8 @@ export default class Session extends EventEmitter {
     };
 
     let sess = await paperfilter.Session.create(option);
-    sess.interface = iface;
+    sess.interface = options.ifs || '';
+    sess.name = options.name || '';
 
     if (options.filter != null) {
       sess.setBPF(options.filter);

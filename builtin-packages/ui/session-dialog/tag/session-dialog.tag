@@ -36,7 +36,8 @@
       let promisc = $(this.refs.promisc).prop('checked');
       let snaplen = Profile.getConfig('snaplen');
 
-      Session.create(ifs, {
+      Session.create({
+        ifs: ifs,
         filter: filter,
         promiscuous: promisc,
         snaplen: snaplen

@@ -2,10 +2,10 @@
   <ul>
     <li each={ sess, i in sessions } class={ session: true, selected: i == activeIndex } onclick={ setIndex }>
       <i class={ fa: true, fa-circle-o-notch: true, fa-spin: status.get(sess).capturing }></i>
-      { sess.interface } <span>{ status.get(sess).packets }</span>
+      { sess.name || sess.interface } <span>{ status.get(sess).packets }</span>
       <ul show={ i == activeIndex }>
-        <li onclick={ pause } show={ status.get(sess).capturing }><i class="fa fa-pause"></i> Pause</li>
-        <li onclick={ start } show={ !status.get(sess).capturing }><i class="fa fa-play"></i> Start</li>
+        <li onclick={ pause } show={ sess.interface && status.get(sess).capturing }><i class="fa fa-pause"></i> Pause</li>
+        <li onclick={ start } show={ sess.interface && !status.get(sess).capturing }><i class="fa fa-play"></i> Start</li>
         <li onclick={ remove }><i class="fa fa-trash"></i> Remove</li>
       </ul>
     </li>

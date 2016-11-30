@@ -1,19 +1,14 @@
 import $ from 'jquery';
 import fs from 'fs';
+import path from 'path';
 import {remote} from 'electron';
 const {MenuItem} = remote;
 const {dialog} = remote;
-import {
-  Session,
-  Menu,
-  KeyBind,
-  PubSub,
-  Logger
-} from 'dripcap';
+import { Session, Menu, KeyBind, PubSub, Logger } from 'dripcap';
 
 class Pcap {
-  constructor(path) {
-    let data = fs.readFileSync(path);
+  constructor(filePath) {
+    let data = fs.readFileSync(filePath);
     if (data.length < 24) { throw new Error('too short global header'); }
 
     let magicNumber = data.readUInt32BE(0, true);
@@ -107,16 +102,16 @@ export default class PcapFile {
     Menu.registerMain('File', this.fileMenu, 5);
 
     PubSub.on('pcap-file:open', () => {
-      let path = dialog.showOpenDialog(remote.getCurrentWindow(), {filters: [{name: 'PCAP File', extensions: ['pcap']}]});
-      if (path != null) {
-        this._open(path[0])
+      let filePath = dialog.showOpenDialog(remote.getCurrentWindow(), {filters: [{name: 'PCAP File', extensions: ['pcap']}]});
+      if (filePath != null) {
+        this._open(filePath[0])
       }
     });
   }
 
-  async _open(path) {
-    let pcap = new Pcap(path);
-    let sess = await Session.create();
+  async _open(filePath) {
+    let pcap = new Pcap(filePath);
+    let sess = await Session.create({name: path.basename(filePath)});
     for (let err of sess.errors) {
       //Logger.error(err.message);
     }

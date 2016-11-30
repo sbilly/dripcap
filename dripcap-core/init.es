@@ -30,7 +30,7 @@ export default function init(dripcap) {
 
   Package.updatePackageList();
 
-  Session.create('en0').then((sess) => {
+  Session.create({ifs: 'en0'}).then((sess) => {
     sess.on('stat', (s) => console.log(s));
     PubSub.emit('core:session-added', sess);
     sess.start();
