@@ -1,3 +1,5 @@
+import * as riot from 'riot';
+
 export default class Layout {
   constructor() {
     this._container = {};
@@ -13,5 +15,14 @@ export default class Layout {
 
   unregisterContainer(id) {
     delete this._container[id];
+  }
+
+  require(tag) {
+    let tagName = riot.require(tag);
+    riot.renderAsync(tagName).catch(() => {});
+  }
+
+  unregister(tagName) {
+    riot.unregister(tagName);
   }
 }

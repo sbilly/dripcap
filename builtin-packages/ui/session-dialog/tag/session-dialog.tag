@@ -1,5 +1,5 @@
 <session-dialog>
-  <div style="padding: 10px 20px;">
+  <div>
     <h2>New session</h2>
     <p>
       <select ref="interface">
@@ -19,6 +19,12 @@
       <input type="button" name="start" value="Start" onclick={ start }>
     </p>
   </div>
+
+  <style>
+    :scope > div {
+      padding: 10px 20px;
+    }
+  </style>
 
   <script>
     const $ = require('jquery');

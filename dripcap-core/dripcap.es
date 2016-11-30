@@ -14,6 +14,10 @@ import Session from './session';
 import init from './init';
 
 export default function(profileName = 'default') {
+  Object.defineProperty(document, 'createElementNS', {
+    value: document.createElementNS
+  });
+
   let profile = new Profile(path.join(config.profilePath, profileName));
   let pubsub = new PubSub();
   let layout = new Layout();

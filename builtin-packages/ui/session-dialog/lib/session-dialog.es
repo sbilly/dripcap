@@ -6,7 +6,7 @@ export default class LogView {
   }
 
   async activate() {
-    riot.require(__dirname + '/../tag/session-dialog.tag');
+    Layout.require(__dirname + '/../tag/session-dialog.tag');
     PubSub.on('core:new-live-session', () => {
       let modal = Layout.container('drip-modal');
       modal.set([{
@@ -16,6 +16,6 @@ export default class LogView {
   }
 
   async deactivate() {
-    riot.unregister('session-dialog');
+    Layout.unregister('session-dialog');
   }
 }
