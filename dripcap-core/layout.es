@@ -18,8 +18,8 @@ export default class Layout {
   }
 
   require(tag) {
-    let tagName = riot.require(tag);
-    riot.renderAsync(tagName).catch(() => {});
+    riot.require(tag);
+    riot.util.styleManager.inject();
   }
 
   unregister(tagName) {
