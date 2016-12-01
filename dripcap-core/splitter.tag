@@ -19,7 +19,6 @@
 <drip-splitter-bar>
   <style>
     :scope {
-      background-color: var(--color-selection-background);
       -webkit-app-region: no-drag;
     }
   </style>
@@ -57,11 +56,12 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 2px;
+      height: 4px;
+      border-top: 1px solid var(--color-selection-background);
       cursor: row-resize;
       z-index: 1;
     }
-
+    
     :scope > drip-splitter-dragarea {
       position: absolute;
       top: 0;
@@ -154,8 +154,9 @@
       left: 300px;
       right: 0;
       bottom: 0;
-      width: 2px;
+      width: 4px;
       cursor: col-resize;
+      border-left: 1px solid var(--color-selection-background);
       z-index: 1;
     }
 
