@@ -111,6 +111,10 @@
         this._top.css('bottom', `${(1-ratio)*100}%`);
         this._bottom.css('top', `${ratio*100}%`);
         this._bar.css('top', `${ratio*100}%`);
+        $(document.body).css('width', '99.999%');
+        process.nextTick(() => {
+          $(document.body).css('width', '100%');
+        });
       }
     }
 
