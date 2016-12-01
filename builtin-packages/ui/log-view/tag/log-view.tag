@@ -3,7 +3,7 @@
     <i class="fa fa-circle-o" show={ !data }></i>
     <i class="fa fa-arrow-circle-right" show={ data && !show }></i>
     <i class="fa fa-arrow-circle-down" show={ data && show }></i>
-    <span class="text-{level}">[{date}] {message}</span>
+    <span class="text-{level}">[{this.date}] {message}</span>
     <ul if={ data && data.resourceName } show={ show }>
       <li>
         { data.resourceName }
@@ -19,6 +19,14 @@
 
   <script>
     this.show = false;
+
+    this.on('mount', () => {
+      let hours = ('0' + this.timestamp.getHours()).slice(-2);
+      let minutes = ('0' + this.timestamp.getMinutes()).slice(-2);
+      let seconds = ('0' + this.timestamp.getSeconds()).slice(-2);
+      this.date = `${hours}:${minutes}:${seconds}`;
+      this.update();
+    });
 
     this.toggle = e => {
       if (opts.data) {
@@ -41,19 +49,15 @@
   </ul>
 
   <script>
-    this.logs = [
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'},
-      {date: new Date(), message: 'aaa'}  
-    ];
+    const { PubSub } = require('dripcap');
+    this.logs = [];
+
+    this.on('mount', () => {
+      PubSub.sub('core:log', (log) => {
+        this.logs.push(log);
+        this.update();
+      });
+    });
   </script>
 
   <style type="text/less" scoped>

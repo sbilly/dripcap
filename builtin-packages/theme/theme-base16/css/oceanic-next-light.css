@@ -1,0 +1,32 @@
+/*
+https://chriskempson.github.io/base16/
+base16-oceanicnext
+*/
+
+:root {
+  --color-default-background: #D8DEE9;
+  --color-lighter-background: #CDD3DE;
+  --color-selection-background: #C0C5CE;
+  --color-comments: #A7ADBA;
+
+  --color-dark-foreground: #1B2B34;
+  --color-default-foreground: #343D46;
+  --color-light-foreground: #4F5B66;
+  --color-light-background: #65737E;
+
+  --color-variables: #EC5f67;
+  --color-integers: #F99157;
+  --color-classes: #FAC863;
+  --color-strings: #99C794;
+  --color-support: #5FB3B3;
+  --color-functions: #6699CC;
+  --color-keywords: #C594C5;
+  --color-deprecated: #AB7967;
+
+  --color-debug: var(--color-dark-foreground);
+  --color-info: var(--color-functions);
+  --color-warn: var(--color-integers);
+  --color-error: var(--color-variables);
+
+  --vibrancy: 'light';
+}

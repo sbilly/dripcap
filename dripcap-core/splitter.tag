@@ -61,7 +61,7 @@
       cursor: row-resize;
       z-index: 1;
     }
-    
+
     :scope > drip-splitter-dragarea {
       position: absolute;
       top: 0;
@@ -97,10 +97,8 @@
       let top = $this.offset().top;
       let height = $this.height();
       if (this.dragging) {
-        console.log((e.clientY - top), height)
         this.updateRatio((e.clientY - top) / (height - 2));
       }
-      e.preventUpdate = true;
       return false;
     }
 

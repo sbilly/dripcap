@@ -1,0 +1,32 @@
+/*
+https://chriskempson.github.io/base16/
+base16-green-screen
+*/
+
+:root {
+  --color-default-background: #001100;
+  --color-lighter-background: #003300;
+  --color-selection-background: #005500;
+  --color-comments: #007700;
+
+  --color-dark-foreground: #009900;
+  --color-default-foreground: #00bb00;
+  --color-light-foreground: #00dd00;
+  --color-light-background: #00ff00;
+
+  --color-variables: #007700;
+  --color-integers: #009900;
+  --color-classes: #007700;
+  --color-strings: #00bb00;
+  --color-support: #005500;
+  --color-functions: #009900;
+  --color-keywords: #00bb00;
+  --color-deprecated: #005500;
+
+  --color-debug: var(--color-dark-foreground);
+  --color-info: var(--color-functions);
+  --color-warn: var(--color-integers);
+  --color-error: var(--color-variables);
+
+  --vibrancy: 'ultra-dark';
+}

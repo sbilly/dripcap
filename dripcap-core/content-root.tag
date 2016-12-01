@@ -179,6 +179,11 @@
       outline-color: var(--color-variables);
     }
 
+    ::-webkit-input-placeholder {
+      color: var(--color-dark-foreground);
+      opacity: 0.5;
+    }
+
     :scope {
       position: absolute;
       top: 0;

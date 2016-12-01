@@ -11,7 +11,11 @@ export default class LogView {
     this.active = this.config.get('visible', false);
     Layout.require(__dirname + '/../tag/log-view.tag');
     let tab = Layout.container('drip-tab-bottom');
-    tab.append({center:{tag: 'log-view'}, bottom: {tag: 'log-view-filter'}, name: 'Log'});
+    let layout = {center:{tag: 'log-view'}, bottom: {tag: 'log-view-filter'}, name: 'Log', id: 'log-view'};
+
+    if (this.active) {
+      tab.append(layout);
+    }
 
     this.toggleMenu = (menu, e) => {
       menu.append(new MenuItem({
@@ -30,28 +34,18 @@ export default class LogView {
     } else {
       Menu.registerMain('Developer', this.toggleMenu);
     }
-/*
-    Action.on('log-view:toggle', () => {
+
+    PubSub.on('log-view:toggle', () => {
       if (this.active) {
-        pkg.root.panel.bottom('log-view');
+        tab.remove('log-view');
       } else {
-        pkg.root.panel.bottom('log-view', this.base, $('<i class="fa fa-file-text"> Log</i>'));
+        tab.append(layout);
       }
       this.active = !this.active;
       this.config.set('visible', this.active);
     });
 
-    PubSub.sub('core:log', (log) => {
-      let textClass = `text-${log.level}`;
-      let hours = ('0' + log.timestamp.getHours()).slice(-2);
-      let minutes = ('0' + log.timestamp.getMinutes()).slice(-2);
-      let seconds = ('0' + log.timestamp.getSeconds()).slice(-2);
-      log.date = `${hours}:${minutes}:${seconds}`;
-      this.view.logs.push(log);
-      this.view.update();
-    });
-*/
-    //Logger.info('log-view loaded');
+    Logger.info('log-view loaded');
   }
 
   async deactivate() {

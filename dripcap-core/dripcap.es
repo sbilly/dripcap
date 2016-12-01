@@ -11,6 +11,7 @@ import PackageHub from './package-hub';
 import KeyBind from './keybind';
 import PubSub from './pubsub';
 import Session from './session';
+import Logger from './logger';
 import init from './init';
 
 export default function(profileName = 'default') {
@@ -31,6 +32,7 @@ export default function(profileName = 'default') {
     Package: new PackageHub(profile),
     KeyBind: new KeyBind(profile, pubsub),
     PubSub: pubsub,
+    Logger: new Logger(pubsub),
     Session: new Session(pubsub)
   };
 

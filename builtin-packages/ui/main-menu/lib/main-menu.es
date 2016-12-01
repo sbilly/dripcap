@@ -5,12 +5,14 @@ let { app, MenuItem } = remote;
 
 export default class MainMenu {
   async activate() {
-    let action = name => () => PubSub.emit(name);
+    let action = name => () => {
+      PubSub.emit(name);
+    }
 
     KeyBind.bind('command+shift+n', '!menu', 'core:new-window');
     KeyBind.bind('command+shift+w', '!menu', 'core:close-window');
     KeyBind.bind('command+q', '!menu', 'core:quit');
-    KeyBind.bind('command+,', '!menu', 'core:preferences');
+    KeyBind.bind('command+,', '!menu', 'core:show-preferences');
     KeyBind.bind('f5', '!menu', 'core:reload-window');
     KeyBind.bind('command+shift+i', '!menu', 'core:toggle-devtools');
     KeyBind.bind('command+m', '!menu', 'core:window-minimize');
@@ -91,8 +93,8 @@ export default class MainMenu {
         }));
         menu.append(new MenuItem({
           label: 'Preferences',
-          accelerator: KeyBind.get('!menu', 'core:preferences'),
-          click: action('core:preferences')
+          accelerator: KeyBind.get('!menu', 'core:show-preferences'),
+          click: action('core:show-preferences')
         }));
       }
       return menu;
@@ -221,8 +223,8 @@ export default class MainMenu {
         }));
         menu.append(new MenuItem({
           label: 'Preferences',
-          accelerator: KeyBind.get('!menu', 'core:preferences'),
-          click: action('core:preferences')
+          accelerator: KeyBind.get('!menu', 'core:show-preferences'),
+          click: action('core:show-preferences')
         }));
         return menu;
       };
@@ -259,7 +261,7 @@ export default class MainMenu {
     KeyBind.unbind('command+shift+n', '!menu', 'core:new-window');
     KeyBind.unbind('command+shift+w', '!menu', 'core:close-window');
     KeyBind.unbind('command+q', '!menu', 'core:quit');
-    KeyBind.unbind('command+,', '!menu', 'core:preferences');
+    KeyBind.unbind('command+,', '!menu', 'core:show-preferences');
     KeyBind.unbind('f5', '!menu', 'core:reload-window');
     KeyBind.unbind('command+shift+i', '!menu', 'core:toggle-devtools');
     KeyBind.unbind('command+m', '!menu', 'core:window-minimize');
