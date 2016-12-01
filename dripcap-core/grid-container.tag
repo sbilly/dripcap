@@ -11,7 +11,7 @@
 </drip-container>
 
 <drip-grid-container>
-  <div class="center" if={ opts.item.center }>
+  <div class="center" tabindex="0" if={ opts.item.center }>
      <virtual data-is="drip-container" item={ opts.item.center }></virtual>
   </div>
   <div class="top" if={ opts.item.top }>
@@ -35,6 +35,7 @@
       grid-template-areas: "top top top"
                            "left center right"
                            "bottom bottom bottom";
+      -webkit-app-region: no-drag;
     }
     :scope > div {
       display: grid;
@@ -47,6 +48,7 @@
       bottom: 0;
       left: 0;
       right: 0;
+      outline-offset: -3px;
     }
     :scope > div.top {
       grid-area: top;

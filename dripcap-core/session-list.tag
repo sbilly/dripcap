@@ -1,18 +1,18 @@
 <drip-session-list>
   <ul>
-    <li each={ sess, i in sessions } class={ session: true, selected: i == activeIndex } onclick={ setIndex }>
+    <li tabindex="0" each={ sess, i in sessions } class={ session: true, selected: i == activeIndex } onclick={ setIndex }>
       <i class={ fa: true, fa-circle-o-notch: true, fa-spin: status.get(sess).capturing }></i>
       { sess.name || sess.interface } <span>{ status.get(sess).packets }</span>
       <ul show={ i == activeIndex }>
-        <li onclick={ pause } show={ sess.interface && status.get(sess).capturing }><i class="fa fa-pause"></i> Pause</li>
-        <li onclick={ start } show={ sess.interface && !status.get(sess).capturing }><i class="fa fa-play"></i> Start</li>
-        <li onclick={ remove }><i class="fa fa-trash"></i> Remove</li>
+        <li tabindex="0" onclick={ pause } show={ sess.interface && status.get(sess).capturing }><i class="fa fa-pause"></i> Pause</li>
+        <li tabindex="0" onclick={ start } show={ sess.interface && !status.get(sess).capturing }><i class="fa fa-play"></i> Start</li>
+        <li tabindex="0" onclick={ remove }><i class="fa fa-trash"></i> Remove</li>
       </ul>
     </li>
-    <li class="button" onclick={ newSession }><i class="fa fa-plus"></i> New Session</li>
+    <li class="button" tabindex="0" onclick={ newSession }><i class="fa fa-plus"></i> New Session</li>
   </ul>
   <ul>
-    <li class="button" onclick={ showPreferences }><i class="fa fa-cogs"></i> Preferences</li>
+    <li class="button" tabindex="0" onclick={ showPreferences }><i class="fa fa-cogs"></i> Preferences</li>
   </ul>
   <style>
     :scope > ul {

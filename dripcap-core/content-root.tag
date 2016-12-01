@@ -170,10 +170,13 @@
       border: 1px solid var(--color-selection-background);
       background: var(--color-lighter-background);
       color: var(--color-default-foreground);
-      outline-color: var(--color-variables);
     }
     input[type=checkbox]:checked {
       background-color: var(--color-variables);
+    }
+
+    * {
+      outline-color: var(--color-variables);
     }
 
     :scope {

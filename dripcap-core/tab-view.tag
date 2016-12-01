@@ -1,6 +1,6 @@
 <drip-tab-view>
   <div class="tab-bar" show={ items.length > 1 }>
-    <div each={ item, i in items }  class={ tab: true, selected: i == this.activeIndex } onclick={ setIndex }> { item.name } </div>
+    <div tabindex="0" each={ item, i in items }  class={ tab: true, selected: i == this.activeIndex } onkeypress={ setIndexKey } onclick={ setIndex }> { item.name } </div>
   </div>
   <virtual each={ item, i in items }>
     <drip-grid-container item={ item } show={ i == this.activeIndex } class={ show-tab: items.length > 1 }></drip-grid-container>
@@ -58,6 +58,12 @@
       this.activeIndex = e.item.i;
       e.preventUpdate = true;
       this.update();
+    }
+
+    setIndexKey(e) {
+      if (e.code == 'Enter') {
+        this.setIndex(e);
+      }
     }
 
     append(item) {
