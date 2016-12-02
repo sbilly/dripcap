@@ -12,23 +12,23 @@
     </li>
   </ul>
 
-  <style>
+  <style type="text/less">
     :scope {
       padding: 10px 20px;
-    }
 
-    :scope label {
-      margin: 5px 0;
-      display: block;
-    }
+      label {
+        margin: 5px 0;
+        display: block;
+      }
 
-    :scope > ul {
-      list-style: none;
-      padding: 0;
-    }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
 
-    :scope > ul > li {
-      padding: 6px 0;
+      li {
+        padding: 6px 0;
+      }
     }
   </style>
 

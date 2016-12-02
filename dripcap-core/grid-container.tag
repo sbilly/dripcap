@@ -27,7 +27,7 @@
      <virtual data-is="drip-container" item={ opts.item.right }></virtual>
   </div>
 
-  <style>
+  <style type="text/less">
     :scope {
       display: grid;
       grid-template-columns: 32px 1fr 32px;
@@ -36,50 +36,51 @@
                            "left center right"
                            "bottom bottom bottom";
       -webkit-app-region: no-drag;
-    }
-    :scope > div {
-      display: grid;
-    }
-    :scope > div.center {
-      grid-area: center;
-      overflow: auto;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      outline-offset: -3px;
-    }
-    :scope > div.top {
-      grid-area: top;
-      overflow: hidden;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-    :scope > div.bottom {
-      grid-area: bottom;
-      overflow: hidden;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-    :scope > div.left {
-      grid-area: left;
-      overflow: hidden;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-    :scope > div.right {
-      grid-area: right;
-      overflow: hidden;
+
+      > div {
+        display: grid;
+      }
+      > div.center {
+        grid-area: center;
+        overflow: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        outline-offset: -3px;
+      }
+      > div.top {
+        grid-area: top;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      > div.bottom {
+        grid-area: bottom;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      > div.left {
+        grid-area: left;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      > div.right {
+        grid-area: right;
+        overflow: hidden;
+      }
     }
   </style>
 

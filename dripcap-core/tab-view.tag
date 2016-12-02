@@ -5,38 +5,42 @@
   <virtual each={ item, i in items }>
     <drip-grid-container item={ item } show={ i == this.activeIndex } class={ show-tab: items.length > 1 }></drip-grid-container>
   </virtual>
-  <style>
-    :scope > drip-grid-container.show-tab {
-      top: 32px;
-    }
-    :scope > drip-grid-container {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-    }
-    :scope > div.tab-bar {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      height: 32px;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      align-items: stretch;
-      border-bottom: 2px solid var(--color-lighter-background);
-      -webkit-user-select: none;
-      display: flex;
-    }
-    :scope > div.tab-bar div.tab {
-      padding: 4px 20px;
-      cursor: pointer;
-      border-top: 4px solid transparent;
-    }
-    :scope > div.tab-bar div.tab.selected {
-      border-top-color: var(--color-variables);
+  <style type="text/less">
+    :scope {
+      > drip-grid-container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        &.show-tab {
+          top: 32px;
+        }
+      }
+
+      > div.tab-bar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 32px;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: stretch;
+        border-bottom: 2px solid var(--color-lighter-background);
+        -webkit-user-select: none;
+        display: flex;
+
+        div.tab {
+          padding: 4px 20px;
+          cursor: pointer;
+          border-top: 4px solid transparent;
+          &.selected {
+            border-top-color: var(--color-variables);
+          }
+        }
+      }
     }
   </style>
 

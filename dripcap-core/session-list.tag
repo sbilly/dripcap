@@ -14,61 +14,59 @@
   <ul>
     <li class="button" tabindex="0" onclick={ showPreferences }><i class="fa fa-cogs"></i> Preferences</li>
   </ul>
-  <style>
+  <style type="text/less">
     :scope > ul {
       padding: 0;
       margin: 0;
       -webkit-user-select: none;
-    }
 
-    :scope > ul > li {
-      list-style: none;
-      padding: 10px 10px;
-      margin: 3px 0;
-      cursor: pointer;
-    }
+      > li {
+        list-style: none;
+        padding: 10px 10px;
+        margin: 3px 0;
+        cursor: pointer;
+      }
 
-    :scope > ul > li.selected {
-      background-color: var(--color-selection-background);
-    }
+      > li.selected {
+        background-color: var(--color-selection-background);
+      }
 
-    :scope > ul > li.session {
-      border-left: 5px solid transparent;
-    }
+      > li.session {
+        border-left: 5px solid transparent;
 
-    :scope > ul > li.session:hover {
-      border-left: 5px solid var(--color-selection-background);
-    }
+        &:hover {
+          border-left: 5px solid var(--color-selection-background);
+        }
 
-    :scope > ul > li.session > ul {
-      list-style: none;
-      margin-top: 5px;
-      padding: 5px 10px;
-    }
+        > span {
+          border-radius: 15px;
+          background-color: var(--color-variables);
+          padding: 0 8px;
+          float: right;
+        }
 
-    :scope > ul > li.session > ul > li {
-      padding: 5px;
-    }
+        > ul {
+          list-style: none;
+          margin-top: 5px;
+          padding: 5px 10px;
 
-    :scope > ul > li.session > ul > li:hover {
-      text-decoration: underline;
-    }
+          > li {
+            padding: 5px;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
 
-    :scope > ul > li.session > span {
-      border-radius: 15px;
-      background-color: var(--color-variables);
-      padding: 0 8px;
-      float: right;
-    }
-
-    :scope > ul > li.button {
-      border-left: 5px solid transparent;
-      color: var(--color-default-background);
-      background-color: var(--color-functions);
-    }
-
-    :scope > ul > li.button:hover {
-      border-left: 5px solid var(--color-selection-background);
+      > li.button {
+        border-left: 5px solid transparent;
+        color: var(--color-default-background);
+        background-color: var(--color-functions);
+        &:hover {
+          border-left: 5px solid var(--color-selection-background);
+        }
+      }
     }
   </style>
 

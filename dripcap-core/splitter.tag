@@ -1,23 +1,23 @@
 <drip-splitter-content>
   <yield/>
-  <style>
+  <style type="text/less">
     :scope {
       display: grid;
       overflow: hidden;
-    }
-
-    :scope > * {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
+    
+      > * {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+      }
     }
   </style>
 </drip-splitter-content>
 
 <drip-splitter-bar>
-  <style>
+  <style type="text/less">
     :scope {
       -webkit-app-region: no-drag;
     }
@@ -25,7 +25,7 @@
 </drip-splitter-bar>
 
 <drip-splitter-dragarea>
-<style>
+<style type="text/less">
   :scope {
     -webkit-app-region: no-drag;
   }
@@ -41,43 +41,45 @@
   <drip-splitter-content>
     <yield from="bottom"/>
   </drip-splitter-content>
-  <style>
-    :scope > drip-splitter-content:first-child {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 50%;
-    }
+  <style type="text/less">
+    :scope {
+      > drip-splitter-content:first-child {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 50%;
+      }
 
-    :scope > drip-splitter-bar {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 4px;
-      border-top: 1px solid var(--color-selection-background);
-      cursor: row-resize;
-      z-index: 1;
-    }
+      > drip-splitter-bar {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 4px;
+        border-top: 1px solid var(--color-selection-background);
+        cursor: row-resize;
+        z-index: 1;
+      }
 
-    :scope > drip-splitter-dragarea {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      cursor: row-resize;
-      z-index: 2;
-    }
+      > drip-splitter-dragarea {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        cursor: row-resize;
+        z-index: 2;
+      }
 
-    :scope > drip-splitter-content:last-child {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      left: 0;
-      bottom: 0;
+      > drip-splitter-content:last-child {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        bottom: 0;
+      }
     }
   </style>
 
@@ -141,43 +143,45 @@
   <drip-splitter-content>
     <yield from="right"/>
   </drip-splitter-content>
-  <style>
-    :scope > drip-splitter-content:first-child {
-      position: absolute;
-      top: 0;
-      width: 300px;
-      left: 0;
-      bottom: 0;
-    }
+  <style type="text/less">
+    :scope {
+      > drip-splitter-content:first-child {
+        position: absolute;
+        top: 0;
+        width: 300px;
+        left: 0;
+        bottom: 0;
+      }
 
-    :scope > drip-splitter-bar {
-      position: absolute;
-      top: 0;
-      left: 300px;
-      right: 0;
-      bottom: 0;
-      width: 4px;
-      cursor: col-resize;
-      border-left: 1px solid var(--color-selection-background);
-      z-index: 1;
-    }
+      > drip-splitter-bar {
+        position: absolute;
+        top: 0;
+        left: 300px;
+        right: 0;
+        bottom: 0;
+        width: 4px;
+        cursor: col-resize;
+        border-left: 1px solid var(--color-selection-background);
+        z-index: 1;
+      }
 
-    :scope > drip-splitter-dragarea {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      cursor: col-resize;
-      z-index: 2;
-    }
+      > drip-splitter-dragarea {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        cursor: col-resize;
+        z-index: 2;
+      }
 
-    :scope > drip-splitter-content:last-child {
-      position: absolute;
-      top: 0;
-      left: 300px;
-      right: 0;
-      bottom: 0;
+      > drip-splitter-content:last-child {
+        position: absolute;
+        top: 0;
+        left: 300px;
+        right: 0;
+        bottom: 0;
+      }
     }
   </style>
 

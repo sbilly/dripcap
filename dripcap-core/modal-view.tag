@@ -3,39 +3,41 @@
   <div class="dialog">
     <drip-tab-view if={ items } items={ items }></drip-tab-view>
   </div>
-  <style>
+  <style type="text/less">
     :scope {
       display: grid;
       grid-template-areas: ". . ."
                            ". center ."
                            ". . .";
-    }
 
-    :scope > div.mask {
-      background-color: var(--color-selection-background);
-      opacity: 0.6;
-      grid-column: 1 / 4;
-      grid-row: 1 / 4;
-      z-index: 1;
-      -webkit-app-region: no-drag;
-    }
+      > div.mask {
+        background-color: var(--color-selection-background);
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        -webkit-app-region: no-drag;
+      }
 
-    :scope > div.dialog {
-      display: grid;
-      grid-area: center;
-      background-color: var(--color-default-background);
-      border-radius: 5px;
-      border: 1px solid var(--color-variables);
-      z-index: 2;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-    }
-
-    :scope > div.dialog > drip-grid-container > div.center {
-      padding: 20px;
+      > div.dialog {
+        display: grid;
+        grid-area: center;
+        background-color: var(--color-default-background);
+        border-radius: 5px;
+        border: 1px solid var(--color-variables);
+        z-index: 2;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        > drip-grid-container > div.center {
+           padding: 20px;
+        }
+      }
     }
   </style>
 

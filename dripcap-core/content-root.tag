@@ -55,7 +55,7 @@
     </yield>
   </drip-hsplitter>
   <drip-modal-view data-container-id="drip-modal"></drip-modal-view>
-  <style>
+  <style type="text/less">
     * {
       font-family: 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, 'Droid Sans Fallback', sans-serif;
       font-size: 14px;
@@ -194,40 +194,40 @@
       padding: 0;
       -webkit-app-region: drag;
       color: var(--color-dark-foreground);
-    }
 
-    :scope drip-session-list {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-color: var(--color-default-background);
-    }
+      drip-session-list {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: var(--color-default-background);
+      }
 
-    :scope .darwin {
-      margin-top: 42px;
-      background-color: transparent;
-    }
+      .darwin {
+        margin-top: 42px;
+        background-color: transparent;
+      }
 
-    :scope > drip-hsplitter {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-    }
+      > drip-hsplitter {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+      }
 
-    :scope > drip-hsplitter > drip-splitter-content:last-child {
-      background-color: var(--color-default-background);
-    }
+      > drip-hsplitter > drip-splitter-content:last-child {
+        background-color: var(--color-default-background);
+      }
 
-    :scope > drip-modal-view {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
+      > drip-modal-view {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+      }
     }
   </style>
 </drip-content-root>

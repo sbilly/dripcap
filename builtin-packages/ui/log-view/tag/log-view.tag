@@ -60,7 +60,7 @@
     });
   </script>
 
-  <style type="text/less" scoped>
+  <style type="text/less">
     :scope {
       ul {
         padding-left: 20px;
