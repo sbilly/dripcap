@@ -142,7 +142,6 @@ export default class PcapFile {
   }
 
   async deactivate() {
-    PubSub.removeAllListeners('pcap-file:open');
     KeyBind.unbind('command+o', '!menu', 'pcap-file:open');
     Menu.unregisterMain('File', this.fileMenu);
   }

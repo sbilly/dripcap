@@ -44,4 +44,10 @@ export default class PubSub {
     const ch = this._getChannel(name);
     return ch.queue[ch.queue.length - index - 1];
   }
+
+  removeListener(name, cb) {
+    const ch = this._getChannel(name);
+    let index = ch.handlers.indexOf(cb);
+    if (inex >= 0) ch.handlers.splice(index, 1);
+  }
 }

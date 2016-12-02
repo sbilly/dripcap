@@ -6,6 +6,7 @@
   <style type="text/less">
     :scope {
       display: grid;
+      overflow: hidden;
       grid-template-areas: ". . ."
                            ". center ."
                            ". . .";

@@ -44,15 +44,24 @@
         this.update();
       });
 
-      Profile.watchConfig('theme', id => {
+      this._setCurrentTheme = (id) => {
         this.currentTheme = id;
         this.update();
-      });
-
-      Profile.watchConfig('snaplen', len => {
+      };
+      
+      this._setCurrentSnaplen = (len) => {
         this.currentSnaplen = len;
         this.update();
-      });
+      };
+
+      Profile.watchConfig('theme', this._setCurrentTheme);
+      Profile.watchConfig('snaplen', this._setCurrentSnaplen);
+    });
+
+
+    this.on('unmount', () => {
+      Profile.unwatchConfig('theme', this._setCurrentTheme);
+      Profile.unwatchConfig('snaplen', this._setCurrentSnaplen);
     });
 
     setThemeList(list) {

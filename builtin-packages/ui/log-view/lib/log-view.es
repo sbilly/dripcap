@@ -49,6 +49,12 @@ export default class LogView {
   }
 
   async deactivate() {
+    if (process.platform === 'darwin') {
+      Menu.unregisterMain(app.getName(), this.toggleMenu);
+    } else {
+      Menu.unregisterMain('Developer', this.toggleMenu);
+    }
+    Layout.container('drip-tab-bottom').remove('log-view');
     Layout.unregister('log-view');
   }
 }
