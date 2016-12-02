@@ -1,4 +1,4 @@
-import { Layout, Theme, Profile, Preferences } from 'dripcap';
+import { Layout, Preferences } from 'dripcap';
 
 export default class GeneralPreferencesView {
   async activate() {

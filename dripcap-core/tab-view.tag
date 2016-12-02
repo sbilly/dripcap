@@ -6,17 +6,8 @@
     <drip-grid-container item={ item } show={ i == this.activeIndex } class={ show-tab: items.length > 1 }></drip-grid-container>
   </virtual>
   <style>
-    :scope {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 32px 1fr;
-    }
-    :scope > div {
-      grid-column: 1 / 1;
-      grid-row: 1 / 3;
-    }
     :scope > drip-grid-container.show-tab {
-      grid-row: 2 / 3;
+      top: 32px;
     }
     :scope > drip-grid-container {
       position: absolute;
@@ -26,7 +17,11 @@
       left: 0;
     }
     :scope > div.tab-bar {
-      grid-row: 1 / 2;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 32px;
       padding: 0;
       margin: 0;
       display: flex;

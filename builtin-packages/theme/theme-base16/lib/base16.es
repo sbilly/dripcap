@@ -7,7 +7,7 @@ export default class Base16 {
       css: [`${__dirname}/../css/oceanic-next-light.css`]
     });
     Theme.registerScheme('base16-green-screen', {
-      name: "Oceanic Next Light",
+      name: "Green Screen",
       css: [`${__dirname}/../css/green-screen.css`]
     });
   }

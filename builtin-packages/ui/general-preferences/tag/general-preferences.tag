@@ -2,30 +2,33 @@
   <ul>
     <li>
       <label for="theme">Theme</label>
-      <select name="theme" onchange={ updateTheme }>
-        <option each={ id, theme in themeList } value={ id } selected={ id==currentTheme }>{ theme.name }</option>
+      <select ref="theme" onchange={ updateTheme }>
+        <option each={ theme, id in themeList } value={ id } selected={ id==currentTheme }>{ theme.name }</option>
       </select>
     </li>
     <li>
       <label for="snaplen">Snapshot Length (bytes)</label>
-      <input type="number" name="snaplen" placeholder="1600" onchange={ updateSnaplen } value={ currentSnaplen }>
+      <input type="number" ref="snaplen" placeholder="1600" onchange={ updateSnaplen } value={ currentSnaplen }>
     </li>
   </ul>
 
-  <style type="text/less" scoped>
+  <style>
     :scope {
-      padding: 18px;
-      label {
-        margin: 5px 0;
-        display: block;
-      }
-      ul {
-        list-style: none;
-        padding: 0;
-      }
-      li {
-        padding: 6px 0;
-      }
+      padding: 10px 20px;
+    }
+
+    :scope label {
+      margin: 5px 0;
+      display: block;
+    }
+
+    :scope > ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    :scope > ul > li {
+      padding: 6px 0;
     }
   </style>
 
@@ -35,21 +38,38 @@
 
     this.on('mount', () => {
       this.currentSnaplen = Profile.getConfig('snaplen');
+
+      Theme.sub('registry-updated', () => {
+        this.setThemeList(Theme.registry);
+        this.update();
+      });
+
+      Profile.watchConfig('theme', id => {
+        this.currentTheme = id;
+        this.update();
+      });
+
+      Profile.watchConfig('snaplen', len => {
+        this.currentSnaplen = len;
+        this.update();
+      });
     });
 
-    this.setThemeList = (list) => {
+    setThemeList(list) {
       this.currentTheme = Theme.id;
       this.themeList = list;
-    };
+    }
 
-    this.updateTheme = () => {
-      Theme.setId($(this.theme).val());
-    };
+    updateTheme() {
+      let id = $(this.refs.theme).val();
+      Theme.setId(id);
+      Profile.setConfig('theme', id);
+    }
 
-    this.updateSnaplen = () => {
-      let len = parseInt($(this.snaplen).val());
+    updateSnaplen() {
+      let len = parseInt($(this.refs.snaplen).val());
       Profile.setConfig('snaplen', len);
-    };
+    }
   </script>
 
 </general-preferences>
