@@ -1,6 +1,6 @@
 import { Layout, Preferences } from 'dripcap';
 
-export default class GeneralPreferencesView {
+export default class GeneralPreferences {
   async activate() {
     Layout.require(__dirname + '/../tag/general-preferences.tag');
     Preferences.registerTab({
