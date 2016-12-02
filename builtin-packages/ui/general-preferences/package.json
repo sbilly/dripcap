@@ -1,0 +1,11 @@
+{
+  "name": "general-preferences",
+  "main": "./lib/general-preferences.es",
+  "license": "MIT",
+  "description": "Dripcap General Preferences",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dripcap/dripcap.git"
+  },
+  "readme": "see README.md"
+}
