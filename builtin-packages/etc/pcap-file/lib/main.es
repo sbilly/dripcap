@@ -101,7 +101,7 @@ export default class PcapFile {
 
     Menu.registerMain('File', this.fileMenu, 5);
 
-    PubSub.on('pcap-file:open', () => {
+    PubSub.on(this, 'pcap-file:open', () => {
       let filePath = dialog.showOpenDialog(remote.getCurrentWindow(), {filters: [{name: 'PCAP File', extensions: ['pcap']}]});
       if (filePath != null) {
         this._open(filePath[0])
@@ -142,6 +142,7 @@ export default class PcapFile {
   }
 
   async deactivate() {
+    PubSub.removeHolder(this);
     KeyBind.unbind('command+o', '!menu', 'pcap-file:open');
     Menu.unregisterMain('File', this.fileMenu);
   }

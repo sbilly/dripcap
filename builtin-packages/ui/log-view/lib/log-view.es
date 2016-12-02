@@ -35,7 +35,7 @@ export default class LogView {
       Menu.registerMain('Developer', this.toggleMenu, -5);
     }
 
-    PubSub.on('log-view:toggle', () => {
+    PubSub.on(this, 'log-view:toggle', () => {
       if (this.active) {
         tab.remove('log-view');
       } else {
@@ -56,5 +56,6 @@ export default class LogView {
     }
     Layout.container('drip-tab-bottom').remove('log-view');
     Layout.unregister('log-view');
+    PubSub.removeHolder(this);
   }
 }

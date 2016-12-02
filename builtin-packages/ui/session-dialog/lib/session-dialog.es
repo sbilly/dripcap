@@ -7,7 +7,7 @@ export default class LogView {
 
   async activate() {
     Layout.require(__dirname + '/../tag/session-dialog.tag');
-    PubSub.on('core:new-live-session', () => {
+    PubSub.on(this, 'core:new-live-session', () => {
       let modal = Layout.container('drip-modal');
       modal.set([{
         center: {tag: 'session-dialog', id: "new-live-session-dialog"}
@@ -16,6 +16,7 @@ export default class LogView {
   }
 
   async deactivate() {
+    PubSub.removeHolder(this);
     Layout.unregister('session-dialog');
   }
 }

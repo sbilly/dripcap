@@ -53,10 +53,14 @@
     this.logs = [];
 
     this.on('mount', () => {
-      PubSub.sub('core:log', (log) => {
+      PubSub.sub(this, 'core:log', (log) => {
         this.logs.push(log);
         this.update();
       });
+    });
+
+    this.on('unmount', () => {
+      PubSub.removeHolder(this);
     });
   </script>
 

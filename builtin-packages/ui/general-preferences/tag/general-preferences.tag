@@ -39,7 +39,7 @@
     this.on('mount', () => {
       this.currentSnaplen = Profile.getConfig('snaplen');
 
-      PubSub.sub('core:theme-registry-updated', () => {
+      PubSub.sub(this, 'core:theme-registry-updated', () => {
         this.setThemeList(Theme.registry);
         this.update();
       });
@@ -48,7 +48,7 @@
         this.currentTheme = id;
         this.update();
       };
-      
+
       this._setCurrentSnaplen = (len) => {
         this.currentSnaplen = len;
         this.update();
@@ -60,6 +60,7 @@
 
 
     this.on('unmount', () => {
+      PubSub.removeHolder(this); 
       Profile.unwatchConfig('theme', this._setCurrentTheme);
       Profile.unwatchConfig('snaplen', this._setCurrentSnaplen);
     });
