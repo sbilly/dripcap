@@ -252,8 +252,6 @@ export default class MainMenu {
     Menu.registerMain('Window', this.windowMenu);
     Menu.registerMain('Help', this.helpMenu);
     Menu.setMainPriority('Help', -999);
-
-    Theme.sub('registryUpdated', () => Menu.updateMainMenu());
     KeyBind.on('update', () => Menu.updateMainMenu());
   }
 

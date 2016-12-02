@@ -1,11 +1,10 @@
-import PubSub from './pubsub';
 import fs from 'fs';
 import { remote } from 'electron';
 import $ from 'jquery';
 
-export default class ThemeInterface extends PubSub {
-  constructor(id) {
-    super();
+export default class ThemeInterface {
+  constructor(pubsub, id) {
+    this.pubsub = pubsub;
     this.registry = {};
 
     this._defaultScheme = {
@@ -19,17 +18,16 @@ export default class ThemeInterface extends PubSub {
 
   registerScheme(id, scheme) {
     this.registry[id] = scheme;
-    this.pub('registry-updated', null, 1);
+    this.pubsub.pub('core:theme-registry-updated');
     if (this._id === id) {
       this.scheme = this.registry[id];
-      this.pub('update', this.scheme, 1);
       this._update();
     }
   }
 
   unregisterScheme(id) {
     if (delete this.registry[id]) {
-      this.pub('registry-updated', null, 1);
+      this.pubsub.pub('core:theme-registry-updated');
       if (id === this._id) {
         this.setId('default');
       }
@@ -62,7 +60,6 @@ export default class ThemeInterface extends PubSub {
       }
       if (this.scheme != this.registry[id]) {
         this.scheme = this.registry[id];
-        this.pub('update', this.scheme, 1);
         this._update();
       }
     }

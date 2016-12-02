@@ -25,7 +25,7 @@ export default function(profileName = 'default') {
   let dripcap = {
     Config: config,
     Profile: profile,
-    Theme: new Theme(profile.getConfig('theme')),
+    Theme: new Theme(pubsub, profile.getConfig('theme')),
     Menu: new Menu(),
     Layout: layout,
     Preferences: new Preferences(layout, pubsub),

@@ -34,12 +34,12 @@
 
   <script>
     const $ = require('jquery');
-    const { Theme, Profile } = require('dripcap');
+    const { PubSub, Theme, Profile } = require('dripcap');
 
     this.on('mount', () => {
       this.currentSnaplen = Profile.getConfig('snaplen');
 
-      Theme.sub('registry-updated', () => {
+      PubSub.sub('core:theme-registry-updated', () => {
         this.setThemeList(Theme.registry);
         this.update();
       });
