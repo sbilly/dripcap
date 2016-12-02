@@ -30,9 +30,9 @@ export default class LogView {
     };
 
     if (process.platform === 'darwin') {
-      Menu.registerMain(app.getName(), this.toggleMenu);
+      Menu.registerMain(app.getName(), this.toggleMenu, -5);
     } else {
-      Menu.registerMain('Developer', this.toggleMenu);
+      Menu.registerMain('Developer', this.toggleMenu, -5);
     }
 
     PubSub.on('log-view:toggle', () => {
