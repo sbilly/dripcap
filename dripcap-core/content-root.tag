@@ -138,7 +138,7 @@
       text-decoration: none;
     }
     input[type=button] {
-      height: 50px;
+      height: 32px;
     }
 
     ::selection {

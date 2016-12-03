@@ -63,9 +63,14 @@
 
   <style type="text/less">
     :scope {
+      position: absolute;
+      right: 0;
+      left: 0;
+      padding: 10px 20px;
+
       li.packages {
         border: 1px solid var(--color-selection-background);
-        margin: 20px 10px;
+        margin: 20px 0;
         padding: 15px;
         border-radius: 5px;
         p.head {

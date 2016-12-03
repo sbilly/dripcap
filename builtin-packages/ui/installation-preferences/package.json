@@ -1,0 +1,11 @@
+{
+  "name": "installation-preferences",
+  "main": "./lib/installation-preferences.es",
+  "license": "MIT",
+  "description": "Dripcap Installation Preferences",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dripcap/dripcap.git"
+  },
+  "readme": "see README.md"
+}
