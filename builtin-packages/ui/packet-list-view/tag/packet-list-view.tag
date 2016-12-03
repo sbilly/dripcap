@@ -141,9 +141,8 @@
             $(this).siblings('.selected').removeClass('selected');
             $(this).addClass('selected');
             self.selectedId = parseInt($(this).attr('data-packet'));
-            process.nextTick(() => {
-              PubSub.pub('core:session-packet', self.session.get(self.selectedId));
-            });
+            let pkt = self.session.get(self.selectedId);
+            PubSub.pub('packet-list-view:select', pkt);
           });
         }
 
