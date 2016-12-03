@@ -26,11 +26,11 @@
   </ul>
 
   <script>
-    const { Package } = require('dripcap');
+    const { Package, PubSub } = require('dripcap');
     const $ = require('jquery');
 
     this.on('mount', () => {
-      Package.sub('core:package-list-updated', list => {
+      PubSub.sub('core:package-list-updated', list => {
         this.packageList = Object.keys(list).map(v => list[v]);
         this.update();
       });

@@ -40,6 +40,6 @@ export default function init(dripcap) {
   });
 
   return new Promise((res) => {
-    Package.sub('core:package-loaded', res);
+    PubSub.sub('core:package-loaded', res);
   });
 }

@@ -12,8 +12,6 @@ import rimraf from 'rimraf';
 import _ from 'underscore';
 import { rollup } from 'rollup';
 import { EventEmitter } from 'events';
-
-import PubSub from './pubsub';
 import config from './config';
 
 class Package extends EventEmitter {
@@ -141,14 +139,14 @@ class Package extends EventEmitter {
   }
 }
 
-export default class PackageHub extends PubSub {
-  constructor(profile) {
-    super();
+export default class PackageHub {
+  constructor(pubsub, profile) {
+    this._pubsub = pubsub;
     this._profile = profile;
     this.uninstall = this.uninstall.bind(this);
     this.list = {};
     this.triggerlLoaded = _.debounce(() => {
-      this.pub('core:package-loaded');
+      this._pubsub.pub('core:package-loaded');
     }, 500);
   }
 
@@ -218,7 +216,7 @@ export default class PackageHub extends PubSub {
         });
         pkg.removeAllListeners();
         pkg.on('file-updated', () => {
-          this.pub('core:package-file-updated', pkg.name);
+          this._pubsub.pub('core:package-file-updated', pkg.name);
           if (this._profile.getConfig('auto-reload') === 'package') {
             pkg.deactivate().then(() => {
               process.nextTick(() => this.updatePackageList());
@@ -228,7 +226,7 @@ export default class PackageHub extends PubSub {
       }
     }
 
-    this.pub('core:package-list-updated', this.list);
+    this._pubsub.pub('core:package-list-updated', this.list);
   }
 
   resolveRegistry(hostname) {

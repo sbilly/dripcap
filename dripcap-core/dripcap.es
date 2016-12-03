@@ -29,7 +29,7 @@ export default function(profileName = 'default') {
     Menu: new Menu(),
     Layout: layout,
     Preferences: new Preferences(layout, pubsub),
-    Package: new PackageHub(profile),
+    Package: new PackageHub(pubsub, profile),
     KeyBind: new KeyBind(profile, pubsub),
     PubSub: pubsub,
     Logger: new Logger(pubsub),
