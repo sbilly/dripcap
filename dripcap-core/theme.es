@@ -46,6 +46,8 @@ export default class ThemeInterface {
     let computed = getComputedStyle(document.documentElement);
     let vibrancy = JSON.parse(computed.getPropertyValue('--vibrancy'));
     remote.getCurrentWindow().setVibrancy(vibrancy);
+
+    this.pubsub.pub('core:theme-id-updated', this._id);
   }
 
   get id() {

@@ -48,10 +48,7 @@
     const {Layout} = require('dripcap');
 
     this.activeIndex = 0;
-    this.items = opts.items || [
-      {center: {tag: 'drip-tab2'}, name: 'TTT'},
-      {center: {tag: 'drip-tab'}, name: 'TTTx'}
-    ];
+    this.items = opts.items || [];
 
     setIndex(e) {
       this.activeIndex = e.item.i;
