@@ -123,7 +123,8 @@
     _setIndex(index) {
       if (this.activeIndex != index) {
         this.activeIndex = index;
-        PubSub.pub('core:session-selected', this.sessions[index]);
+        let sess = this.sessions[index];
+        PubSub.pub('core:session-selected', {session: sess, status: this.status.get(sess)});
       }
     }
 
