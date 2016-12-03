@@ -189,71 +189,64 @@
 </packet-view-item>
 
 <packet-view-layer>
-<p class="layer-name list-item" oncontextmenu={ layerContext } onclick={ toggleLayer } onmouseover={ layerRange } onmouseout={ rangeOut }>
-  <i class="fa fa-arrow-circle-right" show={ !visible }></i>
-  <i class="fa fa-arrow-circle-down" show={ visible }></i>
-  { layer.name }
-  <i class="text-summary">{ layer.summary }</i>
-</p>
-<ul show={ visible }>
-  <packet-view-item each={ f in layer.items } layer={ layer } parent={ layer } path={ layer.id } field={ f }></packet-view-item>
-  <li if={ layer.error }>
-    <a class="text-label">Error:</a>
-    { layer.error }
-  </li>
-</ul>
-<packet-view-layer each={ ns in rootKeys } layer={ rootLayers[ns] } range={ range }></packet-view-layer>
+  <p class="layer-name list-item" oncontextmenu={ layerContext } onclick={ toggleLayer } onmouseover={ layerRange } onmouseout={ rangeOut }>
+    <i class="fa fa-arrow-circle-right" show={ !visible }></i>
+    <i class="fa fa-arrow-circle-down" show={ visible }></i>
+    { layer.name }
+    <i class="text-summary">{ layer.summary }</i>
+  </p>
 
-<script>
-  const { Menu, PubSub } = require('dripcap-core');
-  this.visible = true;
+  <script>
+    const { Menu, PubSub } = require('dripcap');
+    this.visible = true;
+    this.layer = {};
 
-  this.on('update', () => {
-    this.range = (opts.range != null) ? (opts.range + ' ' + opts.layer.range) : opts.layer.range;
-    this.layer = opts.layer;
-    this.rootKeys = [];
-    if (this.layer.layers != null) {
-      this.rootLayers = this.layer.layers;
-      this.rootKeys = Object.keys(this.rootLayers);
+    this.on('mount', () => {
+      this.layer = this.parent.rootLayers[opts.ns];
+      this.range = (opts.range != null) ? (opts.range + ' ' + this.layer.range) : this.layer.range;
+      this.rootKeys = [];
+      if (this.layer.layers != null) {
+        this.rootLayers = this.layer.layers;
+        this.rootKeys = Object.keys(this.rootLayers);
+      }
+      this.update();
+    });
+
+    layerContext(e) {
+      this.clickedLayerNamespace = e.item.ns;
+      e.filterText = this.layer.id;
+      Menu.popup('packet-view:layer-menu', this, remote.getCurrentWindow(), {event: e});
+      e.stopPropagation();
+    };
+
+    rangeOut(e) {
+      PubSub.pub('packet-view:range', []);
     }
-  });
 
-  this.layerContext = e => {
-    this.clickedLayerNamespace = e.item.ns;
-    e.filterText = this.layer.id;
-    Menu.popup('packet-view:layer-menu', this, remote.getCurrentWindow(), {event: e});
-    e.stopPropagation();
-  };
+    fieldRange(e) {
+      let range = this.range.split(' ');
+      range.pop();
+      range = range.concat((e.currentTarget.getAttribute('range') || '').split(' '));
+      PubSub.pub('packet-view:range', range);
+    }
 
-  this.rangeOut = e => {
-    PubSub.pub('packet-view:range', []);
-  }
+    layerRange(e) {
+      let range = this.range.split(' ');
+      range.pop();
+      PubSub.pub('packet-view:range', range);
+    }
 
-  this.fieldRange = e => {
-    let range = this.range.split(' ');
-    range.pop();
-    range = range.concat((e.currentTarget.getAttribute('range') || '').split(' '));
-    PubSub.pub('packet-view:range', range);
-  }
-
-  this.layerRange = e => {
-    let range = this.range.split(' ');
-    range.pop();
-    PubSub.pub('packet-view:range', range);
-  }
-
-  this.toggleLayer = e => {
-    this.visible = !this.visible;
-    e.stopPropagation();
-  };
-</script>
-
+    toggleLayer(e) {
+      this.visible = !this.visible;
+      e.stopPropagation();
+    };
+  </script>
 </packet-view-layer>
 
 <packet-view>
 
-<div if={ packet }>
-  <ul>
+<div>
+  <ul if={ packet }>
     <li>
       <i class="fa fa-circle-o"></i>
       <a class="text-label">
@@ -275,22 +268,34 @@
       </a>
       <i>{ packet.length }</i>
     </li>
-  <li if={ packet.caplen < packet.length }> <i class="fa fa-exclamation-circle text-warn"> This packet has been truncated.</i> </li> </ul> <packet-view-layer each={ ns in rootKeys } layer={ rootLayers[ns] }></packet-view-layer>
+    <li if={ packet.caplen < packet.length }>
+      <i class="fa fa-exclamation-circle text-warn"> This packet has been truncated.</i>
+    </li>
+  </ul>
+  <packet-view-layer each={ ns in rootKeys } ns={ ns }></packet-view-layer>
 </div>
 
 <script>
   const { remote } = require('electron');
+  const { PubSub } = require('dripcap');
 
-  this.set = pkt => {
-    this.packet = pkt;
-    if (pkt != null) {
-      this.rootLayers = this.packet.layers;
-      this.rootKeys = Object.keys(this.rootLayers);
-    }
-  };
+  this.on('mount', () => {
+    PubSub.sub(this, 'packet-list-view:select', (pkt) => {
+      this.packet = pkt;
+      if (pkt != null) {
+        this.rootLayers = this.packet.layers;
+        this.rootKeys = Object.keys(this.rootLayers);
+      }
+      this.update();
+    });
+  });
+
+  this.on('unmount', () => {
+    PubSub.removeHolder(this);
+  });
 </script>
 
-<style type="text/less" scoped>
+<style type="text/less">
   :scope {
     -webkit-user-select: auto;
     table {

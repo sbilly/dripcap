@@ -5,7 +5,7 @@
     <div class="ascii"></div>
   </div>
 
-  <a onclick={ load } show={ pkt && pkt.len - pkt.payload.length > visibleLength && pkt.stream } href="#">
+  <a onclick={ load } if={ pkt && pkt.len - pkt.payload.length > visibleLength && pkt.stream } href="#">
     { pkt.len - pkt.payload.length - visibleLength } bytes are omitted.<br>
     Click here to show more { Math.min(1024, pkt.len - pkt.payload.length - visibleLength) } bytes.
   </a>

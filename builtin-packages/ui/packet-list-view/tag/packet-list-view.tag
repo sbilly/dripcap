@@ -63,11 +63,14 @@
         this.selectedId = -1;
         this.reset();
         this.reload();
-        process.nextTick(() => {
-          $(this.root).focus();
-        });
-        sess.on('status', this.updateStatus);
-        if (status) this.updateStatus(status);
+
+        if (this.session) {
+          process.nextTick(() => {
+            $(this.root).focus();
+          });
+          sess.on('status', this.updateStatus);
+          if (status) this.updateStatus(status);  
+        }
       });
 
       this.reset();
