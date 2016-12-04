@@ -4,6 +4,7 @@
 
   <script>
     const $ = require('jquery');
+    const _ = require('underscore');
     const { PubSub, KeyBind } = require('dripcap');
 
     this.on('mount', () => {
@@ -24,6 +25,9 @@
       };
 
       let cellHeight = 32;
+      let refresh = _.debounce(() => {
+        PubSub.pub('packet-list-view:select', this.session.get(this.selectedId));
+      }, 200);
 
       KeyBind.bind('up', '[data-is=packet-list-view]', () => {
         let cell = this.main.children(`div.packet[data-packet=${this.selectedId}]:visible`);
@@ -64,7 +68,7 @@
           this.view.scrollTop(pos - this.view.height() + cellHeight * 2);
         }
         this.main.children(`div.packet[data-packet=${this.selectedId}]`).addClass('selected');
-        //refresh();
+        refresh();
 
         return false;
       });
@@ -108,7 +112,7 @@
           this.view.scrollTop(pos - cellHeight * 2);
         }
         this.main.children(`div.packet[data-packet=${this.selectedId}]`).addClass('selected');
-        //refresh();
+        refresh();
 
         return false;
       });
