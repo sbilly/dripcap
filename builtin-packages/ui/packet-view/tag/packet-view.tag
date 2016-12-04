@@ -1,11 +1,19 @@
 <packet-view-dripcap-enum>
   <script>
+    this.on('before-mount', () => {
+      this.reset();
+    });
+
     this.on('update', () => {
+      this.reset();
+    });
+
+    reset() {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
       this.name = keys.length > 0 ? keys.join(', ') : '[Unknown]';
       if (opts.val._name) this.name = opts.val._name;
       this.value = opts.val._value;
-    });
+    }
   </script>
   <i>{ name } ({value}) </i>
 </packet-view-dripcap-enum>
@@ -133,7 +141,19 @@
     e.stopPropagation();
   };
 
+  this.on('before-mount', () => {
+    this.reset();
+  });
+
+  this.on('mount', () => {
+    this.update();
+  });
+
   this.on('update', () => {
+    this.reset();
+  });
+
+  reset() {
     this.layer = opts.layer;
     this.val = opts.field.value.data;
     this.type = null;
@@ -177,7 +197,7 @@
         this.type = 'string';
       }
     }
-  });
+  }
 </script>
 
 <style type="text/less" scoped>
@@ -195,22 +215,36 @@
     { layer.name }
     <i class="text-summary">{ layer.summary }</i>
   </p>
+  <ul show={ visible }>
+    <packet-view-item each={ f in layer.items } layer={ parent.layer } parent={ parent.layer } path={ parent.layer.id } field={ f }></packet-view-item>
+    <li if={ layer.error }>
+      <a class="text-label">Error:</a>
+      { layer.error }
+    </li>
+  </ul>
+  <packet-view-layer each={ ns in rootKeys } layer={ parent.rootLayers[ns] } range={ parent.range }></packet-view-layer>
 
   <script>
     const { Menu, PubSub } = require('dripcap');
     this.visible = true;
-    this.layer = {};
 
-    this.on('mount', () => {
-      this.layer = this.parent.rootLayers[opts.ns];
-      this.range = (opts.range != null) ? (opts.range + ' ' + this.layer.range) : this.layer.range;
+    this.on('before-mount', () => {
+      this.reset();
+    });
+
+    this.on('update', () => {
+      this.reset();
+    });
+
+    reset() {
+      this.range = (opts.range != null) ? (opts.range + ' ' + opts.layer.range) : opts.layer.range;
+      this.layer = opts.layer;
       this.rootKeys = [];
       if (this.layer.layers != null) {
         this.rootLayers = this.layer.layers;
         this.rootKeys = Object.keys(this.rootLayers);
       }
-      this.update();
-    });
+    }
 
     layerContext(e) {
       this.clickedLayerNamespace = e.item.ns;
@@ -272,7 +306,7 @@
       <i class="fa fa-exclamation-circle text-warn"> This packet has been truncated.</i>
     </li>
   </ul>
-  <packet-view-layer each={ ns in rootKeys } ns={ ns }></packet-view-layer>
+  <packet-view-layer if={ packet } each={ ns in rootKeys } layer={ parent.rootLayers[ns] }></packet-view-layer>
 </div>
 
 <script>

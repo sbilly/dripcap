@@ -69,7 +69,7 @@
             $(this.root).focus();
           });
           sess.on('status', this.updateStatus);
-          if (status) this.updateStatus(status);  
+          if (status) this.updateStatus(status);
         }
       });
 
@@ -169,9 +169,9 @@
           this.cells.filter(`[data-packet=${pkt.seq}]:visible`)
             .empty()
             .append($('<a>').text(pkt.name))
-            .append($('<a>').text('?'))
+            .append($('<a>').text(pkt.attrs.src.data))
             .append($('<a>').append($('<i class="fa fa-angle-double-right">')))
-            .append($('<a>').text('?'))
+            .append($('<a>').text(pkt.attrs.dst.data))
             .append($('<a>').text(pkt.length));
         });
       }
