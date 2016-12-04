@@ -1,5 +1,4 @@
 <binary-view>
-
   <div class="container">
     <div class="hex"></div>
     <div class="ascii"></div>
@@ -26,6 +25,25 @@
       PubSub.sub(this, 'packet-list-view:select', (pkt) => {
         this.set(pkt);
         this.update();
+      });
+
+      PubSub.sub(this, 'packet-view:range', (array) => {
+        this.ulhex.find('i').removeClass('selected');
+        this.ulascii.find('i').removeClass('selected');
+        if (array.length > 0) {
+          let range = [0, this.ulascii.find('i').length];
+          for (let r of array) {
+            if (r !== '') {
+              let n = r.split(':');
+              n[0] = (n[0] === '') ? 0 : parseInt(n[0]);
+              n[1] = (n[1] === '') ? range[1] : parseInt(n[1]);
+              range[0] = Math.min(range[0] + n[0], range[1]);
+              range[1] = Math.min(range[0] + (n[1] - n[0]), range[1]);
+            }
+          }
+          this.ulhex.find('i').slice(range[0], range[1]).addClass('selected');
+          this.ulascii.find('i').slice(range[0], range[1]).addClass('selected');
+        }
       });
     });
 
@@ -105,6 +123,10 @@
         display: inline-block;
         font-style: normal;
         width: 23px;
+        &.selected {
+          color: var(--color-default-background);
+          background-color: var(--color-variables);
+        }
       }
     }
 

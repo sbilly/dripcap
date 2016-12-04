@@ -1,12 +1,7 @@
 <packet-view-dripcap-enum>
   <script>
-    this.on('before-mount', () => {
-      this.reset();
-    });
-
-    this.on('update', () => {
-      this.reset();
-    });
+    this.on('before-mount', () => { this.reset() });
+    this.on('update', () => { this.reset() });
 
     reset() {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
@@ -20,12 +15,15 @@
 
 <packet-view-dripcap-flags>
   <script>
-    this.on('update', () => {
+    this.on('before-mount', () => { this.reset() });
+    this.on('update', () => { this.reset() });
+
+    reset() {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
       keys = keys.map(k => opts.val._name[k]);
       this.name = keys.length > 0 ? keys.join(', ') : '[None]';
       this.value = opts.val._value;
-    });
+    }
   </script>
   <i>{ name } ({value}) </i>
 </packet-view-dripcap-flags>
@@ -99,7 +97,7 @@
     <packet-view-custom-value if={ type=='custom' } tag={ tag } val={ val }></packet-view-custom-value>
   </p>
   <ul show={ opts.field.items.length && show }>
-    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } parentVal={ val } parent={ f } path={ path } field={ f }></packet-view-item>
+    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } parentVal={ parent.val } parent={ f } path={ parent.path } field={ f }></packet-view-item>
   </ul>
 </li>
 
@@ -200,9 +198,12 @@
   }
 </script>
 
-<style type="text/less" scoped>
+<style type="text/less">
   :scope {
     -webkit-user-select: auto;
+    .text-label {
+      color: var(--color-keywords);
+    }
   }
 </style>
 
@@ -343,6 +344,7 @@
     }
     .text-label {
       cursor: default;
+      color: var(--color-keywords);
     }
     .layer-name {
       white-space: nowrap;
@@ -369,7 +371,7 @@
       margin: 0;
     }
     .fa-circle-o {
-      opacity: 0.1;
+      opacity: 0.5;
     }
   }
 </style>
