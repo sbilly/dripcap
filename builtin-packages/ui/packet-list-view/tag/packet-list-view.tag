@@ -4,11 +4,12 @@
 
   <script>
     const $ = require('jquery');
-    const { PubSub } = require('dripcap');
+    const { PubSub, KeyBind } = require('dripcap');
 
     this.on('mount', () => {
       this.view = $(this.root);
       this.main = this.view.children('div.main');
+      this.view.attr('tabindex', '0');
       this.updateStatus = (n) => {
         if (n.packets < this.packets) {
           this.reset();
@@ -21,6 +22,96 @@
         }
         this.reload();
       };
+
+      let cellHeight = 32;
+
+      KeyBind.bind('up', '[data-is=packet-list-view]', () => {
+        let cell = this.main.children(`div.packet[data-packet=${this.selectedId}]:visible`);
+        let nextIndex = 0;
+
+        if (this.filtered < 0) {
+          if (this.packets > 0) {
+            if (this.selectedId > 1) {
+              this.selectedId--;
+            } else {
+              this.selectedId = 1;
+            }
+            nextIndex = this.selectedId;
+          } else {
+            return;
+          }
+        } else {
+          if (this.filtered > 0) {
+            nextIndex = parseInt(cell.css('top')) / cellHeight - 1;
+            let list = this.session.getFiltered('main', nextIndex, nextIndex);
+            if (list[0]) {
+              this.selectedId = list[0];
+            } else {
+              return;
+            }
+          } else {
+            return;
+          }
+        }
+
+        this.cells.removeClass('selected');
+        let pos = nextIndex * cellHeight;
+        let top = this.view.scrollTop();
+        let diff = pos - (cellHeight * 2) - top;
+        if (diff < 0) {
+          this.view.scrollTop(this.view.scrollTop() + diff);
+        } else if (pos > this.view.scrollTop() + this.view.height()) {
+          this.view.scrollTop(pos - this.view.height() + cellHeight * 2);
+        }
+        this.main.children(`div.packet[data-packet=${this.selectedId}]`).addClass('selected');
+        //refresh();
+
+        return false;
+      });
+
+      KeyBind.bind('down', '[data-is=packet-list-view]', () => {
+        let cell = this.main.children(`div.packet[data-packet=${this.selectedId}]:visible`);
+        let nextIndex = 0;
+
+        if (this.filtered < 0) {
+          if (this.packets > 0) {
+            if (this.selectedId < 1) {
+              this.selectedId = 1;
+            } else if (this.selectedId < this.packets) {
+              this.selectedId++;
+            }
+            nextIndex = this.selectedId;
+          } else {
+            return;
+          }
+        } else {
+          if (this.filtered > 0) {
+            nextIndex = parseInt(cell.css('top')) / cellHeight + 1;
+            let list = this.session.getFiltered('main', nextIndex, nextIndex);
+            if (list[0]) {
+              this.selectedId = list[0];
+            } else {
+              return;
+            }
+          } else {
+            return;
+          }
+        }
+
+        this.cells.removeClass('selected');
+        let pos = nextIndex * cellHeight;
+        let bottom = this.view.scrollTop() + this.view.height();
+        let diff = pos + (cellHeight * 2) - bottom;
+        if (diff > 0) {
+          this.view.scrollTop(this.view.scrollTop() + diff);
+        } else if (pos < this.view.scrollTop()) {
+          this.view.scrollTop(pos - cellHeight * 2);
+        }
+        this.main.children(`div.packet[data-packet=${this.selectedId}]`).addClass('selected');
+        //refresh();
+
+        return false;
+      });
 
       PubSub.sub(this, 'core:theme-id-updated', () => {
         let computed = getComputedStyle(document.documentElement);
@@ -182,6 +273,12 @@
   <style type="text/less">
     :scope {
       outline-offset: -5px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: scroll;
       div.main {
         align-self: stretch;
         border-spacing: 0;
@@ -190,7 +287,7 @@
         div.packet {
           position: absolute;
           height: 32px;
-          left :0;
+          left: 0;
           right: 0;
           display: flex;
           align-items: center;
