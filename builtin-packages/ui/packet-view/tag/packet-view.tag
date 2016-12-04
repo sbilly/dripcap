@@ -64,10 +64,10 @@
     const { Menu } = require('dripcap');
     this.base = 10;
 
-    this.context = e => {
+    context(e) {
       Menu.popup('packet-view:numeric-value-menu', this, remote.getCurrentWindow(), {event: e});
       e.stopPropagation();
-    };
+    }
   </script>
 </packet-view-integer-value>
 
@@ -109,14 +109,16 @@
 
   this.show = false;
 
-  this.toggle = e => {
+  toggle(e) {
     if (opts.field.items.length) {
       this.show = !this.show;
     }
     e.stopPropagation();
-  };
+  }
 
-  this.rangeOut = () => this.parent.rangeOut();
+  rangeOut() {
+    this.parent.rangeOut();
+  }
 
   fieldRange(e) {
     this.parent.fieldRange(e);

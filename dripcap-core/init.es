@@ -4,7 +4,7 @@ import * as riot from 'riot';
 import config from './config';
 
 export default function init(dripcap) {
-  let { Theme, PubSub, Package, Session } = dripcap;
+  let { Theme, PubSub, Package } = dripcap;
 
   PubSub.on('core:new-window', () => remote.getGlobal('dripcap-core').newWindow());
   PubSub.on('core:close-window', () => remote.getCurrentWindow().close());
@@ -30,15 +30,6 @@ export default function init(dripcap) {
   riot.mount(document.body, 'drip-content-root');
 
   Package.updatePackageList();
-
-  Session.create({ifs: 'en0'}).then((sess) => {
-    sess.on('stat', (s) => console.log(s));
-    PubSub.emit('core:session-added', sess);
-    sess.start();
-    sess.on('log', log => {
-      console.log(log)
-    });
-  });
 
   return new Promise((res) => {
     PubSub.sub('core:package-loaded', res);
