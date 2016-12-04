@@ -1,0 +1,11 @@
+{
+  "name": "packet-filter-view",
+  "main": "./lib/packet-filter-view.es",
+  "license": "MIT",
+  "description": "Dripcap Packet Filter View",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dripcap/dripcap.git"
+  },
+  "readme": "see README.md"
+}

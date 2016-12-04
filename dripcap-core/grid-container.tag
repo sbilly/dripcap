@@ -52,7 +52,6 @@
       }
       > div.top {
         grid-area: top;
-        overflow: hidden;
         position: absolute;
         top: 0;
         bottom: 0;
@@ -61,7 +60,6 @@
       }
       > div.bottom {
         grid-area: bottom;
-        overflow: hidden;
         position: absolute;
         top: 0;
         bottom: 0;
@@ -70,7 +68,6 @@
       }
       > div.left {
         grid-area: left;
-        overflow: hidden;
         position: absolute;
         top: 0;
         bottom: 0;
@@ -79,7 +76,6 @@
       }
       > div.right {
         grid-area: right;
-        overflow: hidden;
       }
     }
   </style>
