@@ -1,6 +1,7 @@
 import { remote, shell } from 'electron';
 import { webFrame } from 'electron';
 import * as riot from 'riot';
+import config from './config';
 
 export default function init(dripcap) {
   let { Theme, PubSub, Package, Session } = dripcap;

@@ -60,6 +60,8 @@
   <i if={ base==16 } oncontextmenu={ context }>
     <i class="base">0x</i>{ opts.val.toString(16) }</i>
   <script>
+    const { remote } = require('electron');
+    const { Menu } = require('dripcap');
     this.base = 10;
 
     this.context = e => {
@@ -102,6 +104,9 @@
 </li>
 
 <script>
+  const { remote } = require('electron');
+  const { Menu } = require('dripcap');
+
   this.show = false;
 
   this.toggle = e => {
@@ -113,11 +118,11 @@
 
   this.rangeOut = () => this.parent.rangeOut();
 
-  this.fieldRange = e => {
+  fieldRange(e) {
     this.parent.fieldRange(e);
   };
 
-  this.context = e => {
+  context(e) {
     if (this.path) {
       switch (typeof this.val) {
         case 'boolean':
@@ -227,6 +232,7 @@
 
   <script>
     const { Menu, PubSub } = require('dripcap');
+    const { remote } = require('electron');
     this.visible = true;
 
     this.on('before-mount', () => {
