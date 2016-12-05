@@ -1,47 +1,26 @@
 import fs from 'fs';
-import {
-  remote
-} from 'electron';
-import {
-  Menu,
-  KeyBind,
-  Theme,
-  Action,
-  PubSub,
-  Config,
-  Profile
-} from 'dripcap-core';
-let {
-  app
-} = remote;
-let {
-  MenuItem
-} = remote;
+import { Menu, KeyBind, Theme, PubSub, Config, Profile } from 'dripcap';
+import { remote } from 'electron';
+let { app, MenuItem } = remote;
 
 export default class MainMenu {
   async activate() {
-    let action = name => () => Action.emit(name);
+    let action = name => () => {
+      PubSub.emit(name);
+    }
 
     KeyBind.bind('command+shift+n', '!menu', 'core:new-window');
     KeyBind.bind('command+shift+w', '!menu', 'core:close-window');
     KeyBind.bind('command+q', '!menu', 'core:quit');
-    KeyBind.bind('command+,', '!menu', 'core:preferences');
+    KeyBind.bind('command+,', '!menu', 'core:show-preferences');
     KeyBind.bind('f5', '!menu', 'core:reload-window');
     KeyBind.bind('command+shift+i', '!menu', 'core:toggle-devtools');
     KeyBind.bind('command+m', '!menu', 'core:window-minimize');
     KeyBind.bind('command+alt+ctrl+m', '!menu', 'core:window-zoom');
+    KeyBind.bind('command+Plus', '!menu', 'core:zoom-in');
+    KeyBind.bind('command+-', '!menu', 'core:zoom-out');
 
     this.fileMenu = function(menu, e) {
-      menu.append(new MenuItem({
-        label: 'New Window',
-        accelerator: KeyBind.get('!menu', 'core:new-window'),
-        click: action('core:new-window')
-      }));
-      menu.append(new MenuItem({
-        label: 'Close Window',
-        accelerator: KeyBind.get('!menu', 'core:close-window'),
-        click: action('core:close-window')
-      }));
       if (process.platform !== 'darwin') {
         menu.append(new MenuItem({
           type: 'separator'
@@ -114,8 +93,8 @@ export default class MainMenu {
         }));
         menu.append(new MenuItem({
           label: 'Preferences',
-          accelerator: KeyBind.get('!menu', 'core:preferences'),
-          click: action('core:preferences')
+          accelerator: KeyBind.get('!menu', 'core:show-preferences'),
+          click: action('core:show-preferences')
         }));
       }
       return menu;
@@ -168,6 +147,23 @@ export default class MainMenu {
     };
 
     this.windowMenu = function(menu, e) {
+      menu.append(new MenuItem({
+        label: 'Actual Size',
+        click: action('core:zoom-reset')
+      }));
+      menu.append(new MenuItem({
+        label: 'Zoom In',
+        accelerator: KeyBind.get('!menu', 'core:zoom-in'),
+        click: action('core:zoom-in')
+      }));
+      menu.append(new MenuItem({
+        label: 'Zoom Out',
+        accelerator: KeyBind.get('!menu', 'core:zoom-out'),
+        click: action('core:zoom-out')
+      }));
+      menu.append(new MenuItem({
+        type: 'separator'
+      }));
       menu.append(new MenuItem({
         label: 'Minimize',
         accelerator: KeyBind.get('!menu', 'core:window-minimize'),
@@ -227,8 +223,8 @@ export default class MainMenu {
         }));
         menu.append(new MenuItem({
           label: 'Preferences',
-          accelerator: KeyBind.get('!menu', 'core:preferences'),
-          click: action('core:preferences')
+          accelerator: KeyBind.get('!menu', 'core:show-preferences'),
+          click: action('core:show-preferences')
         }));
         return menu;
       };
@@ -256,8 +252,6 @@ export default class MainMenu {
     Menu.registerMain('Window', this.windowMenu);
     Menu.registerMain('Help', this.helpMenu);
     Menu.setMainPriority('Help', -999);
-
-    Theme.sub('registryUpdated', () => Menu.updateMainMenu());
     KeyBind.on('update', () => Menu.updateMainMenu());
   }
 
@@ -265,7 +259,7 @@ export default class MainMenu {
     KeyBind.unbind('command+shift+n', '!menu', 'core:new-window');
     KeyBind.unbind('command+shift+w', '!menu', 'core:close-window');
     KeyBind.unbind('command+q', '!menu', 'core:quit');
-    KeyBind.unbind('command+,', '!menu', 'core:preferences');
+    KeyBind.unbind('command+,', '!menu', 'core:show-preferences');
     KeyBind.unbind('f5', '!menu', 'core:reload-window');
     KeyBind.unbind('command+shift+i', '!menu', 'core:toggle-devtools');
     KeyBind.unbind('command+m', '!menu', 'core:window-minimize');

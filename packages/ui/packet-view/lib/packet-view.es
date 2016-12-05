@@ -1,45 +1,21 @@
-import $ from 'jquery';
-import riot from 'riot';
-import Component from 'dripcap-core/component';
-import {
-  remote
-} from 'electron';
-let {
-  MenuItem
-} = remote;
-let {
-  dialog
-} = remote;
+import { remote, clipboard } from 'electron';
+let { MenuItem } = remote;
+let { dialog } = remote;
 import fs from 'fs';
-import {
-  clipboard
-} from 'electron';
 import notifier from 'node-notifier';
-import {
-  Menu,
-  Package,
-  PubSub,
-  Session
-} from 'dripcap-core';
+import { Menu, Package, PubSub, Session, Layout } from 'dripcap';
 
-export default class PacketListView {
+export default class PacketView {
   async activate() {
-    this.comp = await Component.create(`${__dirname}/../tag/*.tag`);
-    let pkg = await Package.load('main-view');
-
-    let m = $('<div class="wrapper" />').attr('tabIndex', '0');
-    pkg.root.panel.center('packet-view', m, $('<i class="fa fa-cubes"> Packet</i>'));
-    this.view = riot.mount(m[0], 'packet-view')[0];
-
-    Session.on('created', session => {
-      this.view.set(null);
-      this.view.update();
-    });
-
-    PubSub.sub('packet-list-view:select', pkt => {
-      this.view.set(pkt);
-      this.view.update();
-    });
+    Layout.require(__dirname + '/../tag/packet-view.tag');
+    let layout = {
+      center: {
+        tag: 'packet-view'
+      },
+      name: 'Packet',
+      id: 'packet-view'
+    };
+    Layout.container('drip-tab-top').append(layout);
 
     this.copyMenu = function(menu, e) {
       if (window.getSelection().toString().length > 0) {
@@ -183,10 +159,9 @@ export default class PacketListView {
     Menu.unregister('packet-view:numeric-value-menu', this.copyMenu);
     Menu.unregister('packet-view:context-menu', this.filterMenu);
     Menu.unregister('packet-view:context-menu', this.copyMenu);
-
-    let pkg = await Package.load('main-view');
-    pkg.root.panel.center('packet-view');
-    this.view.unmount();
-    this.comp.destroy();
+    
+    Layout.container('drip-tab-top').remove('packet-view');
+    Layout.unregister('packet-view');
+    PubSub.removeHolder(this);
   }
 }
