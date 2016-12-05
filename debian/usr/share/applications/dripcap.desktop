@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Dripcap
 Comment=Caffeinated packet analyzer
-Exec=dripcap
+Exec=/usr/share/dripcap/dripcap
 Terminal=false
 Type=Application
 Icon=dripcap
