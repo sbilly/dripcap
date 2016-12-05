@@ -1,14 +1,13 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import Mousetrap from 'mousetrap';
-import {
-  EventEmitter
-} from 'events';
+import { EventEmitter } from 'events';
 
 export default class KeybindInterface extends EventEmitter {
-  constructor(parent) {
+  constructor(profile, pubsub) {
     super();
-    this.parent = parent;
+    this._profile = profile;
+    this._pubsub = pubsub;
     this._builtinCommands = {};
     this._commands = {};
   }
@@ -32,7 +31,7 @@ export default class KeybindInterface extends EventEmitter {
   }
 
   get(selector, action) {
-    let map = this.parent.profile.getKeymap();
+    let map = this._profile.getKeymap();
     for (var sel in map) {
       let commands = map[sel];
       for (var command in commands) {
@@ -68,7 +67,7 @@ export default class KeybindInterface extends EventEmitter {
 
     this._commands = _.clone(this._builtinCommands);
 
-    let map = this.parent.profile.getKeymap();
+    let map = this._profile.getKeymap();
     for (let selector in map) {
       let commands = map[selector];
       for (var command in commands) {
@@ -97,7 +96,7 @@ export default class KeybindInterface extends EventEmitter {
                     e.stopPropagation();
                   }
                 } else {
-                  this.parent.action.emit(act);
+                  this._pubsub.emit(act);
                   e.preventDefault();
                   e.stopPropagation();
                 }

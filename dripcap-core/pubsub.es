@@ -1,6 +1,7 @@
 export default class PubSub {
   constructor() {
     this._channels = {}
+    this._holders = new WeakMap();
   }
 
   _getChannel(name) {
@@ -13,7 +14,17 @@ export default class PubSub {
     return this._channels[name];
   }
 
-  sub(name, cb) {
+  sub(holder, name, cb) {
+    if (typeof holder === 'object') {
+      if (!this._holders.has(holder)) {
+        this._holders.set(holder, []);
+      }
+      let handlers = this._holders.get(holder);
+      handlers.push({name, cb});
+    } else {
+      cb = name;
+      name = holder;
+    }
     const ch = this._getChannel(name);
     ch.handlers.push(cb);
     for (let data of ch.queue) {
@@ -32,8 +43,32 @@ export default class PubSub {
     }
   }
 
+  on(holder, name, cb) {
+    this.sub(holder, name, cb);
+  }
+
+  emit(name, data) {
+    this.pub(name, data, 0);
+  }
+
   get(name, index = 0) {
     const ch = this._getChannel(name);
     return ch.queue[ch.queue.length - index - 1];
+  }
+
+  removeListener(name, cb) {
+    const ch = this._getChannel(name);
+    let index = ch.handlers.indexOf(cb);
+    if (index >= 0) ch.handlers.splice(index, 1);
+  }
+
+  removeHolder(holder) {
+    if (this._holders.has(holder)) {
+      let handlers = this._holders.get(holder, []);
+      for (let h of handlers) {
+        this.removeListener(h.name, h.cb);
+      }
+      this._holders.delete(holder);
+    }
   }
 }

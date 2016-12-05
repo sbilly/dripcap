@@ -15,7 +15,6 @@ import rimraf from 'rimraf';
 import {
   exec
 } from 'child_process';
-import jasmine from 'gulp-jasmine';
 import npm from 'npm';
 import pkg from './package.json';
 import EventEmitter from 'events';
