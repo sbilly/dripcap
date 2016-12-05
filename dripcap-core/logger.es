@@ -1,13 +1,13 @@
 import util from 'util';
 
-export default class LoggerInterface {
-  constructor(parent) {
-    this.parent = parent;
+export default class Logger {
+  constructor(pubsub) {
+    this.pubsub = pubsub;
   }
 
   debug() {
     let msg = util.format.apply(this, arguments);
-    this.parent.pubsub.pub('core:log', {
+    this.pubsub.pub('core:log', {
       level: 'debug',
       message: msg,
       timestamp: new Date()
@@ -16,7 +16,7 @@ export default class LoggerInterface {
 
   info() {
     let msg = util.format.apply(this, arguments);
-    this.parent.pubsub.pub('core:log', {
+    this.pubsub.pub('core:log', {
       level: 'info',
       message: msg,
       timestamp: new Date()
@@ -25,7 +25,7 @@ export default class LoggerInterface {
 
   warn() {
     let msg = util.format.apply(this, arguments);
-    this.parent.pubsub.pub('core:log', {
+    this.pubsub.pub('core:log', {
       level: 'warn',
       message: msg,
       timestamp: new Date()
@@ -34,7 +34,7 @@ export default class LoggerInterface {
 
   error() {
     let msg = util.format.apply(this, arguments);
-    this.parent.pubsub.pub('core:log', {
+    this.pubsub.pub('core:log', {
       level: 'error',
       message: msg,
       timestamp: new Date()

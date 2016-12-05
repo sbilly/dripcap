@@ -1,39 +1,30 @@
-import {
-  EventEmitter
-} from 'events';
 import config from './config';
-import {Session} from 'paperfilter';
+import { EventEmitter } from 'events';
+import paperfilter from 'paperfilter';
 
-export default class SessionInterface extends EventEmitter {
-  constructor(parent) {
+export default class Session extends EventEmitter {
+  constructor(pubsub) {
     super();
-    this.parent = parent;
-    this.list = [];
+    this._pubsub = pubsub;
     this._dissectors = [];
     this._streamDissectors = [];
     this._filterHints = {};
   }
 
   async getInterfaceList() {
-    return Session.devices;
+    return paperfilter.Session.devices;
   }
 
   registerDissector(script) {
     this._dissectors.push({
       script
     });
-    for (let sess of this.list) {
-      sess.registerDissector(script);
-    }
   }
 
   registerStreamDissector(script) {
     this._streamDissectors.push({
       script
     });
-    for (let sess of this.list) {
-      sess.registerStreamDissector(script);
-    }
   }
 
   unregisterDissector(script) {
@@ -41,18 +32,12 @@ export default class SessionInterface extends EventEmitter {
     if (index != null) {
       this._dissectors.splice(index, 1);
     }
-    for (let sess of this.list) {
-      sess.unregisterDissector(script);
-    }
   }
 
   unregisterStreamDissector(script) {
     let index = this._streamDissectors.find(e => e.path === script);
     if (index != null) {
       this._streamDissectors.splice(index, 1);
-    }
-    for (let sess of this.list) {
-      sess.unregisterStreamDissector(script);
     }
   }
 
@@ -76,27 +61,23 @@ export default class SessionInterface extends EventEmitter {
       if (a.filter === b.filter) return 0;
       return (a.filter < b.filter) ? 1 : -1;
     });
-    this.parent.pubsub.pub('core:filter-hints', hints);
+    this._pubsub.pub('core:filter-hints', hints);
   }
 
-  async create(iface = '', options = {}) {
+  async create(options = {}) {
     let option = {
       namespace: '::<Ethernet>',
       dissectors: this._dissectors,
       stream_dissectors: this._streamDissectors
     };
 
-    let sess = await Session.create(option);
-    sess.interface = iface;
+    let sess = await paperfilter.Session.create(option);
+    sess.interface = options.ifs || '';
+    sess.name = options.name || '';
 
     if (options.filter != null) {
       sess.setBPF(options.filter);
     }
-
-    this.parent.pubsub.pub('core:capturing-settings', {
-      iface,
-      options
-    });
 
     return sess;
   }

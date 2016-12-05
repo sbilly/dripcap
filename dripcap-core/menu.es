@@ -1,41 +1,31 @@
-import {
-  EventEmitter
-} from 'events';
 import _ from 'underscore';
-import {
-  remote
-} from 'electron';
-let {
-  Menu
-} = remote;
-let {
-  MenuItem
-} = remote;
+import { EventEmitter } from 'events';
+import { remote, shell } from 'electron';
 
-export default class MenuInterface extends EventEmitter {
-  constructor(parent) {
+export default class Menu extends EventEmitter {
+  constructor() {
     super();
-    this.parent = parent;
     this._handlers = {};
     this._mainHadlers = {};
     this._mainPriorities = {};
 
     this._updateMainMenu = _.debounce(() => {
-      let root = new Menu();
+      let root = new remote.Menu();
       let keys = Object.keys(this._mainHadlers);
       keys.sort((a, b) => (this._mainPriorities[b] || 0) - (this._mainPriorities[a] || 0));
       for (let j = 0; j < keys.length; j++) {
         let k = keys[j];
-        let menu = new Menu();
+        let menu = new remote.Menu();
         for (let i = 0; i < this._mainHadlers[k].length; i++) {
           let h = this._mainHadlers[k][i];
           menu = h.handler.call(this, menu);
           if (i < this._mainHadlers[k].length - 1) {
-            menu.append(new MenuItem({
+            menu.append(new remote.MenuItem({
               type: 'separator'
             }));
           }
         }
+        if (menu.items.length === 0) continue;
         let item = {
           label: k,
           submenu: menu,
@@ -49,13 +39,13 @@ export default class MenuInterface extends EventEmitter {
             item.role = 'window';
             break;
         }
-        root.append(new MenuItem(item));
+        root.append(new remote.MenuItem(item));
       }
 
       if (process.platform !== 'darwin') {
         return remote.getCurrentWindow().setMenu(root);
       } else {
-        return Menu.setApplicationMenu(root);
+        return remote.Menu.setApplicationMenu(root);
       }
     }, 100);
   }
@@ -108,13 +98,13 @@ export default class MenuInterface extends EventEmitter {
 
   popup(name, self, browserWindow, option = {}) {
     if (this._handlers[name] != null) {
-      let menu = new Menu();
+      let menu = new remote.Menu();
       let handlers = this._handlers[name];
       for (let i = 0; i < handlers.length; i++) {
         let h = handlers[i];
         menu = h.handler.call(self, menu, option.event);
         if (i < handlers.length - 1) {
-          menu.append(new MenuItem({
+          menu.append(new remote.MenuItem({
             type: 'separator'
           }));
         }

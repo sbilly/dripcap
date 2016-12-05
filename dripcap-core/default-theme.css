@@ -1,0 +1,32 @@
+/*
+https://chriskempson.github.io/base16/
+base16-ocean
+*/
+
+:root {
+  --color-default-background: #2b303b;
+  --color-lighter-background: #343d46;
+  --color-selection-background: #4f5b66;
+  --color-comments: #65737e;
+
+  --color-dark-foreground: #a7adba;
+  --color-default-foreground: #c0c5ce;
+  --color-light-foreground: #dfe1e8;
+  --color-light-background: #eff1f5;
+
+  --color-variables: #bf616a;
+  --color-integers: #d08770;
+  --color-classes: #ebcb8b;
+  --color-strings: #a3be8c;
+  --color-support: #96b5b4;
+  --color-functions: #8fa1b3;
+  --color-keywords: #b48ead;
+  --color-deprecated: #ab7967;
+
+  --color-debug: var(--color-dark-foreground);
+  --color-info: var(--color-functions);
+  --color-warn: var(--color-integers);
+  --color-error: var(--color-variables);
+
+  --vibrancy: 'dark';
+}
