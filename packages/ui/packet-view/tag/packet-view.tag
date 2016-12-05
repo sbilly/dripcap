@@ -1,23 +1,29 @@
 <packet-view-dripcap-enum>
   <script>
-    this.on('update', () => {
+    this.on('before-mount', () => { this.reset() });
+    this.on('update', () => { this.reset() });
+
+    reset() {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
       this.name = keys.length > 0 ? keys.join(', ') : '[Unknown]';
       if (opts.val._name) this.name = opts.val._name;
       this.value = opts.val._value;
-    });
+    }
   </script>
   <i>{ name } ({value}) </i>
 </packet-view-dripcap-enum>
 
 <packet-view-dripcap-flags>
   <script>
-    this.on('update', () => {
+    this.on('before-mount', () => { this.reset() });
+    this.on('update', () => { this.reset() });
+
+    reset() {
       let keys = Object.keys(opts.val).filter(k => !k.startsWith('_') && opts.val[k]);
       keys = keys.map(k => opts.val._name[k]);
       this.name = keys.length > 0 ? keys.join(', ') : '[None]';
       this.value = opts.val._value;
-    });
+    }
   </script>
   <i>{ name } ({value}) </i>
 </packet-view-dripcap-flags>
@@ -54,19 +60,21 @@
   <i if={ base==16 } oncontextmenu={ context }>
     <i class="base">0x</i>{ opts.val.toString(16) }</i>
   <script>
+    const { remote } = require('electron');
+    const { Menu } = require('dripcap');
     this.base = 10;
 
-    this.context = e => {
+    context(e) {
       Menu.popup('packet-view:numeric-value-menu', this, remote.getCurrentWindow(), {event: e});
       e.stopPropagation();
-    };
+    }
   </script>
 </packet-view-integer-value>
 
 <packet-view-string-value>
   <i></i>
   <script>
-    import $ from 'jquery';
+    const $ = require('jquery');
 
     this.on('update', () => {
       if (this.opts.val != null) {
@@ -91,27 +99,32 @@
     <packet-view-custom-value if={ type=='custom' } tag={ tag } val={ val }></packet-view-custom-value>
   </p>
   <ul show={ opts.field.items.length && show }>
-    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } parentVal={ val } parent={ f } path={ path } field={ f }></packet-view-item>
+    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } parentVal={ parent.val } parent={ f } path={ parent.path } field={ f }></packet-view-item>
   </ul>
 </li>
 
 <script>
+  const { remote } = require('electron');
+  const { Menu } = require('dripcap');
+
   this.show = false;
 
-  this.toggle = e => {
+  toggle(e) {
     if (opts.field.items.length) {
       this.show = !this.show;
     }
     e.stopPropagation();
-  };
+  }
 
-  this.rangeOut = () => this.parent.rangeOut();
+  rangeOut() {
+    this.parent.rangeOut();
+  }
 
-  this.fieldRange = e => {
+  fieldRange(e) {
     this.parent.fieldRange(e);
   };
 
-  this.context = e => {
+  context(e) {
     if (this.path) {
       switch (typeof this.val) {
         case 'boolean':
@@ -133,7 +146,19 @@
     e.stopPropagation();
   };
 
+  this.on('before-mount', () => {
+    this.reset();
+  });
+
+  this.on('mount', () => {
+    this.update();
+  });
+
   this.on('update', () => {
+    this.reset();
+  });
+
+  reset() {
     this.layer = opts.layer;
     this.val = opts.field.value.data;
     this.type = null;
@@ -177,83 +202,94 @@
         this.type = 'string';
       }
     }
-  });
+  }
 </script>
 
-<style type="text/less" scoped>
+<style type="text/less">
   :scope {
     -webkit-user-select: auto;
+    .text-label {
+      color: var(--color-keywords);
+    }
   }
 </style>
 
 </packet-view-item>
 
 <packet-view-layer>
-<p class="layer-name list-item" oncontextmenu={ layerContext } onclick={ toggleLayer } onmouseover={ layerRange } onmouseout={ rangeOut }>
-  <i class="fa fa-arrow-circle-right" show={ !visible }></i>
-  <i class="fa fa-arrow-circle-down" show={ visible }></i>
-  { layer.name }
-  <i class="text-summary">{ layer.summary }</i>
-</p>
-<ul show={ visible }>
-  <packet-view-item each={ f in layer.items } layer={ layer } parent={ layer } path={ layer.id } field={ f }></packet-view-item>
-  <li if={ layer.error }>
-    <a class="text-label">Error:</a>
-    { layer.error }
-  </li>
-</ul>
-<packet-view-layer each={ ns in rootKeys } layer={ rootLayers[ns] } range={ range }></packet-view-layer>
+  <p class="layer-name list-item" oncontextmenu={ layerContext } onclick={ toggleLayer } onmouseover={ layerRange } onmouseout={ rangeOut }>
+    <i class="fa fa-arrow-circle-right" show={ !visible }></i>
+    <i class="fa fa-arrow-circle-down" show={ visible }></i>
+    { layer.name }
+    <i class="text-summary">{ layer.summary }</i>
+  </p>
+  <ul show={ visible }>
+    <packet-view-item each={ f in layer.items } layer={ parent.layer } parent={ parent.layer } path={ parent.layer.id } field={ f }></packet-view-item>
+    <li if={ layer.error }>
+      <a class="text-label">Error:</a>
+      { layer.error }
+    </li>
+  </ul>
+  <packet-view-layer each={ ns in rootKeys } layer={ parent.rootLayers[ns] } range={ parent.range }></packet-view-layer>
 
-<script>
-  import {Menu, PubSub} from 'dripcap-core';
-  this.visible = true;
+  <script>
+    const { Menu, PubSub } = require('dripcap');
+    const { remote } = require('electron');
+    this.visible = true;
 
-  this.on('update', () => {
-    this.range = (opts.range != null) ? (opts.range + ' ' + opts.layer.range) : opts.layer.range;
-    this.layer = opts.layer;
-    this.rootKeys = [];
-    if (this.layer.layers != null) {
-      this.rootLayers = this.layer.layers;
-      this.rootKeys = Object.keys(this.rootLayers);
+    this.on('before-mount', () => {
+      this.reset();
+    });
+
+    this.on('update', () => {
+      this.reset();
+    });
+
+    reset() {
+      this.range = (opts.range != null) ? (opts.range + ' ' + opts.layer.range) : opts.layer.range;
+      this.layer = opts.layer;
+      this.rootKeys = [];
+      if (this.layer.layers != null) {
+        this.rootLayers = this.layer.layers;
+        this.rootKeys = Object.keys(this.rootLayers);
+      }
     }
-  });
 
-  this.layerContext = e => {
-    this.clickedLayerNamespace = e.item.ns;
-    e.filterText = this.layer.id;
-    Menu.popup('packet-view:layer-menu', this, remote.getCurrentWindow(), {event: e});
-    e.stopPropagation();
-  };
+    layerContext(e) {
+      this.clickedLayerNamespace = e.item.ns;
+      e.filterText = this.layer.id;
+      Menu.popup('packet-view:layer-menu', this, remote.getCurrentWindow(), {event: e});
+      e.stopPropagation();
+    };
 
-  this.rangeOut = e => {
-    PubSub.pub('packet-view:range', []);
-  }
+    rangeOut(e) {
+      PubSub.pub('packet-view:range', []);
+    }
 
-  this.fieldRange = e => {
-    let range = this.range.split(' ');
-    range.pop();
-    range = range.concat((e.currentTarget.getAttribute('range') || '').split(' '));
-    PubSub.pub('packet-view:range', range);
-  }
+    fieldRange(e) {
+      let range = this.range.split(' ');
+      range.pop();
+      range = range.concat((e.currentTarget.getAttribute('range') || '').split(' '));
+      PubSub.pub('packet-view:range', range);
+    }
 
-  this.layerRange = e => {
-    let range = this.range.split(' ');
-    range.pop();
-    PubSub.pub('packet-view:range', range);
-  }
+    layerRange(e) {
+      let range = this.range.split(' ');
+      range.pop();
+      PubSub.pub('packet-view:range', range);
+    }
 
-  this.toggleLayer = e => {
-    this.visible = !this.visible;
-    e.stopPropagation();
-  };
-</script>
-
+    toggleLayer(e) {
+      this.visible = !this.visible;
+      e.stopPropagation();
+    };
+  </script>
 </packet-view-layer>
 
 <packet-view>
 
-<div if={ packet }>
-  <ul>
+<div>
+  <ul if={ packet }>
     <li>
       <i class="fa fa-circle-o"></i>
       <a class="text-label">
@@ -275,22 +311,34 @@
       </a>
       <i>{ packet.length }</i>
     </li>
-  <li if={ packet.caplen < packet.length }> <i class="fa fa-exclamation-circle text-warn"> This packet has been truncated.</i> </li> </ul> <packet-view-layer each={ ns in rootKeys } layer={ rootLayers[ns] }></packet-view-layer>
+    <li if={ packet.caplen < packet.length }>
+      <i class="fa fa-exclamation-circle text-warn"> This packet has been truncated.</i>
+    </li>
+  </ul>
+  <packet-view-layer if={ packet } each={ ns in rootKeys } layer={ parent.rootLayers[ns] }></packet-view-layer>
 </div>
 
 <script>
-  import {remote} from 'electron';
+  const { remote } = require('electron');
+  const { PubSub } = require('dripcap');
 
-  this.set = pkt => {
-    this.packet = pkt;
-    if (pkt != null) {
-      this.rootLayers = this.packet.layers;
-      this.rootKeys = Object.keys(this.rootLayers);
-    }
-  };
+  this.on('mount', () => {
+    PubSub.sub(this, 'packet-list-view:select', (pkt) => {
+      this.packet = pkt;
+      if (pkt != null) {
+        this.rootLayers = this.packet.layers;
+        this.rootKeys = Object.keys(this.rootLayers);
+      }
+      this.update();
+    });
+  });
+
+  this.on('unmount', () => {
+    PubSub.removeHolder(this);
+  });
 </script>
 
-<style type="text/less" scoped>
+<style type="text/less">
   :scope {
     -webkit-user-select: auto;
     table {
@@ -304,6 +352,7 @@
     }
     .text-label {
       cursor: default;
+      color: var(--color-keywords);
     }
     .layer-name {
       white-space: nowrap;
@@ -330,7 +379,7 @@
       margin: 0;
     }
     .fa-circle-o {
-      opacity: 0.1;
+      opacity: 0.5;
     }
   }
 </style>

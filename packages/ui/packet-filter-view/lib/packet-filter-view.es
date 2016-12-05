@@ -1,23 +1,16 @@
-import $ from 'jquery';
-import riot from 'riot';
-import Component from 'dripcap-core/component';
-import {
-  Package
-} from 'dripcap-core';
+import { Package, Layout } from 'dripcap';
 
 export default class PacketFilterView {
   async activate() {
-    this.comp = await Component.create(`${__dirname}/../tag/*.tag`);
-    let pkg = await Package.load('main-view');
-    let m = $('<div/>');
-    this.view = riot.mount(m[0], 'packet-filter-view')[0];
-    pkg.root.panel.leftSouthFixed(m);
+    let pkg = await Package.load('packet-list-view');
+    Layout.require(__dirname + '/../tag/packet-filter-view.tag');
+    Layout.container('packet-list-view').setBottom({
+      tag: 'packet-filter-view'
+    });
   }
 
   async deactivate() {
-    let pkg = await Package.load('main-view');
-    pkg.root.panel.leftSouthFixed();
-    this.view.unmount();
-    this.comp.destroy();
+    Layout.container('packet-list-view').setBottom();
+    Layout.unregister('packet-filter-view');
   }
 }

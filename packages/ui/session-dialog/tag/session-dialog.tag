@@ -1,82 +1,61 @@
 <session-dialog>
-
-  <modal-dialog>
+  <div>
     <h2>New session</h2>
     <p>
-      <select name="interface">
-        <option each={ parent.interfaceList } if={ link===1 } value={ encodeURI(id) }>{ name }</option>
+      <select ref="interface">
+        <option each={ interfaceList } if={ link===1 } value={ encodeURI(id) }>{ name }</option>
       </select>
     </p>
     <p>
-      <input type="text" name="filter" placeholder="filter (BPF)">
+      <input type="text" ref="filter" placeholder="filter (BPF)">
     </p>
     <p>
       <label>
-        <input type="checkbox" name="promisc">
+        <input type="checkbox" ref="promisc">
         Promiscuous mode
       </label>
     </p>
     <p>
-      <input type="button" name="start" value="Start" onclick={ parent.start }>
+      <input type="button" name="start" value="Start" onclick={ start }>
     </p>
-  </modal-dialog>
+  </div>
 
-  <style type="text/less" scoped>
-    :scope > modal-dialog > .modal > .content {
-      max-width: 600px;
+  <style>
+    :scope > div {
+      padding: 10px 20px;
     }
   </style>
 
   <script>
-    import $ from 'jquery';
-    import { Session, PubSub, Profile, Logger } from 'dripcap-core';
+    const $ = require('jquery');
+    const { Session, Layout, Profile, PubSub } = require('dripcap');
 
-    this.setInterfaceList = list => {
-      return this.interfaceList = list;
-    };
+    this.interfaceList = [];
+    Session.getInterfaceList().then(list => {
+      this.interfaceList = list;
+      this.update();
+    });
 
-    this.show = () => {
-      return this.tags['modal-dialog'].show();
-    };
-
-    this.start = () => {
-      let ifs = decodeURI($(this.tags['modal-dialog'].interface).val());
-      let filter = $(this.tags['modal-dialog'].filter).val();
-      let promisc = $(this.tags['modal-dialog'].promisc).prop('checked');
+    start() {
+      let ifs = decodeURI($(this.refs.interface).val());
+      let filter = $(this.refs.filter).val();
+      let promisc = $(this.refs.promisc).prop('checked');
       let snaplen = Profile.getConfig('snaplen');
 
-      this.tags['modal-dialog'].hide();
-      Session.create(ifs, {
+      Session.create({
+        ifs: ifs,
         filter: filter,
         promiscuous: promisc,
         snaplen: snaplen
       }).then(sess => {
-        for (let err of sess.errors) {
-          Logger.error(err.message);
-        }
-        PubSub.pub('core:session-created', sess);
-        sess.on('status', stat => {
-          PubSub.pub('core:capturing-status', stat);
-        });
-        sess.on('log', log => {
-          PubSub.pub('core:log', {
-            level: log.level,
-            message: log.message,
-            timestamp: new Date(),
-            data: log.data
-          });
-        });
-        if (Session.list != null) {
-          for (let i = 0; i < Session.list.length; i++) {
-            let s = Session.list[i];
-            s.close();
-          }
-        }
-        Session.list = [sess];
-        Session.emit('created', sess);
+        PubSub.emit('core:session-added', sess);
         sess.start();
+        sess.on('log', log => {
+          console.log(log)
+        });
       });
-    };
-  </script>
 
+      Layout.container('drip-modal').close();
+    }
+  </script>
 </session-dialog>

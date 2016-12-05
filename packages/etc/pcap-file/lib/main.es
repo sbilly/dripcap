@@ -1,20 +1,14 @@
 import $ from 'jquery';
 import fs from 'fs';
+import path from 'path';
 import {remote} from 'electron';
 const {MenuItem} = remote;
 const {dialog} = remote;
-import {
-  Session,
-  Menu,
-  KeyBind,
-  Action,
-  PubSub,
-  Logger
-} from 'dripcap-core';
+import { Session, Menu, KeyBind, PubSub, Logger } from 'dripcap';
 
 class Pcap {
-  constructor(path) {
-    let data = fs.readFileSync(path);
+  constructor(filePath) {
+    let data = fs.readFileSync(filePath);
     if (data.length < 24) { throw new Error('too short global header'); }
 
     let magicNumber = data.readUInt32BE(0, true);
@@ -100,28 +94,28 @@ export default class PcapFile {
       menu.append(new MenuItem({
         label: 'Import Pcap File...',
         accelerator: KeyBind.get('!menu', 'pcap-file:open'),
-        click: () => { return Action.emit('pcap-file:open'); }
+        click: () => { return PubSub.emit('pcap-file:open'); }
       }));
       return menu;
     };
 
     Menu.registerMain('File', this.fileMenu, 5);
 
-    Action.on('pcap-file:open', () => {
-      let path = dialog.showOpenDialog(remote.getCurrentWindow(), {filters: [{name: 'PCAP File', extensions: ['pcap']}]});
-      if (path != null) {
-        this._open(path[0])
+    PubSub.on(this, 'pcap-file:open', () => {
+      let filePath = dialog.showOpenDialog(remote.getCurrentWindow(), {filters: [{name: 'PCAP File', extensions: ['pcap']}]});
+      if (filePath != null) {
+        this._open(filePath[0])
       }
     });
   }
 
-  async _open(path) {
-    let pcap = new Pcap(path);
-    let sess = await Session.create();
+  async _open(filePath) {
+    let pcap = new Pcap(filePath);
+    let sess = await Session.create({name: path.basename(filePath)});
     for (let err of sess.errors) {
-      Logger.error(err.message);
+      //Logger.error(err.message);
     }
-    PubSub.pub('core:session-created', sess);
+    PubSub.emit('core:session-added', sess);
     sess.on('status', stat => {
       PubSub.pub('core:capturing-status', stat);
     });
@@ -133,14 +127,6 @@ export default class PcapFile {
         data: log.data
       });
     });
-    if (Session.list != null) {
-      for (let i = 0; i < Session.list.length; i++) {
-        let s = Session.list[i];
-        s.close();
-      }
-    }
-    Session.list = [sess];
-    Session.emit('created', sess);
     sess.analyze(pcap.packets);
     let start = new Date();
     sess.on('status', stat => {
@@ -156,7 +142,7 @@ export default class PcapFile {
   }
 
   async deactivate() {
-    Action.removeAllListeners('pcap-file:open');
+    PubSub.removeHolder(this);
     KeyBind.unbind('command+o', '!menu', 'pcap-file:open');
     Menu.unregisterMain('File', this.fileMenu);
   }

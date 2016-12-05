@@ -1,6 +1,4 @@
-import {
-  Session
-} from 'dripcap-core';
+import { Session } from 'dripcap';
 
 export default class IPv4 {
   activate() {
