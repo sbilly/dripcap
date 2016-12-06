@@ -28,7 +28,6 @@ cp -a * %{buildroot}
 %defattr(-,root,root)
 %doc
 
-/usr/bin/dripcap
 /usr/share/dripcap/
 /usr/share/applications/dripcap.desktop
 /usr/share/doc/dripcap/copyright
@@ -40,4 +39,3 @@ cp -a * %{buildroot}
 
 %post
 setcap cap_net_raw,cap_net_admin=eip /usr/share/dripcap/dripcap
-
