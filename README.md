@@ -6,7 +6,7 @@ Caffeinated packet analyzer
 [![Build status](https://ci.appveyor.com/api/projects/status/rbw0hgmguohnrgfi/branch/master?svg=true)](https://ci.appveyor.com/project/h2so5/dripcap/branch/master)
 [![dependencies Status](https://david-dm.org/dripcap/dripcap/status.svg)](https://david-dm.org/dripcap/dripcap)
 
-![screenshot](https://github.com/h2so5/dripcap/blob/master/images/screenshot.png)
+![screenshot](https://github.com/dripcap/dripcap/blob/master/images/screenshot.png)
 
 ## Download
 
