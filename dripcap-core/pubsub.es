@@ -47,8 +47,8 @@ export default class PubSub {
     this.sub(holder, name, cb);
   }
 
-  emit(name, data) {
-    this.pub(name, data, 0);
+  emit(name, data, queue = 0) {
+    this.pub(name, data, queue);
   }
 
   get(name, index = 0) {
