@@ -1,9 +1,9 @@
-import { Layout, Preferences } from 'dripcap';
+import { Layout } from 'dripcap';
 
 export default class GeneralPreferences {
   async activate() {
     Layout.require(__dirname + '/../tag/general-preferences.tag');
-    Preferences.registerTab({
+    Layout.registerPreferenceTab({
       id: 'general-preferences',
       name: 'General',
       center: {
@@ -13,7 +13,7 @@ export default class GeneralPreferences {
   }
 
   async deactivate() {
-    Preferences.unregisterTab('general-preferences');
+    Layout.unregisterPreferenceTab('general-preferences');
     Layout.unregister('general-preferences');
   }
 }

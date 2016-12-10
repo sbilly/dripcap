@@ -1,9 +1,9 @@
-import { Package, Layout, Preferences } from 'dripcap';
+import { Package, Layout } from 'dripcap';
 
 export default class PackagePreferences {
   async activate() {
     Layout.require(__dirname + '/../tag/installation-preferences.tag');
-    Preferences.registerTab({
+    Layout.registerPreferenceTab({
       id: 'installation-preferences',
       name: 'Install',
       center: {
@@ -13,7 +13,7 @@ export default class PackagePreferences {
   }
 
   async deactivate() {
-    Preferences.unregisterTab('installation-preferences');
+    Layout.unregisterPreferenceTab('installation-preferences');
     Layout.unregister('installation-preferences');
   }
 }
