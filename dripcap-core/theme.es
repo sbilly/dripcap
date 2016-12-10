@@ -50,7 +50,7 @@ export default class ThemeInterface {
     this.pubsub.pub('core:theme-id-updated', this._id);
   }
 
-  get id() {
+  id() {
     return this._id;
   }
 

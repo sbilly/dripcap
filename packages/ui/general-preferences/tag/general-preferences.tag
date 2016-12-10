@@ -66,7 +66,7 @@
     });
 
     setThemeList(list) {
-      this.currentTheme = Theme.id;
+      this.currentTheme = Theme.id();
       this.themeList = list;
     }
 
