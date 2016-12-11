@@ -37,7 +37,7 @@ export default class KeybindInterface extends EventEmitter {
       for (var command in commands) {
         var act = commands[command];
         if (sel === selector && act === action) {
-          if (process.platform === 'linux') {
+          if (process.platform !== 'darwin') {
             return command.replace('command', 'ctrl');
           } else {
             return command;
@@ -51,7 +51,7 @@ export default class KeybindInterface extends EventEmitter {
       for (sel in sels) {
         var act = sels[sel];
         if (sel === selector && act === action) {
-          if (process.platform === 'linux') {
+          if (process.platform !== 'darwin') {
             return command.replace('command', 'ctrl');
           } else {
             return command;
@@ -82,7 +82,7 @@ export default class KeybindInterface extends EventEmitter {
     for (var command in this._commands) {
       let sels = this._commands[command];
       ((command, sels) => {
-        if (process.platform === 'linux') {
+        if (process.platform !== 'darwin') {
           command = command.replace('command', 'ctrl');
         }
         return Mousetrap.bind(command, e => {
