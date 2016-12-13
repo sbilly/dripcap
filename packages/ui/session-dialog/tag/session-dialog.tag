@@ -30,11 +30,7 @@
     const $ = require('jquery');
     const { Session, Layout, Profile, PubSub } = require('dripcap');
 
-    this.interfaceList = [];
-    Session.getInterfaceList().then(list => {
-      this.interfaceList = list;
-      this.update();
-    });
+    this.interfaceList = Session.devices;
 
     start() {
       let ifs = decodeURI($(this.refs.interface).val());

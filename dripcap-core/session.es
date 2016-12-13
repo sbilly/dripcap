@@ -11,7 +11,7 @@ export default class Session extends EventEmitter {
     this._filterHints = {};
   }
 
-  async getInterfaceList() {
+  get devices() {
     return paperfilter.Session.devices;
   }
 
