@@ -3,7 +3,7 @@ import path from 'path';
 import mkpath from 'mkpath';
 import _ from 'underscore';
 
-class Category {
+class Config {
   constructor(_path, defaultValue = {}) {
     this._path = _path;
     try {
@@ -66,7 +66,7 @@ export default class Profile {
     mkpath.sync(this.path);
     mkpath.sync(this._packagePath);
 
-    this._config = new Category(path.join(this.path, 'config.json'), {
+    this._config = new Config(path.join(this.path, 'config.json'), {
       snaplen: 1600,
       theme: 'default',
       "package-registry": 'dripcap.org',
@@ -105,7 +105,7 @@ export default class Profile {
 
   getPackageConfig(name) {
     if (this._packages[name] == null) {
-      this._packages[name] = new Category(path.join(this._packagePath, `${name}.json`), {
+      this._packages[name] = new Config(path.join(this._packagePath, `${name}.json`), {
         enabled: true
       });
     }
