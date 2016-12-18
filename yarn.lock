@@ -4106,7 +4106,7 @@ riot-compiler@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/riot-compiler/-/riot-compiler-3.0.0.tgz#9d4259d743341f5c79ae06667cf3161056fd2a6b"
 
-riot-compiler@^3.1.1:
+riot-compiler@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/riot-compiler/-/riot-compiler-3.1.1.tgz#f456934bb863231b21807fa185a5a9edaf062008"
 
@@ -4118,16 +4118,16 @@ riot-tmpl@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/riot-tmpl/-/riot-tmpl-3.0.1.tgz#2d69a563053259dcefcfd2da6d206d9466072225"
 
-riot@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/riot/-/riot-3.0.4.tgz#c837f16bda0145b517172c15d8ec2b6756e38ff9"
+riot@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/riot/-/riot-3.0.2.tgz#8d713268a20ff4a711719af59f1a229b18f95c97"
   dependencies:
     riot-cli "^3.0.0"
-    riot-compiler "^3.1.1"
+    riot-compiler "^3.1.0"
     riot-observable "^3.0.0"
     riot-tmpl "^3.0.1"
     simple-dom "0.3.2"
-    simple-html-tokenizer "^0.2.6"
+    simple-html-tokenizer "^0.2.5"
 
 rollup-plugin-commonjs@^6.0.0:
   version "6.0.0"
@@ -4256,7 +4256,7 @@ simple-dom@0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/simple-dom/-/simple-dom-0.3.2.tgz#0663d10f1556f1500551d518f56e3aba0871371d"
 
-simple-html-tokenizer@^0.2.6:
+simple-html-tokenizer@^0.2.5:
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/simple-html-tokenizer/-/simple-html-tokenizer-0.2.6.tgz#a6efab7bc705cf3a96f1aaeaa1a76365f0d16c33"
 
