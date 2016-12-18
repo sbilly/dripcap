@@ -12,7 +12,7 @@ import rimraf from 'rimraf';
 import _ from 'underscore';
 import { rollup } from 'rollup';
 import { EventEmitter } from 'events';
-import config from './config';
+import Env from './env';
 
 class Package extends EventEmitter {
   constructor(jsonPath, profile) {
@@ -20,7 +20,7 @@ class Package extends EventEmitter {
     this._activated = false;
 
     this.path = path.dirname(jsonPath);
-    this.userPackage = path.normalize(this.path).startsWith(path.normalize(config.userPackagePath));
+    this.userPackage = path.normalize(this.path).startsWith(path.normalize(Env.userPackagePath));
 
     let info = JSON.parse(fs.readFileSync(jsonPath));
 
@@ -167,15 +167,15 @@ export default class PackageHub {
   }
 
   updatePackageList() {
-    let paths = glob.sync(config.packagePath + '/**/package.json');
-    paths = paths.concat(glob.sync(config.userPackagePath + '/**/package.json'));
+    let paths = glob.sync(Env.packagePath + '/**/package.json');
+    paths = paths.concat(glob.sync(Env.userPackagePath + '/**/package.json'));
 
     let packages = {};
     for (let p of paths) {
       if (!p.split(path.sep).includes('node_modules')) {
         let pkg = new Package(p, this._profile);
         let loaded = packages[pkg.name];
-        if (loaded == null || path.normalize(pkg.path).startsWith(path.normalize(config.userPackagePath))) {
+        if (loaded == null || path.normalize(pkg.path).startsWith(path.normalize(Env.userPackagePath))) {
           packages[pkg.name] = pkg;
         }
       }
@@ -251,7 +251,7 @@ export default class PackageHub {
 
   async install(name) {
     let registry = this._profile.getConfig('package-registry');
-    let pkgpath = path.join(config.userPackagePath, name);
+    let pkgpath = path.join(Env.userPackagePath, name);
     let host = await this.resolveRegistry(registry);
 
     await new Promise((res) => {
@@ -276,7 +276,7 @@ export default class PackageHub {
     let pkg = data.versions[vars[0]];
     if ((pkg.engines != null) && (pkg.engines.dripcap != null)) {
       let ver = pkg.engines.dripcap;
-      if (semver.satisfies(config.version, ver)) {
+      if (semver.satisfies(Env.version, ver)) {
         if ((pkg.dist != null) && (pkg.dist.tarball != null)) {
         } else {
           throw new Error('Tarball not found');
@@ -333,7 +333,7 @@ export default class PackageHub {
   }
 
   uninstall(name) {
-    let pkgpath = path.join(config.userPackagePath, name);
+    let pkgpath = path.join(Env.userPackagePath, name);
     return new Promise(res => {
       rimraf(pkgpath, err => {
         this.updatePackageList();

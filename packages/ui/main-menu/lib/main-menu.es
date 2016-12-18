@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Menu, KeyBind, Theme, PubSub, Config, Profile } from 'dripcap';
+import { Menu, KeyBind, Theme, PubSub, Env, Profile } from 'dripcap';
 import { remote } from 'electron';
 let { app, MenuItem } = remote;
 
@@ -205,7 +205,7 @@ export default class MainMenu {
           type: 'separator'
         }));
         menu.append(new MenuItem({
-          label: `Version ${Config.version}`,
+          label: `Version ${Env.version}`,
           enabled: false
         }));
       }
@@ -215,7 +215,7 @@ export default class MainMenu {
     if (process.platform === 'darwin') {
       this.appMenu = function(menu, e) {
         menu.append(new MenuItem({
-          label: `Version ${Config.version}`,
+          label: `Version ${Env.version}`,
           enabled: false
         }));
         menu.append(new MenuItem({

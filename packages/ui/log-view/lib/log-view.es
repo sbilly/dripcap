@@ -1,4 +1,4 @@
-import { Package, Menu, PubSub, Config, Logger, Layout } from 'dripcap';
+import { Package, Menu, PubSub, Logger, Layout } from 'dripcap';
 import { remote } from 'electron';
 let { MenuItem, app } = remote;
 

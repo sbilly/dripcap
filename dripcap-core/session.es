@@ -1,4 +1,3 @@
-import config from './config';
 import { EventEmitter } from 'events';
 import paperfilter from 'paperfilter';
 

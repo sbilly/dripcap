@@ -1,7 +1,7 @@
 import path from 'path';
 import $ from 'jquery';
 import { webFrame } from 'electron';
-import config from './config';
+import Env from './env';
 import Profile from './profile';
 import Theme from './theme';
 import Menu from './menu';
@@ -18,11 +18,11 @@ export default function(profileName = 'default') {
     value: document.createElementNS
   });
 
-  let profile = new Profile(path.join(config.profilePath, profileName));
+  let profile = new Profile(path.join(Env.profilePath, profileName));
   let pubsub = new PubSub();
   let layout = new Layout(pubsub);
   let dripcap = {
-    Config: config,
+    Env: Env,
     Profile: profile,
     Theme: new Theme(pubsub, profile.getConfig('theme')),
     Menu: new Menu(),
