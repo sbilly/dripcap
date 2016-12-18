@@ -98,8 +98,19 @@ DissectorThread::Private::Private(
           v8::Local<v8::Value> result =
               moduleObj->Get(v8::String::NewFromUtf8(isolate, "exports"));
 
-          if (!result.IsEmpty() && result->IsFunction()) {
-            func = result.As<v8::Function>();
+          if (!result.IsEmpty()) {
+            if (result->IsFunction()) {
+              func = result.As<v8::Function>();
+            } else {
+              if (ctx.logCb) {
+                LogMessage msg;
+                msg.message = "module.exports must be a function";
+                msg.domain = "dissector";
+                msg.resourceName = diss.resourceName;
+                ctx.logCb(msg);
+              }
+              continue;
+            }
           }
         }
         if (func.IsEmpty()) {
