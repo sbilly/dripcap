@@ -3,8 +3,9 @@ rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm
 source ~/.nvm/nvm.sh
 nvm install 7
 
-sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
-echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update && sudo apt-get install yarn
 
 export CC="gcc-5"
 export CXX="g++-5"
