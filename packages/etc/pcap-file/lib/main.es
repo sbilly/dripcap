@@ -4,7 +4,15 @@ import path from 'path';
 import {remote} from 'electron';
 const {MenuItem} = remote;
 const {dialog} = remote;
-import { Session, Menu, KeyBind, PubSub, Logger } from 'dripcap';
+import { Session, Menu, KeyBind, PubSub, Logger, Argv } from 'dripcap';
+
+let pcapFiles = [];
+
+for (let file of Argv._) {
+  if (file.endsWith('.pcap')) {
+    pcapFiles.push(path.resolve(file));
+  }
+}
 
 class Pcap {
   constructor(filePath) {
@@ -88,6 +96,11 @@ class Pcap {
 
 export default class PcapFile {
   async activate() {
+    for (let filePath of pcapFiles) {
+      this._open(filePath);
+    }
+    pcapFiles = [];
+
     KeyBind.bind('command+o', '!menu', 'pcap-file:open');
 
     this.fileMenu = function(menu, e) {
