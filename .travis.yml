@@ -23,9 +23,8 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source travis/osx-before-install.sh ;
   fi
 install:
-- npm install -g gulp babel-cli node-gyp
-- npm install nan babel-plugin-add-module-exports babel-plugin-transform-es2015-modules-commonjs
-- npm install
+- yarn global add gulp babel-cli node-gyp
+- yarn
 - gulp build
 before_script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source travis/linux-before-script.sh
