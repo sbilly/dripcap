@@ -13,7 +13,7 @@ import Session from './session';
 import Logger from './logger';
 import init from './init';
 
-export default function(profileName = 'default') {
+export default function(argv, profileName = 'default') {
   Object.defineProperty(document, 'createElementNS', {
     value: document.createElementNS
   });
@@ -22,6 +22,7 @@ export default function(profileName = 'default') {
   let pubsub = new PubSub();
   let layout = new Layout(pubsub);
   let dripcap = {
+    Argv: argv,
     Env: Env,
     Profile: profile,
     Theme: new Theme(pubsub, profile.getConfig('theme')),
