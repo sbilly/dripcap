@@ -8,4 +8,7 @@ Copy-Item -Path ../dripcap -Destination ../dripcap2 -Recurse
 $env:NO_WPCAP = "true"
 npm config set loglevel error
 yarn global add gulp electron babel-cli node-gyp
+
+ls "C:\Program Files\nodejs"
+
 yarn
