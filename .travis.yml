@@ -24,6 +24,7 @@ before_install:
   fi
 install:
 - yarn global add gulp babel-cli node-gyp
+- yarn add nan
 - yarn
 - gulp build
 before_script:

@@ -9,6 +9,15 @@ $env:NO_WPCAP = "true"
 npm config set loglevel error
 yarn global add gulp electron babel-cli node-gyp
 
-ls "C:\Program Files\nodejs"
+$dir = $pwd
+cd "C:\Program Files\nodejs"
+rm babel-doctor.cmd
+rm babel-external-helpers.cmd
+rm babel-node.cmd
+rm babel.cmd
+rm electron.cmd
+rm gulp.cmd
+rm node-gyp.cmd
+Get-ChildItem *.cmd.cmd | Rename-Item -NewName { $_.name -Replace '\.cmd\.cmd','\.cmd' }
 
 yarn
