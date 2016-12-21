@@ -18,6 +18,15 @@ rm babel.cmd
 rm electron.cmd
 rm gulp.cmd
 rm node-gyp.cmd
-Get-ChildItem *.cmd.cmd | Rename-Item -NewName { $_.name -Replace '\.cmd\.cmd','\.cmd' }
+
+Rename-Item babel-doctor.cmd.cmd babel-doctor.cmd
+Rename-Item babel-external-helpers.cmd.cmd babel-external-helpers.cmd
+Rename-Item babel-node.cmd.cmd babel-node.cmd
+Rename-Item babel.cmd.cmd babel.cmd
+Rename-Item electron.cmd.cmd electron.cmd
+Rename-Item gulp.cmd.cmd gulp.cmd
+Rename-Item node-gyp.cmd.cmd node-gyp.cmd
+
+cd $dir
 
 yarn
