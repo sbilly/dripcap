@@ -99,7 +99,7 @@
     <packet-view-custom-value if={ type=='custom' } tag={ tag } val={ val }></packet-view-custom-value>
   </p>
   <ul show={ opts.field.items.length && show }>
-    <packet-view-item each={ f in opts.field.items } layer={ opts.layer } parentVal={ parent.val } parent={ f } path={ parent.path } field={ f }></packet-view-item>
+    <packet-view-item each={ f in opts.field.items } layer={ parent.opts.layer } parentVal={ parent.val } parent={ parent.opts.field } path={ parent.path } field={ f }></packet-view-item>
   </ul>
 </li>
 
@@ -167,13 +167,15 @@
 
     let id = opts.field.id;
     if (id) {
-      this.path = opts.path + '.' + id;
-      if (id in opts.parent.attrs) {
-        this.val = opts.parent.attrs[id].data;
-        valType = opts.parent.attrs[id].type;
-      } else if (opts.parentval && id in opts.parentval) {
+      if (id in opts.layer.attrs) {
+        this.path = opts.layer.id + '.' + id;
+        this.val = opts.layer.attrs[id].data;
+        valType = opts.layer.attrs[id].type;
+      } else if (typeof opts.parentval === 'object' && id in opts.parentval) {
+        this.path = opts.path + '.' + id;
         this.val = opts.parentval[id];
       } else if (opts.parent.hasOwnProperty(id)) {
+        this.path = opts.path + '.' + id;
         this.val = opts.parent[id];
       }
     }
