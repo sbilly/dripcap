@@ -29,9 +29,6 @@ public:
   std::vector<std::shared_ptr<Item>> items() const;
   void addItem(v8::Local<v8::Object> obj);
 
-  void setAttr(const std::string &name, v8::Local<v8::Value> obj);
-  std::unordered_map<std::string, ItemValue> attrs() const;
-
 private:
   class Private;
   std::unique_ptr<Private> d;
