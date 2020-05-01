@@ -22,7 +22,7 @@
     "esprima": "^3.1.2",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.1",
-    "jquery": "^3.1.1",
+    "jquery": "^3.5.0",
     "less": "^2.7.1",
     "minimist": "^1.2.0",
     "mkpath": "^1.0.0",
