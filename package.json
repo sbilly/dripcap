@@ -28,7 +28,7 @@
     "mkpath": "^1.0.0",
     "mousetrap": "^1.6.0",
     "msgpack-lite": "^0.1.26",
-    "node-notifier": "^4.6.1",
+    "node-notifier": "^9.0.0",
     "npm": "^4.0.5",
     "paperfilter": "file:./paperfilter",
     "request": "^2.79.0",
